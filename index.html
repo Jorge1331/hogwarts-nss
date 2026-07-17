@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Hogwarts NSS: El legado del Fénix. Proyecto de convivencia y motivación del tercer ciclo."
+  >
+
+  <title>Hogwarts NSS | El legado del Fénix</title>
+
+  <!-- Tipografías provisionales -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <div class="app-shell">
+
+    <!-- MENÚ LATERAL -->
+    <aside class="sidebar">
+
+      <div class="brand">
+        <div class="brand-shield">NSS</div>
+
+        <div class="brand-text">
+          <span>Torneo de los</span>
+          <strong>Cuatro Magos</strong>
+          <small>Hogwarts NSS</small>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav" aria-label="Navegación principal">
+
+        <button class="nav-item active" data-section="inicio">
+          <span class="nav-icon">🏰</span>
+
+          <span>
+            <strong>Torre Principal</strong>
+            <small>Inicio</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="gran-comedor">
+          <span class="nav-icon">🏆</span>
+
+          <span>
+            <strong>El Gran Comedor</strong>
+            <small>Clasificación</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="caliz">
+          <span class="nav-icon">🔥</span>
+
+          <span>
+            <strong>El Santo Cáliz</strong>
+            <small>Misión semanal</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="callejon">
+          <span class="nav-icon">🪙</span>
+
+          <span>
+            <strong>El Callejón Diagon</strong>
+            <small>Recompensas</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="mapa">
+          <span class="nav-icon">🗺️</span>
+
+          <span>
+            <strong>Mapa del Merodeador</strong>
+            <small>Progreso del curso</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="gringotts">
+          <span class="nav-icon">🏦</span>
+
+          <span>
+            <strong>Gringotts</strong>
+            <small>Banco de puntos</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="pociones">
+          <span class="nav-icon">🧪</span>
+
+          <span>
+            <strong>Aula de Pociones</strong>
+            <small>Retos especiales</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="torneo">
+          <span class="nav-icon">🐉</span>
+
+          <span>
+            <strong>Torneo de los Magos</strong>
+            <small>Las tres pruebas</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="copa">
+          <span class="nav-icon">🏅</span>
+
+          <span>
+            <strong>Copa de las Casas</strong>
+            <small>Ranking anual</small>
+          </span>
+        </button>
+
+        <button class="nav-item" data-section="biblioteca">
+          <span class="nav-icon">📖</span>
+
+          <span>
+            <strong>Biblioteca</strong>
+            <small>Normas y ayuda</small>
+          </span>
+        </button>
+
+      </nav>
+
+      <div class="sidebar-profile">
+
+        <div class="profile-house-badge">🦅</div>
+
+        <div class="profile-copy">
+          <small>Tu perfil</small>
+          <strong>Profesor de Hogwarts</strong>
+
+          <div class="mini-progress">
+            <span style="width: 62%"></span>
+          </div>
+
+          <small>El legado continúa</small>
+        </div>
+
+      </div>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="main-content">
+
+      <!-- CABECERA -->
+      <header class="topbar">
+
+        <div>
+          <p class="eyebrow">Curso 2026-2027</p>
+          <h1>Hogwarts NSS</h1>
+        </div>
+
+        <div class="topbar-actions">
+
+          <button
+            class="icon-button"
+            type="button"
+            aria-label="Mensajes"
+          >
+            ✉️
+            <span class="notification-dot"></span>
+          </button>
+
+          <button
+            class="icon-button"
+            type="button"
+            aria-label="Notificaciones"
+          >
+            🔔
+          </button>
+
+          <div class="teacher-profile">
+            <div>
+              <small>Hola, profesor</small>
+              <strong>Guardián del Cáliz</strong>
+            </div>
+
+            <div class="teacher-avatar">J</div>
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <!-- PORTADA DEL CASTILLO -->
+      <section class="hero-banner">
+
+        <div class="hero-overlay"></div>
+
+        <div class="hero-content">
+          <p>Hogwarts NSS</p>
+          <h2>El legado del Fénix</h2>
+
+          <blockquote>
+            “La magia nace cuando nadie se queda atrás.”
+          </blockquote>
+        </div>
+
+        <div class="countdown-card">
+          <small>Días para la siguiente prueba</small>
+          <strong id="daysToNextChallenge">27</strong>
+          <span>El desafío del Dragón</span>
+        </div>
+
+      </section>
+
+
+      <!-- CUADRÍCULA PRINCIPAL -->
+      <section class="dashboard-grid">
+
+        <!-- MISIÓN SEMANAL -->
+        <article class="dashboard-card parchment-card mission-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">El Santo Cáliz</p>
+              <h3>Misión semanal</h3>
+            </div>
+
+            <span class="card-symbol">🔥</span>
+          </div>
+
+          <div class="mission-content">
+
+            <div class="magic-cup" aria-hidden="true">
+              <div class="cup-flame">✦</div>
+              <div class="cup-body">♛</div>
+            </div>
+
+            <div>
+              <h4 id="weeklyMissionTitle">
+                El Cáliz busca acciones que ayuden a los demás
+              </h4>
+
+              <p id="weeklyMissionDescription">
+                Esta semana, cada acto de generosidad y ayuda
+                desinteresada otorgará puntos adicionales a la casa.
+              </p>
+
+              <button class="primary-button" type="button">
+                Ver detalles de la misión
+              </button>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- NOTICIAS -->
+        <article class="dashboard-card parchment-card news-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">El Profeta</p>
+              <h3>Noticias del castillo</h3>
+            </div>
+
+            <span class="card-symbol">📰</span>
+          </div>
+
+          <div class="news-list">
+
+            <article class="news-item">
+              <span class="news-icon">✉️</span>
+
+              <div>
+                <strong>Nueva misión disponible</strong>
+                <p>El Santo Cáliz ha enviado un mensaje a las cuatro casas.</p>
+                <small>Hace 2 horas</small>
+              </div>
+            </article>
+
+            <article class="news-item">
+              <span class="news-icon">🪶</span>
+
+              <div>
+                <strong>La Niebla Gris se mueve</strong>
+                <p>Se han encontrado nuevas pistas cerca de la biblioteca.</p>
+                <small>Hace 5 horas</small>
+              </div>
+            </article>
+
+            <article class="news-item">
+              <span class="news-icon">🛡️</span>
+
+              <div>
+                <strong>Mensaje de los profesores</strong>
+                <p>El respeto y el trabajo en equipo tendrán recompensa.</p>
+                <small>Hace 1 día</small>
+              </div>
+            </article>
+
+          </div>
+
+        </article>
+
+
+        <!-- CLASIFICACIÓN -->
+        <article class="dashboard-card dark-card ranking-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Gran Comedor</p>
+              <h3>Copa de las Casas</h3>
+            </div>
+
+            <span class="card-symbol">🏆</span>
+          </div>
+
+          <ol class="house-ranking" id="houseRanking">
+
+            <li class="ranking-row gryffindor">
+              <span class="ranking-position">1.º</span>
+              <span class="house-emblem">🦁</span>
+              <strong>Gryffindor</strong>
+              <span class="house-score" data-house="gryffindor">
+                12540 pts
+              </span>
+            </li>
+
+            <li class="ranking-row slytherin">
+              <span class="ranking-position">2.º</span>
+              <span class="house-emblem">🐍</span>
+              <strong>Slytherin</strong>
+              <span class="house-score" data-house="slytherin">
+                11230 pts
+              </span>
+            </li>
+
+            <li class="ranking-row ravenclaw">
+              <span class="ranking-position">3.º</span>
+              <span class="house-emblem">🦅</span>
+              <strong>Ravenclaw</strong>
+              <span class="house-score" data-house="ravenclaw">
+                9870 pts
+              </span>
+            </li>
+
+            <li class="ranking-row hufflepuff">
+              <span class="ranking-position">4.º</span>
+              <span class="house-emblem">🦡</span>
+              <strong>Hufflepuff</strong>
+              <span class="house-score" data-house="hufflepuff">
+                8420 pts
+              </span>
+            </li>
+
+          </ol>
+
+          <button class="secondary-button" type="button">
+            Ver clasificación completa
+          </button>
+
+        </article>
+
+
+        <!-- PROGRESO -->
+        <article class="dashboard-card parchment-card progress-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Camino del aprendiz</p>
+              <h3>Progreso de Hogwarts NSS</h3>
+            </div>
+
+            <span class="card-symbol">✨</span>
+          </div>
+
+          <div class="level-track">
+
+            <div class="level-item completed">
+              <span>✦</span>
+              <small>Aprendiz</small>
+            </div>
+
+            <div class="level-item completed">
+              <span>✦</span>
+              <small>Estudiante</small>
+            </div>
+
+            <div class="level-item active">
+              <span>✦</span>
+              <small>Prefecto</small>
+            </div>
+
+            <div class="level-item">
+              <span>✦</span>
+              <small>Campeón</small>
+            </div>
+
+            <div class="level-item">
+              <span>✦</span>
+              <small>Maestro</small>
+            </div>
+
+            <div class="level-item">
+              <span>✦</span>
+              <small>Leyenda</small>
+            </div>
+
+          </div>
+
+          <div class="progress-bar">
+            <span style="width: 58%"></span>
+          </div>
+
+          <p class="progress-copy">
+            1 de las 3 Plumas del Fénix recuperada
+          </p>
+
+        </article>
+
+
+        <!-- OBJETOS MÁGICOS -->
+        <article class="dashboard-card parchment-card inventory-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Cámara de recompensas</p>
+              <h3>Objetos mágicos</h3>
+            </div>
+
+            <button class="text-button" type="button">
+              Ver todos
+            </button>
+          </div>
+
+          <div class="inventory-grid">
+
+            <button class="inventory-item" type="button">
+              <span class="inventory-count">1</span>
+              <span class="inventory-icon">🧥</span>
+              <small>Capa invisible</small>
+            </button>
+
+            <button class="inventory-item" type="button">
+              <span class="inventory-count">2</span>
+              <span class="inventory-icon">⏳</span>
+              <small>Giratiempos</small>
+            </button>
+
+            <button class="inventory-item" type="button">
+              <span class="inventory-count">1</span>
+              <span class="inventory-icon">🧪</span>
+              <small>Felix Felicis</small>
+            </button>
+
+            <button class="inventory-item" type="button">
+              <span class="inventory-count">1</span>
+              <span class="inventory-icon">🦉</span>
+              <small>Lechuza</small>
+            </button>
+
+            <button class="inventory-item" type="button">
+              <span class="inventory-count">1</span>
+              <span class="inventory-icon">🪶</span>
+              <small>Pluma del Fénix</small>
+            </button>
+
+          </div>
+
+        </article>
+
+
+        <!-- EVENTO ALEATORIO -->
+        <article class="dashboard-card dark-card event-card">
+
+          <div class="event-glow"></div>
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Acontecimiento inesperado</p>
+              <h3>Evento aleatorio</h3>
+            </div>
+
+            <span class="card-symbol">🌫️</span>
+          </div>
+
+          <div class="event-content">
+            <h4>La Niebla Gris ha llegado</h4>
+
+            <p>
+              Durante las próximas horas, las acciones de ayuda y
+              compañerismo tendrán una recompensa especial.
+            </p>
+
+            <button class="secondary-button" type="button">
+              Descubrir el evento
+            </button>
+          </div>
+
+        </article>
+
+
+        <!-- MAPA -->
+        <article class="dashboard-card map-card">
+
+          <div class="map-heading">
+            <div>
+              <p class="card-kicker">Mapa del Merodeador</p>
+              <h3>Explora Hogwarts NSS</h3>
+            </div>
+          </div>
+
+          <div class="castle-map">
+
+            <button class="map-location location-tournament" type="button">
+              Torneo
+            </button>
+
+            <button class="map-location location-potions" type="button">
+              Pociones
+            </button>
+
+            <button class="map-location location-library" type="button">
+              Biblioteca
+            </button>
+
+            <button class="map-location location-gringotts" type="button">
+              Gringotts
+            </button>
+
+            <div class="map-castle">🏰</div>
+
+          </div>
+
+        </article>
+
+
+        <!-- ACTIVIDAD RECIENTE -->
+        <article class="dashboard-card dark-card activity-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Movimientos del castillo</p>
+              <h3>Actividad reciente</h3>
+            </div>
+
+            <span class="card-symbol">📜</span>
+          </div>
+
+          <div class="activity-list">
+
+            <div class="activity-item">
+              <div class="activity-avatar">AL</div>
+
+              <div>
+                <strong>Una alumna ha completado una misión</strong>
+                <p>Ha obtenido puntos para Ravenclaw.</p>
+              </div>
+
+              <span class="positive-points">+3</span>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-avatar">MS</div>
+
+              <div>
+                <strong>Un alumno ha ayudado a un compañero</strong>
+                <p>Hufflepuff refuerza el valor del servicio.</p>
+              </div>
+
+              <span class="positive-points">+1</span>
+            </div>
+
+            <div class="activity-item">
+              <div class="activity-avatar">NSS</div>
+
+              <div>
+                <strong>Misión de Hogwarts completada</strong>
+                <p>Las cuatro casas han colaborado.</p>
+              </div>
+
+              <span class="positive-points">+25</span>
+            </div>
+
+          </div>
+
+        </article>
+
+
+        <!-- PRÓXIMOS EVENTOS -->
+        <article class="dashboard-card dark-card upcoming-card">
+
+          <div class="card-heading">
+            <div>
+              <p class="card-kicker">Calendario mágico</p>
+              <h3>Próximos eventos</h3>
+            </div>
+
+            <span class="card-symbol">📅</span>
+          </div>
+
+          <div class="upcoming-list">
+
+            <div class="upcoming-item">
+              <span class="event-marker dragon-marker">🐉</span>
+
+              <div>
+                <strong>Primera prueba: El Dragón</strong>
+                <small>Pluma del Valor</small>
+              </div>
+
+              <span>27 días</span>
+            </div>
+
+            <div class="upcoming-item">
+              <span class="event-marker lake-marker">🌊</span>
+
+              <div>
+                <strong>Segunda prueba: El Lago Negro</strong>
+                <small>Pluma de la Unidad</small>
+              </div>
+
+              <span>118 días</span>
+            </div>
+
+            <div class="upcoming-item">
+              <span class="event-marker maze-marker">🌀</span>
+
+              <div>
+                <strong>Tercera prueba: El Laberinto</strong>
+                <small>Pluma del Socorro</small>
+              </div>
+
+              <span>208 días</span>
+            </div>
+
+          </div>
+
+        </article>
+
+      </section>
+
+
+      <!-- PIE -->
+      <footer class="site-footer">
+        <p>
+          Hogwarts NSS: El legado del Fénix ·
+          Nuestra Señora del Socorro
+        </p>
+
+        <blockquote>
+          “La magia nace cuando nadie se queda atrás.”
+        </blockquote>
+      </footer>
+
+    </main>
+
+  </div>
+
+
+  <script src="app.js"></script>
+
+</body>
+</html>
