@@ -147,86 +147,36 @@
 
         </div>
 
-        <form
-          id="teacherLoginForm"
-          class="teacher-login-form"
-          novalidate
-        >
+       <div class="teacher-google-access">
 
-          <div class="form-field">
+  <p class="google-access-description">
+    Identifícate mediante tu cuenta corporativa de Google.
+    No necesitas crear otra contraseña.
+  </p>
 
-            <label for="teacherEmail">
-              Correo institucional
-            </label>
+  <button
+    id="googleSignInButton"
+    class="google-sign-in-button"
+    type="button"
+  >
+    <span
+      class="google-sign-in-icon"
+      aria-hidden="true"
+    >
+      G
+    </span>
 
-            <div class="input-wrapper">
-              <span aria-hidden="true">✉️</span>
+    <span>Continuar con Google</span>
+  </button>
 
-              <input
-                id="teacherEmail"
-                name="teacherEmail"
-                type="email"
-                autocomplete="email"
-                placeholder="profesor@colegio.es"
-                required
-              >
-            </div>
+  <p
+    id="loginMessage"
+    class="login-message"
+    role="status"
+    aria-live="polite"
+  ></p>
 
-            <small>
-              Solo se admitirán cuentas previamente autorizadas.
-            </small>
-
-          </div>
-
-
-          <div class="form-field">
-
-            <label for="teacherPassword">
-              Contraseña
-            </label>
-
-            <div class="input-wrapper">
-              <span aria-hidden="true">🔐</span>
-
-              <input
-                id="teacherPassword"
-                name="teacherPassword"
-                type="password"
-                autocomplete="current-password"
-                placeholder="Introduce tu contraseña"
-                required
-              >
-
-              <button
-                id="togglePasswordButton"
-                class="toggle-password-button"
-                type="button"
-                aria-label="Mostrar contraseña"
-              >
-                👁️
-              </button>
-            </div>
-
-          </div>
-
-
-          <p
-            id="loginMessage"
-            class="login-message"
-            role="status"
-            aria-live="polite"
-          ></p>
-
-
-          <button
-            class="teacher-login-button"
-            type="submit"
-          >
-            <span>Entrar en la Sala de Profesores</span>
-            <span aria-hidden="true">⚡</span>
-          </button>
-
-        </form>
+</div>
 
 
         <div class="security-divider">
@@ -266,11 +216,11 @@
         </div>
 
 
-        <p class="temporary-access-warning">
-          Esta pantalla todavía no permite iniciar sesión.
-          La autenticación segura se activará mediante Firebase
-          antes de incorporar cualquier dato real.
-        </p>
+       <p class="temporary-access-warning">
+  El acceso está protegido mediante Firebase Authentication.
+  Solo las cuentas docentes expresamente autorizadas
+  podrán cruzar esta puerta.
+</p>
 
       </div>
 
@@ -279,7 +229,10 @@
   </main>
 
 
-  <script src="profesores.js"></script>
+<script
+  type="module"
+  src="profesores.js"
+></script>
 
 </body>
 </html>
