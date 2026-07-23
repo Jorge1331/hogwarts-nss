@@ -1,23 +1,31 @@
 /* =========================================================
    HOGWARTS NSS: EL LEGADO DEL FÉNIX
-   Interacción de la Guardiana del Cáliz
+   Acceso docente mediante Google y Firebase
    ========================================================= */
 
 "use strict";
 
+
+import {
+  auth,
+  googleProvider
+} from "./firebase-config.js";
+
+
+import {
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+const CORPORATE_DOMAIN = "@colegiosocorro.es";
+
+
 document.addEventListener("DOMContentLoaded", () => {
 
-  const loginForm =
-    document.getElementById("teacherLoginForm");
-
-  const emailInput =
-    document.getElementById("teacherEmail");
-
-  const passwordInput =
-    document.getElementById("teacherPassword");
-
-  const togglePasswordButton =
-    document.getElementById("togglePasswordButton");
+  const googleSignInButton =
+    document.getElementById("googleSignInButton");
 
   const loginMessage =
     document.getElementById("loginMessage");
@@ -29,21 +37,22 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("guardianMessage");
 
 
-  /* Comprobación preventiva */
+  if (
+    !googleSignInButton ||
+    !loginMessage ||
+    !guardianPortrait ||
+    !guardianMessage
+  ) {
+    console.error(
+      "No se han encontrado todos los elementos del acceso docente."
+    );
 
-  const requiredElements = [
-    loginForm,
-    emailInput,
-    passwordInput,
-    togglePasswordButton,
-    loginMessage,
-    guardianPortrait,
-    guardianMessage
-  ];
-
-  if (requiredElements.some((element) => !element)) {
     return;
   }
+
+
+  let currentUser = null;
+  let authenticationReady = false;
 
 
   /* ------------------------------
@@ -62,11 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
       "is-alert"
     );
 
-    /*
-     Reinicia la animación cada vez
-     que cambia el mensaje.
-    */
-
     void guardianPortrait.offsetWidth;
 
     guardianPortrait.classList.add(
@@ -80,20 +84,22 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     window.setTimeout(() => {
+
       guardianPortrait.classList.remove(
         "is-speaking"
       );
+
     }, 1000);
   };
 
 
   /* ------------------------------
-     MENSAJE DEL FORMULARIO
+     MENSAJE DEL ACCESO
   ------------------------------ */
 
   const showLoginMessage = (
     message,
-    type
+    type = "info"
   ) => {
 
     loginMessage.textContent = message;
@@ -113,202 +119,429 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ------------------------------
-     MOSTRAR U OCULTAR CONTRASEÑA
+     CONTENIDO DEL BOTÓN
   ------------------------------ */
 
-  togglePasswordButton.addEventListener(
+  const renderButton = (
+    icon,
+    text
+  ) => {
+
+    const iconElement =
+      document.createElement("span");
+
+    iconElement.className =
+      "google-sign-in-icon";
+
+    iconElement.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    iconElement.textContent = icon;
+
+
+    const textElement =
+      document.createElement("span");
+
+    textElement.textContent = text;
+
+
+    googleSignInButton.replaceChildren(
+      iconElement,
+      textElement
+    );
+  };
+
+
+  const setLoadingState = (
+    isLoading
+  ) => {
+
+    googleSignInButton.disabled =
+      isLoading;
+
+    googleSignInButton.classList.toggle(
+      "is-loading",
+      isLoading
+    );
+
+    if (isLoading) {
+
+      renderButton(
+        "✦",
+        "Comprobando identidad..."
+      );
+    }
+  };
+
+
+  const showSignedOutState = () => {
+
+    currentUser = null;
+
+    googleSignInButton.classList.remove(
+      "is-signed-in"
+    );
+
+    renderButton(
+      "G",
+      "Continuar con Google"
+    );
+
+    googleSignInButton.disabled = false;
+  };
+
+
+  const showSignedInState = (
+    user
+  ) => {
+
+    currentUser = user;
+
+    googleSignInButton.classList.add(
+      "is-signed-in"
+    );
+
+    const firstName =
+      user.displayName
+        ?.trim()
+        .split(/\s+/)[0] ||
+      "docente";
+
+    renderButton(
+      "✓",
+      `Cerrar sesión de ${firstName}`
+    );
+
+    googleSignInButton.disabled = false;
+  };
+
+
+  /* ------------------------------
+     COMPROBAR CUENTA CORPORATIVA
+  ------------------------------ */
+
+  const isCorporateAccount = (
+    user
+  ) => {
+
+    const email =
+      user?.email
+        ?.trim()
+        .toLowerCase() ||
+      "";
+
+    return email.endsWith(
+      CORPORATE_DOMAIN
+    );
+  };
+
+
+  /* ------------------------------
+     OBSERVADOR DE SESIÓN
+  ------------------------------ */
+
+  onAuthStateChanged(
+    auth,
+    async (user) => {
+
+      authenticationReady = true;
+
+
+      if (!user) {
+
+        showSignedOutState();
+
+        return;
+      }
+
+
+      if (!isCorporateAccount(user)) {
+
+        await signOut(auth);
+
+        speak(
+          "Esa cuenta no pertenece a los guardianes del Colegio del Socorro.",
+          "alert"
+        );
+
+        showLoginMessage(
+          "Debes utilizar una cuenta corporativa terminada en @colegiosocorro.es.",
+          "error"
+        );
+
+        return;
+      }
+
+
+      showSignedInState(user);
+
+
+      const firstName =
+        user.displayName
+          ?.trim()
+          .split(/\s+/)[0] ||
+        "guardián";
+
+
+      speak(
+        `Identidad reconocida. Bienvenido, ${firstName}. El Cáliz ha respondido correctamente.`
+      );
+
+
+      showLoginMessage(
+        `Cuenta verificada: ${user.email}. La autenticación con Google funciona correctamente.`,
+        "info"
+      );
+    }
+  );
+
+
+  /* ------------------------------
+     BOTÓN DE ACCESO
+  ------------------------------ */
+
+  googleSignInButton.addEventListener(
     "click",
-    () => {
-
-      const passwordIsHidden =
-        passwordInput.type === "password";
-
-      passwordInput.type =
-        passwordIsHidden
-          ? "text"
-          : "password";
-
-      togglePasswordButton.textContent =
-        passwordIsHidden
-          ? "🙈"
-          : "👁️";
-
-      togglePasswordButton.setAttribute(
-        "aria-label",
-        passwordIsHidden
-          ? "Ocultar contraseña"
-          : "Mostrar contraseña"
-      );
-
-      speak(
-        passwordIsHidden
-          ? "La contraseña ha quedado visible. Asegúrate de que nadie esté mirando."
-          : "El secreto vuelve a estar protegido."
-      );
-
-      passwordInput.focus();
-    }
-  );
-
-
-  /* ------------------------------
-     REACCIONES AL FORMULARIO
-  ------------------------------ */
-
-  emailInput.addEventListener(
-    "focus",
-    () => {
-
-      speak(
-        "Preséntate, guardián. Necesito reconocer tu identidad."
-      );
-    }
-  );
-
-
-  passwordInput.addEventListener(
-    "focus",
-    () => {
-
-      speak(
-        "La contraseña debe permanecer únicamente en manos de su propietario."
-      );
-    }
-  );
-
-
-  emailInput.addEventListener(
-    "input",
-    clearLoginMessage
-  );
-
-
-  passwordInput.addEventListener(
-    "input",
-    clearLoginMessage
-  );
-
-
-  /* ------------------------------
-     VALIDACIÓN TEMPORAL
-  ------------------------------ */
-
-  loginForm.addEventListener(
-    "submit",
-    (event) => {
-
-      event.preventDefault();
+    async () => {
 
       clearLoginMessage();
 
-      const email =
-        emailInput.value.trim();
 
-      const password =
-        passwordInput.value;
-
-
-      if (!email && !password) {
+      if (!authenticationReady) {
 
         speak(
-          "No puedo abrir la puerta sin conocer tu identidad y tu clave.",
-          "alert"
+          "Espera un instante. Las protecciones de la puerta todavía se están preparando."
         );
 
         showLoginMessage(
-          "Introduce el correo institucional y la contraseña.",
-          "error"
+          "Firebase Authentication todavía se está inicializando.",
+          "info"
         );
-
-        emailInput.focus();
-
-        return;
-      }
-
-
-      if (!email) {
-
-        speak(
-          "Todavía no te has presentado. Necesito conocer tu correo institucional.",
-          "alert"
-        );
-
-        showLoginMessage(
-          "Introduce tu correo institucional.",
-          "error"
-        );
-
-        emailInput.focus();
-
-        return;
-      }
-
-
-      if (!emailInput.validity.valid) {
-
-        speak(
-          "Ese correo no parece pertenecer a ningún guardián reconocido.",
-          "alert"
-        );
-
-        showLoginMessage(
-          "El formato del correo electrónico no es válido.",
-          "error"
-        );
-
-        emailInput.focus();
-
-        return;
-      }
-
-
-      if (!password) {
-
-        speak(
-          "Falta la clave que protege la entrada.",
-          "alert"
-        );
-
-        showLoginMessage(
-          "Introduce tu contraseña.",
-          "error"
-        );
-
-        passwordInput.focus();
 
         return;
       }
 
 
       /*
-       Firebase todavía no está conectado.
-       No se almacena ni se envía ningún dato.
+       Si ya existe una sesión,
+       el botón permite cerrarla.
       */
+
+      if (currentUser) {
+
+        setLoadingState(true);
+
+        try {
+
+          await signOut(auth);
+
+          speak(
+            "La sesión ha quedado cerrada. La puerta vuelve a estar protegida."
+          );
+
+          showLoginMessage(
+            "Sesión cerrada correctamente.",
+            "info"
+          );
+
+        } catch (error) {
+
+          console.error(
+            "Error al cerrar sesión:",
+            error
+          );
+
+          speak(
+            "No he podido cerrar la sesión correctamente.",
+            "alert"
+          );
+
+          showLoginMessage(
+            "Se ha producido un error al cerrar la sesión.",
+            "error"
+          );
+
+        } finally {
+
+          showSignedOutState();
+        }
+
+        return;
+      }
+
+
+      /*
+       Inicio de sesión mediante
+       la ventana oficial de Google.
+      */
+
+      setLoadingState(true);
 
       speak(
-        "Has completado la identificación, pero el encantamiento protector todavía no ha sido activado."
+        "El Cáliz comprobará ahora tu identidad mediante Google."
       );
 
-      showLoginMessage(
-        "Acceso bloqueado temporalmente. Firebase Authentication se activará antes de utilizar cuentas reales.",
-        "info"
-      );
 
-      /*
-       La contraseña se elimina del campo
-       después de la prueba.
-      */
+      try {
 
-      passwordInput.value = "";
-      passwordInput.type = "password";
+        const result =
+          await signInWithPopup(
+            auth,
+            googleProvider
+          );
 
-      togglePasswordButton.textContent =
-        "👁️";
 
-      togglePasswordButton.setAttribute(
-        "aria-label",
-        "Mostrar contraseña"
-      );
+        if (!isCorporateAccount(result.user)) {
+
+          await signOut(auth);
+
+          speak(
+            "Esa cuenta no pertenece al dominio autorizado del colegio.",
+            "alert"
+          );
+
+          showLoginMessage(
+            "Selecciona tu cuenta corporativa @colegiosocorro.es.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        /*
+         El observador onAuthStateChanged
+         completará la interfaz.
+        */
+
+
+      } catch (error) {
+
+        console.error(
+          "Error de Firebase Authentication:",
+          error
+        );
+
+
+        switch (error.code) {
+
+          case "auth/popup-closed-by-user":
+
+            speak(
+              "Has cerrado la ventana antes de completar la identificación."
+            );
+
+            showLoginMessage(
+              "Acceso cancelado. No se ha iniciado ninguna sesión.",
+              "info"
+            );
+
+            break;
+
+
+          case "auth/popup-blocked":
+
+            speak(
+              "El navegador ha bloqueado la ventana de identificación.",
+              "alert"
+            );
+
+            showLoginMessage(
+              "Permite las ventanas emergentes para esta página y vuelve a intentarlo.",
+              "error"
+            );
+
+            break;
+
+
+          case "auth/cancelled-popup-request":
+
+            showLoginMessage(
+              "Ya había otra ventana de acceso abierta.",
+              "info"
+            );
+
+            break;
+
+
+          case "auth/network-request-failed":
+
+            speak(
+              "No puedo comunicarme con Google en este momento.",
+              "alert"
+            );
+
+            showLoginMessage(
+              "Comprueba tu conexión a Internet y vuelve a intentarlo.",
+              "error"
+            );
+
+            break;
+
+
+          case "auth/unauthorized-domain":
+
+            speak(
+              "Esta puerta todavía no reconoce el dominio desde el que intentas entrar.",
+              "alert"
+            );
+
+            showLoginMessage(
+              "El dominio de GitHub Pages no está autorizado correctamente en Firebase.",
+              "error"
+            );
+
+            break;
+
+
+          case "auth/operation-not-allowed":
+
+            speak(
+              "El método de acceso con Google no está habilitado.",
+              "alert"
+            );
+
+            showLoginMessage(
+              "Google debe estar habilitado en Firebase Authentication.",
+              "error"
+            );
+
+            break;
+
+
+          default:
+
+            speak(
+              "No he podido completar la comprobación de identidad.",
+              "alert"
+            );
+
+            showLoginMessage(
+              "Se ha producido un error inesperado durante el acceso con Google.",
+              "error"
+            );
+        }
+
+
+      } finally {
+
+        googleSignInButton.disabled = false;
+
+        googleSignInButton.classList.remove(
+          "is-loading"
+        );
+
+
+        if (!currentUser) {
+
+          renderButton(
+            "G",
+            "Continuar con Google"
+          );
+        }
+      }
     }
   );
 
