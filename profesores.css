@@ -1,0 +1,875 @@
+/* =========================================================
+   HOGWARTS NSS: EL LEGADO DEL FÉNIX
+   Acceso a la Sala de Profesores
+   ========================================================= */
+
+
+/* ------------------------------
+   PÁGINA GENERAL
+------------------------------ */
+
+.teachers-login-page {
+  min-height: 100vh;
+  color: var(--white);
+  background:
+    radial-gradient(
+      circle at 18% 20%,
+      rgba(216, 168, 78, 0.14),
+      transparent 28%
+    ),
+    radial-gradient(
+      circle at 82% 78%,
+      rgba(45, 91, 145, 0.2),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #03060c,
+      var(--night-950) 42%,
+      #07111f
+    );
+}
+
+.teachers-login-page::before {
+  opacity: 0.45;
+}
+
+.teachers-login-shell {
+  display: grid;
+  grid-template-columns: minmax(340px, 0.9fr) minmax(520px, 1.1fr);
+
+  width: 100%;
+  min-height: 100vh;
+}
+
+
+/* ------------------------------
+   PANEL NARRATIVO
+------------------------------ */
+
+.teachers-story-panel {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  min-height: 100vh;
+  padding: 38px 48px;
+
+  overflow: hidden;
+
+  border-right: 1px solid rgba(239, 200, 115, 0.28);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(5, 8, 17, 0.3),
+      rgba(5, 8, 17, 0.92)
+    ),
+    radial-gradient(
+      circle at 50% 28%,
+      rgba(239, 200, 115, 0.16),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      #10192b,
+      #080d19 58%,
+      #04070d
+    );
+}
+
+.teachers-story-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.35;
+
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 80px,
+      rgba(255, 255, 255, 0.025) 81px
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent 0,
+      transparent 80px,
+      rgba(255, 255, 255, 0.02) 81px
+    );
+}
+
+.teachers-story-panel::after {
+  content: "♜";
+  position: absolute;
+  left: 50%;
+  bottom: -92px;
+
+  transform: translateX(-50%);
+
+  color: rgba(239, 200, 115, 0.055);
+  font-family: var(--font-display);
+  font-size: clamp(250px, 38vw, 520px);
+  line-height: 1;
+
+  pointer-events: none;
+}
+
+.back-to-castle {
+  position: relative;
+  z-index: 2;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  width: fit-content;
+
+  color: var(--gold-300);
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.back-to-castle:hover {
+  color: var(--white);
+  transform: translateX(-4px);
+}
+
+.back-to-castle:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 5px;
+  border-radius: 4px;
+}
+
+.teachers-story-content {
+  position: relative;
+  z-index: 2;
+
+  width: min(100%, 560px);
+  margin: auto;
+  text-align: center;
+}
+
+.teachers-emblem {
+  display: grid;
+  place-items: center;
+
+  width: 112px;
+  height: 112px;
+  margin: 0 auto 28px;
+
+  border: 2px solid var(--gold-400);
+  border-radius: 50%;
+
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: 1.65rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(216, 168, 78, 0.18),
+      rgba(8, 13, 25, 0.94) 70%
+    );
+
+  box-shadow:
+    0 0 0 8px rgba(216, 168, 78, 0.06),
+    0 0 42px rgba(216, 168, 78, 0.22),
+    inset 0 0 24px rgba(239, 200, 115, 0.12);
+
+  animation: emblemGlow 4s ease-in-out infinite;
+}
+
+@keyframes emblemGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 8px rgba(216, 168, 78, 0.05),
+      0 0 30px rgba(216, 168, 78, 0.14),
+      inset 0 0 20px rgba(239, 200, 115, 0.1);
+  }
+
+  50% {
+    box-shadow:
+      0 0 0 10px rgba(216, 168, 78, 0.08),
+      0 0 52px rgba(216, 168, 78, 0.28),
+      inset 0 0 30px rgba(239, 200, 115, 0.17);
+  }
+}
+
+.teachers-eyebrow {
+  margin: 0 0 12px;
+
+  color: var(--gold-400);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.teachers-story-content h1 {
+  margin: 0;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 4vw, 4.1rem);
+  line-height: 1.08;
+  text-shadow:
+    0 3px 20px rgba(0, 0, 0, 0.65),
+    0 0 24px rgba(216, 168, 78, 0.1);
+}
+
+.teachers-subtitle {
+  max-width: 490px;
+  margin: 22px auto 0;
+
+  color: var(--muted);
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+.teachers-story-content blockquote {
+  position: relative;
+
+  max-width: 450px;
+  margin: 34px auto 0;
+  padding: 22px 28px;
+
+  border-top: 1px solid rgba(239, 200, 115, 0.28);
+  border-bottom: 1px solid rgba(239, 200, 115, 0.28);
+
+  color: var(--gold-300);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-style: italic;
+  line-height: 1.7;
+}
+
+.legacy-symbols {
+  display: flex;
+  justify-content: center;
+  gap: 26px;
+
+  margin-top: 30px;
+}
+
+.legacy-symbols span {
+  display: grid;
+  place-items: center;
+
+  width: 48px;
+  height: 48px;
+
+  border: 1px solid rgba(239, 200, 115, 0.25);
+  border-radius: 50%;
+
+  font-size: 1.45rem;
+
+  background: rgba(8, 13, 25, 0.72);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.28);
+}
+
+.teachers-privacy-message {
+  position: relative;
+  z-index: 2;
+
+  padding: 18px 20px;
+
+  border: 1px solid rgba(239, 200, 115, 0.2);
+  border-radius: 14px;
+
+  background: rgba(8, 13, 25, 0.72);
+  backdrop-filter: blur(10px);
+}
+
+.teachers-privacy-message strong {
+  display: block;
+  margin-bottom: 7px;
+
+  color: var(--gold-400);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.teachers-privacy-message p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.55;
+}
+
+
+/* ------------------------------
+   PANEL DE ACCESO
+------------------------------ */
+
+.teachers-access-panel {
+  display: grid;
+  place-items: center;
+
+  min-height: 100vh;
+  padding: 44px;
+
+  background:
+    radial-gradient(
+      circle at center,
+      rgba(23, 34, 58, 0.65),
+      transparent 70%
+    );
+}
+
+.teachers-login-card {
+  position: relative;
+
+  width: min(100%, 600px);
+  padding: 42px;
+
+  border: 1px solid rgba(239, 200, 115, 0.34);
+  border-radius: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 25, 43, 0.96),
+      rgba(8, 13, 25, 0.98)
+    );
+
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.48),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.teachers-login-card::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+
+  pointer-events: none;
+
+  border: 1px solid rgba(216, 168, 78, 0.12);
+  border-radius: 18px;
+}
+
+.login-card-heading {
+  position: relative;
+  z-index: 1;
+
+  text-align: center;
+}
+
+.login-key-icon {
+  display: grid;
+  place-items: center;
+
+  width: 68px;
+  height: 68px;
+  margin: 0 auto 20px;
+
+  border: 1px solid rgba(239, 200, 115, 0.4);
+  border-radius: 18px;
+
+  font-size: 2rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(216, 168, 78, 0.18),
+      rgba(8, 13, 25, 0.7)
+    );
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.25),
+    0 0 28px rgba(216, 168, 78, 0.11);
+}
+
+.login-card-heading > p {
+  margin: 0 0 8px;
+
+  color: var(--gold-400);
+  font-family: var(--font-display);
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  text-transform: uppercase;
+}
+
+.login-card-heading h2 {
+  margin: 0;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(1.45rem, 3vw, 2rem);
+  line-height: 1.25;
+}
+
+.login-card-heading > span {
+  display: block;
+  margin-top: 12px;
+
+  color: var(--muted);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+
+/* ------------------------------
+   FORMULARIO
+------------------------------ */
+
+.teacher-login-form {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  gap: 22px;
+
+  margin-top: 34px;
+}
+
+.form-field {
+  display: grid;
+  gap: 9px;
+}
+
+.form-field label {
+  color: var(--gold-300);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.form-field small {
+  color: #8893a8;
+  font-size: 0.72rem;
+  line-height: 1.45;
+}
+
+.input-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+
+  min-height: 54px;
+  padding: 0 16px;
+
+  border: 1px solid rgba(174, 183, 202, 0.23);
+  border-radius: 12px;
+
+  background: rgba(5, 8, 17, 0.72);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.input-wrapper:focus-within {
+  border-color: var(--gold-400);
+
+  background: rgba(5, 8, 17, 0.94);
+
+  box-shadow:
+    0 0 0 3px rgba(216, 168, 78, 0.11),
+    0 0 26px rgba(216, 168, 78, 0.08);
+}
+
+.input-wrapper > span {
+  flex: 0 0 auto;
+  opacity: 0.72;
+}
+
+.input-wrapper input {
+  width: 100%;
+  min-width: 0;
+  padding: 16px 0;
+
+  border: 0;
+  outline: 0;
+
+  color: var(--white);
+  font: inherit;
+
+  background: transparent;
+}
+
+.input-wrapper input::placeholder {
+  color: #687287;
+}
+
+.toggle-password-button {
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 auto;
+
+  width: 34px;
+  height: 34px;
+  padding: 0;
+
+  border: 0;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  background: transparent;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease;
+}
+
+.toggle-password-button:hover {
+  background: rgba(239, 200, 115, 0.1);
+  transform: scale(1.06);
+}
+
+.toggle-password-button:focus-visible {
+  outline: 2px solid var(--gold-400);
+  outline-offset: 2px;
+}
+
+.login-message {
+  display: none;
+  margin: -4px 0 0;
+  padding: 11px 13px;
+
+  border-radius: 9px;
+
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+.login-message.visible {
+  display: block;
+}
+
+.login-message.error {
+  border: 1px solid rgba(229, 138, 138, 0.35);
+  color: #ffc4c4;
+  background: rgba(122, 35, 42, 0.2);
+}
+
+.login-message.info {
+  border: 1px solid rgba(239, 200, 115, 0.3);
+  color: var(--gold-300);
+  background: rgba(127, 87, 32, 0.16);
+}
+
+.teacher-login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 56px;
+  padding: 14px 20px;
+
+  border: 1px solid var(--gold-400);
+  border-radius: 12px;
+
+  cursor: pointer;
+
+  color: #1e1408;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold-300),
+      var(--gold-500)
+    );
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.28),
+    0 0 24px rgba(216, 168, 78, 0.12);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.teacher-login-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.34),
+    0 0 34px rgba(216, 168, 78, 0.2);
+}
+
+.teacher-login-button:active {
+  transform: translateY(0);
+}
+
+.teacher-login-button:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 4px;
+}
+
+
+/* ------------------------------
+   SEGURIDAD
+------------------------------ */
+
+.security-divider {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  margin: 34px 0 22px;
+
+  color: var(--gold-400);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.security-divider::before,
+.security-divider::after {
+  content: "";
+  flex: 1;
+
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(239, 200, 115, 0.28)
+    );
+}
+
+.security-divider::after {
+  transform: rotate(180deg);
+}
+
+.security-principles {
+  position: relative;
+  z-index: 1;
+
+  display: grid;
+  gap: 12px;
+}
+
+.security-principles > div {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  border: 1px solid rgba(174, 183, 202, 0.11);
+  border-radius: 10px;
+
+  background: rgba(5, 8, 17, 0.38);
+}
+
+.security-principles span {
+  flex: 0 0 auto;
+
+  font-size: 1.05rem;
+}
+
+.security-principles p {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 0.76rem;
+  line-height: 1.55;
+}
+
+.temporary-access-warning {
+  position: relative;
+  z-index: 1;
+
+  margin: 22px 0 0;
+  padding: 13px 14px;
+
+  border-left: 3px solid var(--gold-500);
+  border-radius: 0 9px 9px 0;
+
+  color: #c6cede;
+  font-size: 0.72rem;
+  line-height: 1.55;
+
+  background: rgba(216, 168, 78, 0.07);
+}
+
+
+/* ------------------------------
+   TABLET
+------------------------------ */
+
+@media (max-width: 980px) {
+
+  .teachers-login-shell {
+    grid-template-columns: 1fr;
+  }
+
+  .teachers-story-panel {
+    min-height: auto;
+    padding: 28px 30px 40px;
+
+    border-right: 0;
+    border-bottom: 1px solid rgba(239, 200, 115, 0.25);
+  }
+
+  .teachers-story-content {
+    margin: 54px auto 45px;
+  }
+
+  .teachers-story-panel::after {
+    bottom: -140px;
+    font-size: 420px;
+  }
+
+  .teachers-privacy-message {
+    width: min(100%, 600px);
+    margin: 0 auto;
+  }
+
+  .teachers-access-panel {
+    min-height: auto;
+    padding: 50px 26px;
+  }
+}
+
+
+/* ------------------------------
+   MÓVIL
+------------------------------ */
+
+@media (max-width: 600px) {
+
+  .teachers-story-panel {
+    padding: 22px 18px 30px;
+  }
+
+  .back-to-castle {
+    font-size: 0.8rem;
+  }
+
+  .teachers-story-content {
+    margin: 42px auto 34px;
+  }
+
+  .teachers-emblem {
+    width: 88px;
+    height: 88px;
+    margin-bottom: 22px;
+
+    font-size: 1.25rem;
+  }
+
+  .teachers-story-content h1 {
+    font-size: 2.15rem;
+  }
+
+  .teachers-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.65;
+  }
+
+  .teachers-story-content blockquote {
+    margin-top: 26px;
+    padding: 18px 10px;
+
+    font-size: 0.88rem;
+  }
+
+  .legacy-symbols {
+    gap: 16px;
+  }
+
+  .legacy-symbols span {
+    width: 42px;
+    height: 42px;
+
+    font-size: 1.2rem;
+  }
+
+  .teachers-privacy-message {
+    padding: 15px 16px;
+  }
+
+  .teachers-access-panel {
+    padding: 32px 14px;
+  }
+
+  .teachers-login-card {
+    padding: 28px 20px;
+
+    border-radius: 18px;
+  }
+
+  .teachers-login-card::before {
+    inset: 5px;
+    border-radius: 13px;
+  }
+
+  .login-key-icon {
+    width: 58px;
+    height: 58px;
+
+    font-size: 1.7rem;
+  }
+
+  .login-card-heading h2 {
+    font-size: 1.45rem;
+  }
+
+  .teacher-login-form {
+    margin-top: 28px;
+  }
+
+  .teacher-login-button {
+    font-size: 0.75rem;
+  }
+
+  .security-divider {
+    font-size: 0.6rem;
+    letter-spacing: 0.08em;
+  }
+}
+
+
+/* ------------------------------
+   MOVIMIENTO REDUCIDO
+------------------------------ */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .teachers-emblem {
+    animation: none;
+  }
+
+  .back-to-castle,
+  .toggle-password-button,
+  .teacher-login-button {
+    transition: none;
+  }
+}
