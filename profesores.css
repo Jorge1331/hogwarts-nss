@@ -873,3 +873,475 @@
     transition: none;
   }
 }
+/* =========================================================
+   RETRATO DE LA GUARDIANA DEL CÁLIZ
+   ========================================================= */
+
+.guardian-portrait {
+  position: relative;
+  width: min(100%, 340px);
+  margin: 0 auto 30px;
+  text-align: center;
+}
+
+.guardian-frame {
+  position: relative;
+  width: 220px;
+  height: 265px;
+  margin: 0 auto;
+
+  padding: 13px;
+
+  border: 3px solid #efc873;
+  border-radius: 48% 48% 18px 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #ffe2a3,
+      #8b5b20 22%,
+      #efc873 48%,
+      #6b4318 73%,
+      #ffe2a3
+    );
+
+  box-shadow:
+    0 22px 45px rgba(0, 0, 0, 0.52),
+    0 0 0 5px rgba(216, 168, 78, 0.11),
+    0 0 38px rgba(216, 168, 78, 0.22),
+    inset 0 0 10px rgba(255, 226, 163, 0.65);
+
+  animation: guardianFrameGlow 4s ease-in-out infinite;
+}
+
+.guardian-frame::before {
+  content: "";
+  position: absolute;
+  inset: 5px;
+
+  z-index: 2;
+  pointer-events: none;
+
+  border: 1px solid rgba(71, 39, 13, 0.85);
+  border-radius: 46% 46% 12px 12px;
+}
+
+.guardian-frame::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -13px;
+
+  width: 78px;
+  height: 22px;
+
+  transform: translateX(-50%);
+
+  border: 2px solid #d8a84e;
+  border-radius: 0 0 16px 16px;
+
+  background:
+    linear-gradient(
+      180deg,
+      #efc873,
+      #7f5720
+    );
+
+  box-shadow: 0 8px 15px rgba(0, 0, 0, 0.35);
+}
+
+.guardian-painting {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border: 2px solid rgba(46, 25, 10, 0.9);
+  border-radius: 44% 44% 10px 10px;
+
+  background:
+    radial-gradient(
+      circle at 52% 25%,
+      rgba(239, 200, 115, 0.18),
+      transparent 25%
+    ),
+    linear-gradient(
+      180deg,
+      #17223a,
+      #0b1222 55%,
+      #050811
+    );
+
+  box-shadow:
+    inset 0 0 32px rgba(0, 0, 0, 0.85),
+    inset 0 0 8px rgba(239, 200, 115, 0.12);
+}
+
+.guardian-painting::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  opacity: 0.25;
+
+  background:
+    repeating-linear-gradient(
+      115deg,
+      transparent 0,
+      transparent 18px,
+      rgba(255, 255, 255, 0.035) 19px
+    );
+}
+
+.guardian-moon {
+  position: absolute;
+  top: 28px;
+  right: 28px;
+
+  width: 40px;
+  height: 40px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 35%,
+      #fff4c8,
+      #d8a84e 55%,
+      rgba(216, 168, 78, 0.2) 72%
+    );
+
+  box-shadow:
+    0 0 24px rgba(255, 226, 163, 0.5),
+    0 0 55px rgba(216, 168, 78, 0.22);
+}
+
+.guardian-character {
+  position: absolute;
+  left: 50%;
+  bottom: 52px;
+
+  z-index: 2;
+
+  transform: translateX(-50%);
+
+  font-size: 6rem;
+  line-height: 1;
+
+  filter:
+    drop-shadow(0 12px 12px rgba(0, 0, 0, 0.55))
+    sepia(0.12);
+
+  animation: guardianBreathing 3.8s ease-in-out infinite;
+}
+
+.guardian-chalice {
+  position: absolute;
+  left: 50%;
+  bottom: 18px;
+
+  z-index: 3;
+
+  transform: translateX(-50%);
+
+  font-size: 2.15rem;
+
+  filter:
+    drop-shadow(0 0 9px rgba(239, 200, 115, 0.9));
+
+  animation: chaliceGlow 2.4s ease-in-out infinite;
+}
+
+.guardian-flame {
+  position: absolute;
+  left: 50%;
+  bottom: 48px;
+
+  z-index: 4;
+
+  width: 17px;
+  height: 25px;
+
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+
+  border-radius: 70% 30% 65% 35%;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fff3a0,
+      #f6ad32 45%,
+      #dc5c25 78%
+    );
+
+  box-shadow:
+    0 0 14px rgba(255, 197, 71, 0.9),
+    0 0 30px rgba(235, 90, 31, 0.55);
+
+  animation: guardianFlame 0.85s ease-in-out infinite alternate;
+}
+
+.guardian-frame-decoration {
+  position: absolute;
+  z-index: 5;
+
+  color: #4c2d0c;
+  font-size: 1rem;
+  text-shadow: 0 1px rgba(255, 226, 163, 0.5);
+}
+
+.guardian-frame-decoration.top-left {
+  top: 14px;
+  left: 19px;
+}
+
+.guardian-frame-decoration.top-right {
+  top: 14px;
+  right: 19px;
+}
+
+.guardian-frame-decoration.bottom-left {
+  left: 17px;
+  bottom: 14px;
+}
+
+.guardian-frame-decoration.bottom-right {
+  right: 17px;
+  bottom: 14px;
+}
+
+.guardian-plaque {
+  position: relative;
+  z-index: 6;
+
+  width: fit-content;
+  max-width: 250px;
+  margin: -2px auto 15px;
+  padding: 8px 18px;
+
+  border: 1px solid #efc873;
+  border-radius: 5px;
+
+  color: #2b1a08;
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+
+  background:
+    linear-gradient(
+      180deg,
+      #ffe2a3,
+      #c99537
+    );
+
+  box-shadow:
+    0 8px 18px rgba(0, 0, 0, 0.42),
+    inset 0 1px rgba(255, 255, 255, 0.55);
+}
+
+.guardian-speech {
+  position: relative;
+
+  min-height: 78px;
+  padding: 17px 20px 16px 38px;
+
+  border: 1px solid rgba(239, 200, 115, 0.34);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(16, 25, 43, 0.96),
+      rgba(5, 8, 17, 0.97)
+    );
+
+  box-shadow:
+    0 15px 28px rgba(0, 0, 0, 0.3),
+    inset 0 1px rgba(255, 255, 255, 0.035);
+}
+
+.guardian-speech::before {
+  content: "";
+  position: absolute;
+  top: -9px;
+  left: 50%;
+
+  width: 16px;
+  height: 16px;
+
+  transform:
+    translateX(-50%)
+    rotate(45deg);
+
+  border-top: 1px solid rgba(239, 200, 115, 0.34);
+  border-left: 1px solid rgba(239, 200, 115, 0.34);
+
+  background: #0d1526;
+}
+
+.guardian-speech-mark {
+  position: absolute;
+  top: 5px;
+  left: 13px;
+
+  color: var(--gold-400);
+  font-family: Georgia, serif;
+  font-size: 2.4rem;
+  line-height: 1;
+
+  opacity: 0.7;
+}
+
+.guardian-speech p {
+  position: relative;
+  z-index: 1;
+
+  margin: 0;
+
+  color: #e6e0d2;
+  font-family: var(--font-display);
+  font-size: 0.76rem;
+  line-height: 1.65;
+}
+
+.guardian-portrait.is-speaking .guardian-frame {
+  animation:
+    guardianFrameGlow 1.6s ease-in-out infinite,
+    guardianSpeaking 0.28s ease-in-out 3;
+}
+
+.guardian-portrait.is-alert .guardian-speech {
+  border-color: rgba(229, 138, 138, 0.65);
+  box-shadow:
+    0 15px 28px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(229, 138, 138, 0.14);
+}
+
+@keyframes guardianFrameGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 22px 45px rgba(0, 0, 0, 0.52),
+      0 0 0 5px rgba(216, 168, 78, 0.08),
+      0 0 26px rgba(216, 168, 78, 0.14),
+      inset 0 0 10px rgba(255, 226, 163, 0.55);
+  }
+
+  50% {
+    box-shadow:
+      0 22px 45px rgba(0, 0, 0, 0.52),
+      0 0 0 7px rgba(216, 168, 78, 0.12),
+      0 0 46px rgba(216, 168, 78, 0.27),
+      inset 0 0 14px rgba(255, 226, 163, 0.7);
+  }
+}
+
+@keyframes guardianBreathing {
+  0%,
+  100% {
+    transform:
+      translateX(-50%)
+      translateY(0)
+      scale(1);
+  }
+
+  50% {
+    transform:
+      translateX(-50%)
+      translateY(-4px)
+      scale(1.025);
+  }
+}
+
+@keyframes chaliceGlow {
+  0%,
+  100% {
+    filter:
+      drop-shadow(0 0 7px rgba(239, 200, 115, 0.72));
+  }
+
+  50% {
+    filter:
+      drop-shadow(0 0 18px rgba(255, 226, 163, 1));
+  }
+}
+
+@keyframes guardianFlame {
+  from {
+    transform:
+      translateX(-50%)
+      rotate(40deg)
+      scale(0.9);
+  }
+
+  to {
+    transform:
+      translateX(-50%)
+      rotate(48deg)
+      scale(1.1);
+  }
+}
+
+@keyframes guardianSpeaking {
+  0%,
+  100% {
+    transform: rotate(0);
+  }
+
+  50% {
+    transform: rotate(0.7deg);
+  }
+}
+
+@media (max-width: 600px) {
+
+  .guardian-portrait {
+    width: min(100%, 310px);
+    margin-bottom: 26px;
+  }
+
+  .guardian-frame {
+    width: 185px;
+    height: 225px;
+  }
+
+  .guardian-character {
+    bottom: 45px;
+    font-size: 5rem;
+  }
+
+  .guardian-chalice {
+    bottom: 15px;
+    font-size: 1.8rem;
+  }
+
+  .guardian-flame {
+    bottom: 40px;
+  }
+
+  .guardian-speech {
+    min-height: 70px;
+    padding: 14px 16px 14px 34px;
+  }
+
+  .guardian-speech p {
+    font-size: 0.69rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .guardian-frame,
+  .guardian-character,
+  .guardian-chalice,
+  .guardian-flame {
+    animation: none;
+  }
+}
