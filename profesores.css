@@ -1345,3 +1345,63 @@
     animation: none;
   }
 }
+/* IMAGEN REAL DE LA GUARDIANA */
+
+.guardian-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  border-radius: 42% 42% 8px 8px;
+
+  filter:
+    contrast(1.04)
+    saturate(1.05)
+    brightness(0.94);
+
+  transform: scale(1.02);
+
+  transition:
+    transform 0.8s ease,
+    filter 0.8s ease;
+}
+
+.guardian-portrait:hover .guardian-image {
+  transform: scale(1.055);
+
+  filter:
+    contrast(1.06)
+    saturate(1.1)
+    brightness(1);
+}
+
+.guardian-painting::before {
+  z-index: 2;
+}
+
+.guardian-image {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 600px) {
+
+  .guardian-image {
+    object-position: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .guardian-image {
+    transition: none;
+  }
+
+  .guardian-portrait:hover .guardian-image {
+    transform: scale(1.02);
+  }
+}
