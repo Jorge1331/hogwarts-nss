@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Acceso privado para los profesores responsables de Hogwarts NSS."
+  >
+
+  <title>Sala de Profesores | Hogwarts NSS</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="profesores.css">
+</head>
+
+<body class="teachers-login-page">
+
+  <main class="teachers-login-shell">
+
+    <!-- ZONA NARRATIVA -->
+    <section class="teachers-story-panel">
+
+      <a
+        class="back-to-castle"
+        href="index.html"
+        aria-label="Volver a la portada pública"
+      >
+        ← Volver al castillo
+      </a>
+
+      <div class="teachers-story-content">
+
+        <div class="teachers-emblem" aria-hidden="true">
+          NSS
+        </div>
+
+        <p class="teachers-eyebrow">
+          Hogwarts NSS
+        </p>
+
+        <h1>Sala de Profesores</h1>
+
+        <p class="teachers-subtitle">
+          El acceso a esta estancia está reservado a los
+          guardianes del Santo Cáliz.
+        </p>
+
+        <blockquote>
+          “La magia nace cuando nadie se queda atrás.”
+        </blockquote>
+
+        <div class="legacy-symbols" aria-hidden="true">
+          <span>🔥</span>
+          <span>🪶</span>
+          <span>🏆</span>
+        </div>
+
+      </div>
+
+      <div class="teachers-privacy-message">
+        <strong>Zona protegida</strong>
+
+        <p>
+          La información individual del alumnado solo podrá
+          consultarse mediante una cuenta docente autorizada.
+        </p>
+      </div>
+
+    </section>
+
+
+    <!-- FORMULARIO DE ACCESO -->
+    <section class="teachers-access-panel">
+
+      <div class="teachers-login-card">
+
+        <div class="login-card-heading">
+
+          <div class="login-key-icon" aria-hidden="true">
+            🗝️
+          </div>
+
+          <p>Acceso restringido</p>
+          <h2>Identificación del profesorado</h2>
+
+          <span>
+            Utiliza exclusivamente tu cuenta institucional.
+          </span>
+
+        </div>
+
+        <form
+          id="teacherLoginForm"
+          class="teacher-login-form"
+          novalidate
+        >
+
+          <div class="form-field">
+
+            <label for="teacherEmail">
+              Correo institucional
+            </label>
+
+            <div class="input-wrapper">
+              <span aria-hidden="true">✉️</span>
+
+              <input
+                id="teacherEmail"
+                name="teacherEmail"
+                type="email"
+                autocomplete="email"
+                placeholder="profesor@colegio.es"
+                required
+              >
+            </div>
+
+            <small>
+              Solo se admitirán cuentas previamente autorizadas.
+            </small>
+
+          </div>
+
+
+          <div class="form-field">
+
+            <label for="teacherPassword">
+              Contraseña
+            </label>
+
+            <div class="input-wrapper">
+              <span aria-hidden="true">🔐</span>
+
+              <input
+                id="teacherPassword"
+                name="teacherPassword"
+                type="password"
+                autocomplete="current-password"
+                placeholder="Introduce tu contraseña"
+                required
+              >
+
+              <button
+                id="togglePasswordButton"
+                class="toggle-password-button"
+                type="button"
+                aria-label="Mostrar contraseña"
+              >
+                👁️
+              </button>
+            </div>
+
+          </div>
+
+
+          <p
+            id="loginMessage"
+            class="login-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+
+          <button
+            class="teacher-login-button"
+            type="submit"
+          >
+            <span>Entrar en la Sala de Profesores</span>
+            <span aria-hidden="true">⚡</span>
+          </button>
+
+        </form>
+
+
+        <div class="security-divider">
+          <span>Seguridad del alumnado</span>
+        </div>
+
+
+        <div class="security-principles">
+
+          <div>
+            <span aria-hidden="true">🛡️</span>
+
+            <p>
+              Los datos personales nunca serán visibles
+              desde la zona pública.
+            </p>
+          </div>
+
+          <div>
+            <span aria-hidden="true">👤</span>
+
+            <p>
+              Cada profesor accederá con una cuenta
+              individual y autorizada.
+            </p>
+          </div>
+
+          <div>
+            <span aria-hidden="true">📜</span>
+
+            <p>
+              Los movimientos quedarán registrados para
+              permitir su revisión y corrección.
+            </p>
+          </div>
+
+        </div>
+
+
+        <p class="temporary-access-warning">
+          Esta pantalla todavía no permite iniciar sesión.
+          La autenticación segura se activará mediante Firebase
+          antes de incorporar cualquier dato real.
+        </p>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <script src="profesores.js"></script>
+
+</body>
+</html>
