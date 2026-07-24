@@ -1646,3 +1646,94 @@
     animation: none;
   }
 }
+/* =========================================================
+   ACCESO AL PANEL PRIVADO
+   ========================================================= */
+
+.teacher-panel-button {
+  position: relative;
+  z-index: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+
+  width: 100%;
+  min-height: 56px;
+  margin-top: 14px;
+  padding: 14px 20px;
+
+  border: 1px solid var(--gold-400);
+  border-radius: 12px;
+
+  color: #211507;
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.045em;
+  text-align: center;
+  text-decoration: none;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold-300),
+      var(--gold-500)
+    );
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.3),
+    0 0 25px rgba(216, 168, 78, 0.15);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    filter 0.2s ease;
+}
+
+.teacher-panel-button::after {
+  content: "→";
+
+  font-family: Arial, sans-serif;
+  font-size: 1.05rem;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.teacher-panel-button:hover {
+  transform: translateY(-2px);
+
+  color: #211507;
+
+  filter: brightness(1.06);
+
+  box-shadow:
+    0 18px 38px rgba(0, 0, 0, 0.36),
+    0 0 35px rgba(216, 168, 78, 0.23);
+}
+
+.teacher-panel-button:hover::after {
+  transform: translateX(4px);
+}
+
+.teacher-panel-button:active {
+  transform: translateY(0);
+}
+
+.teacher-panel-button:focus-visible {
+  outline: 3px solid var(--white);
+  outline-offset: 4px;
+}
+
+.teacher-panel-button[hidden] {
+  display: none !important;
+}
+
+@media (max-width: 600px) {
+
+  .teacher-panel-button {
+    font-size: 0.75rem;
+  }
+}
