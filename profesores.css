@@ -1737,3 +1737,222 @@
     font-size: 0.75rem;
   }
 }
+/* =========================================================
+   GUARDIANA COMO PROTAGONISTA
+   ========================================================= */
+
+.teachers-story-panel {
+  justify-content: center;
+  padding: 34px 52px;
+}
+
+.teachers-story-panel::after {
+  display: none;
+}
+
+.back-to-castle {
+  position: absolute;
+  top: 28px;
+  left: 36px;
+}
+
+.teachers-story-content {
+  width: min(100%, 620px);
+  margin: auto;
+}
+
+
+/* RETRATO MÁS GRANDE */
+
+.guardian-portrait {
+  width: min(100%, 540px);
+  margin: 0 auto 28px;
+}
+
+.guardian-frame {
+  width: clamp(300px, 20vw, 360px);
+  height: auto;
+  aspect-ratio: 220 / 265;
+
+  padding: 16px;
+
+  border-width: 4px;
+}
+
+.guardian-frame::after {
+  bottom: -16px;
+
+  width: 112px;
+  height: 28px;
+}
+
+
+/* PLACA MÁS VISIBLE */
+
+.guardian-plaque {
+  max-width: 330px;
+  margin: -1px auto 20px;
+  padding: 10px 25px;
+
+  font-size: 0.86rem;
+}
+
+
+/* MENSAJE PRINCIPAL */
+
+.guardian-speech {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 100%;
+  min-height: 112px;
+  padding: 24px 32px 23px 54px;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 20px 38px rgba(0, 0, 0, 0.38),
+    0 0 30px rgba(216, 168, 78, 0.09),
+    inset 0 1px rgba(255, 255, 255, 0.04);
+}
+
+.guardian-speech-mark {
+  top: 10px;
+  left: 18px;
+
+  font-size: 3.2rem;
+}
+
+.guardian-speech p {
+  max-width: 440px;
+
+  font-size: 0.94rem;
+  line-height: 1.75;
+  letter-spacing: 0.015em;
+}
+
+
+/* ÚNICO TÍTULO INFERIOR */
+
+.teachers-eyebrow {
+  margin: 30px 0 10px;
+
+  font-size: 0.78rem;
+  letter-spacing: 0.3em;
+}
+
+.teachers-story-content h1 {
+  font-size: clamp(2.6rem, 3.6vw, 3.8rem);
+  line-height: 1.05;
+}
+
+
+/* PANTALLAS CON MENOS ALTURA */
+
+@media (min-width: 981px) and (max-height: 820px) {
+
+  .teachers-story-panel {
+    padding: 26px 44px;
+  }
+
+  .guardian-frame {
+    width: 285px;
+  }
+
+  .guardian-portrait {
+    margin-bottom: 20px;
+  }
+
+  .guardian-speech {
+    min-height: 90px;
+    padding: 18px 26px 17px 48px;
+  }
+
+  .guardian-speech p {
+    font-size: 0.82rem;
+  }
+
+  .teachers-eyebrow {
+    margin-top: 22px;
+  }
+
+  .teachers-story-content h1 {
+    font-size: 2.8rem;
+  }
+}
+
+
+/* TABLET */
+
+@media (max-width: 980px) {
+
+  .teachers-story-panel {
+    min-height: 100vh;
+    padding: 82px 28px 46px;
+  }
+
+  .back-to-castle {
+    top: 24px;
+    left: 24px;
+  }
+
+  .guardian-frame {
+    width: 330px;
+  }
+}
+
+
+/* MÓVIL */
+
+@media (max-width: 600px) {
+
+  .teachers-story-panel {
+    min-height: auto;
+    padding: 72px 18px 36px;
+  }
+
+  .back-to-castle {
+    top: 20px;
+    left: 18px;
+  }
+
+  .guardian-portrait {
+    width: 100%;
+    margin-bottom: 22px;
+  }
+
+  .guardian-frame {
+    width: min(72vw, 280px);
+  }
+
+  .guardian-plaque {
+    padding: 9px 18px;
+    font-size: 0.72rem;
+  }
+
+  .guardian-speech {
+    min-height: 94px;
+    padding: 18px 20px 17px 42px;
+  }
+
+  .guardian-speech-mark {
+    top: 7px;
+    left: 13px;
+
+    font-size: 2.7rem;
+  }
+
+  .guardian-speech p {
+    font-size: 0.8rem;
+    line-height: 1.65;
+  }
+
+  .teachers-eyebrow {
+    margin-top: 24px;
+  }
+
+  .teachers-story-content h1 {
+    font-size: 2.35rem;
+  }
+}
