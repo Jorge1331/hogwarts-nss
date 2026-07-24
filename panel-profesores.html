@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="Panel privado del profesorado de Hogwarts NSS."
+  >
+
+  <meta
+    name="robots"
+    content="noindex, nofollow"
+  >
+
+  <title>Panel del Profesorado | Hogwarts NSS</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="panel-profesores.css"
+  >
+
+</head>
+
+
+<body class="private-panel-page">
+
+
+  <!-- =====================================================
+       COMPROBACIÓN DE ACCESO
+       El contenido privado permanece oculto hasta que
+       Firebase confirme identidad y autorización.
+       ===================================================== -->
+
+  <section
+    id="panelLoading"
+    class="panel-gate panel-loading"
+    role="status"
+    aria-live="polite"
+  >
+
+    <div class="gate-symbol" aria-hidden="true">
+      ✦
+    </div>
+
+    <p class="gate-eyebrow">
+      Hogwarts NSS
+    </p>
+
+    <h1>Consultando el Cáliz</h1>
+
+    <p>
+      La Guardiana está comprobando tu identidad
+      y tus permisos de acceso.
+    </p>
+
+    <div
+      class="gate-loader"
+      aria-hidden="true"
+    ></div>
+
+  </section>
+
+
+  <!-- ACCESO DENEGADO -->
+
+  <section
+    id="panelDenied"
+    class="panel-gate panel-denied"
+    hidden
+  >
+
+    <div class="gate-symbol denied-symbol" aria-hidden="true">
+      🔒
+    </div>
+
+    <p class="gate-eyebrow">
+      Acceso restringido
+    </p>
+
+    <h1>La puerta permanece cerrada</h1>
+
+    <p id="panelDeniedMessage">
+      No se ha podido confirmar una autorización docente activa.
+    </p>
+
+    <div class="gate-actions">
+
+      <a
+        class="gate-primary-action"
+        href="profesores.html"
+      >
+        Volver ante la Guardiana
+      </a>
+
+      <a
+        class="gate-secondary-action"
+        href="index.html"
+      >
+        Regresar al castillo
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- =====================================================
+       APLICACIÓN PRIVADA
+       Empieza oculta mediante el atributo hidden.
+       ===================================================== -->
+
+  <div
+    id="privatePanelApp"
+    class="private-panel-shell"
+    hidden
+  >
+
+
+    <!-- MENÚ LATERAL -->
+
+    <aside class="private-sidebar">
+
+      <div class="private-brand">
+
+        <div class="private-brand-logo">
+
+          <img
+            src="logo_cole.png"
+            alt="Colegio Diocesano Nuestra Señora del Socorro"
+          >
+
+        </div>
+
+        <div>
+
+          <p>Curso 2026-2027</p>
+
+          <strong>
+            Hogwarts NSS
+          </strong>
+
+          <small>
+            Sala de Profesores
+          </small>
+
+        </div>
+
+      </div>
+
+
+      <nav
+        class="private-navigation"
+        aria-label="Navegación del panel docente"
+      >
+
+        <button
+          class="private-nav-item active"
+          type="button"
+          data-panel-section="resumen"
+        >
+
+          <span aria-hidden="true">🏰</span>
+
+          <span>
+            <strong>Vista general</strong>
+            <small>Resumen del proyecto</small>
+          </span>
+
+        </button>
+
+
+        <button
+          class="private-nav-item"
+          type="button"
+          data-panel-section="casas"
+        >
+
+          <span aria-hidden="true">🏆</span>
+
+          <span>
+            <strong>Casas y puntos</strong>
+            <small>Gestión colectiva</small>
+          </span>
+
+        </button>
+
+
+        <button
+          class="private-nav-item"
+          type="button"
+          data-panel-section="pruebas"
+        >
+
+          <span aria-hidden="true">🐉</span>
+
+          <span>
+            <strong>Las tres pruebas</strong>
+            <small>Valor, Unidad y Socorro</small>
+          </span>
+
+        </button>
+
+
+        <button
+          class="private-nav-item"
+          type="button"
+          data-panel-section="cronicas"
+        >
+
+          <span aria-hidden="true">📜</span>
+
+          <span>
+            <strong>Crónicas</strong>
+            <small>Actividad pública colectiva</small>
+          </span>
+
+        </button>
+
+
+        <button
+          class="private-nav-item"
+          type="button"
+          data-panel-section="configuracion"
+          data-admin-only
+          hidden
+        >
+
+          <span aria-hidden="true">⚙️</span>
+
+          <span>
+            <strong>Administración</strong>
+            <small>Solo administradores</small>
+          </span>
+
+        </button>
+
+      </nav>
+
+
+      <div class="private-user-card">
+
+        <div
+          id="panelUserInitial"
+          class="private-user-avatar"
+          aria-hidden="true"
+        >
+          P
+        </div>
+
+        <div class="private-user-data">
+
+          <small>Sesión autorizada</small>
+
+          <strong id="panelUserName">
+            Profesorado
+          </strong>
+
+          <span id="panelUserJob">
+            Cuenta docente
+          </span>
+
+          <span
+            id="panelUserRole"
+            class="private-role-badge"
+          >
+            Docente
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <button
+        id="panelLogoutButton"
+        class="private-logout-button"
+        type="button"
+      >
+        <span aria-hidden="true">↩</span>
+        Cerrar sesión
+      </button>
+
+    </aside>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+
+    <main class="private-main-content">
+
+
+      <!-- CABECERA -->
+
+      <header class="private-topbar">
+
+        <div>
+
+          <p class="private-eyebrow">
+            Panel privado del profesorado
+          </p>
+
+          <h1>
+            Bienvenido,
+            <span id="panelWelcomeName">docente</span>
+          </h1>
+
+          <p id="panelWelcomeJob">
+            Acceso autorizado a Hogwarts NSS.
+          </p>
+
+        </div>
+
+
+        <div class="private-topbar-actions">
+
+          <a
+            class="private-public-link"
+            href="index.html"
+          >
+            <span aria-hidden="true">🏰</span>
+            Ver zona pública
+          </a>
+
+          <div class="private-security-status">
+
+            <span
+              class="security-status-dot"
+              aria-hidden="true"
+            ></span>
+
+            Acceso protegido
+
+          </div>
+
+        </div>
+
+      </header>
+
+
+      <!-- AVISO DE PRIVACIDAD -->
+
+      <section class="private-privacy-banner">
+
+        <span aria-hidden="true">🛡️</span>
+
+        <div>
+
+          <strong>
+            Entorno de prueba protegido
+          </strong>
+
+          <p>
+            Todavía no se incorporarán nombres, imágenes ni datos
+            reales del alumnado. La configuración se probará
+            exclusivamente con información ficticia.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- VISTA GENERAL -->
+
+      <section
+        id="sectionResumen"
+        class="private-panel-section active"
+        data-section-content="resumen"
+      >
+
+        <div class="private-section-heading">
+
+          <div>
+
+            <p class="private-eyebrow">
+              El legado del Fénix
+            </p>
+
+            <h2>Vista general</h2>
+
+          </div>
+
+          <span class="private-course-badge">
+            Curso 2026-2027
+          </span>
+
+        </div>
+
+
+        <div class="private-summary-grid">
+
+
+          <article class="private-summary-card houses-summary">
+
+            <div class="summary-card-icon" aria-hidden="true">
+              🏆
+            </div>
+
+            <p>Competición colectiva</p>
+
+            <h3>Casas y puntos</h3>
+
+            <strong>4 casas</strong>
+
+            <span>
+              La puntuación se conectará con Firestore
+              cuando definamos su estructura.
+            </span>
+
+            <button
+              class="summary-card-action"
+              type="button"
+              data-open-section="casas"
+            >
+              Preparar gestión
+            </button>
+
+          </article>
+
+
+          <article class="private-summary-card trials-summary">
+
+            <div class="summary-card-icon" aria-hidden="true">
+              🐉
+            </div>
+
+            <p>Torneo anual</p>
+
+            <h3>Las tres pruebas</h3>
+
+            <strong>3 desafíos</strong>
+
+            <span>
+              Dragón del Valor, Lago de la Unidad
+              y Laberinto del Socorro.
+            </span>
+
+            <button
+              class="summary-card-action"
+              type="button"
+              data-open-section="pruebas"
+            >
+              Ver planificación
+            </button>
+
+          </article>
+
+
+          <article class="private-summary-card chronicles-summary">
+
+            <div class="summary-card-icon" aria-hidden="true">
+              📜
+            </div>
+
+            <p>Comunicación pública</p>
+
+            <h3>Crónicas de Hogwarts</h3>
+
+            <strong>Solo logros colectivos</strong>
+
+            <span>
+              Nunca se publicarán nombres ni movimientos
+              individuales del alumnado.
+            </span>
+
+            <button
+              class="summary-card-action"
+              type="button"
+              data-open-section="cronicas"
+            >
+              Preparar crónicas
+            </button>
+
+          </article>
+
+
+          <article
+            class="private-summary-card admin-summary"
+            data-admin-only
+            hidden
+          >
+
+            <div class="summary-card-icon" aria-hidden="true">
+              ⚙️
+            </div>
+
+            <p>Permisos globales</p>
+
+            <h3>Administración</h3>
+
+            <strong>Rol administrador</strong>
+
+            <span>
+              Gestión de docentes, configuración general
+              y revisión del sistema.
+            </span>
+
+            <button
+              class="summary-card-action"
+              type="button"
+              data-open-section="configuracion"
+            >
+              Abrir administración
+            </button>
+
+          </article>
+
+        </div>
+
+
+        <div class="private-dashboard-grid">
+
+
+          <article class="private-dashboard-card">
+
+            <div class="dashboard-card-heading">
+
+              <div>
+
+                <p class="private-eyebrow">
+                  Estado del proyecto
+                </p>
+
+                <h3>Protecciones activadas</h3>
+
+              </div>
+
+              <span aria-hidden="true">🔐</span>
+
+            </div>
+
+
+            <ul class="private-check-list">
+
+              <li>
+                <span aria-hidden="true">✓</span>
+                Acceso mediante Google corporativo
+              </li>
+
+              <li>
+                <span aria-hidden="true">✓</span>
+                Autorización individual mediante UID
+              </li>
+
+              <li>
+                <span aria-hidden="true">✓</span>
+                Reglas privadas de Firestore
+              </li>
+
+              <li>
+                <span aria-hidden="true">✓</span>
+                Roles docentes y administrador
+              </li>
+
+            </ul>
+
+          </article>
+
+
+          <article class="private-dashboard-card">
+
+            <div class="dashboard-card-heading">
+
+              <div>
+
+                <p class="private-eyebrow">
+                  Próxima fase
+                </p>
+
+                <h3>Construcción del sistema</h3>
+
+              </div>
+
+              <span aria-hidden="true">🪄</span>
+
+            </div>
+
+
+            <ol class="private-roadmap-list">
+
+              <li class="current">
+                <span>1</span>
+                Diseñar el panel privado
+              </li>
+
+              <li>
+                <span>2</span>
+                Crear las casas de prueba
+              </li>
+
+              <li>
+                <span>3</span>
+                Programar el sistema de puntos
+              </li>
+
+              <li>
+                <span>4</span>
+                Registrar movimientos y correcciones
+              </li>
+
+            </ol>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- CASAS -->
+
+      <section
+        id="sectionCasas"
+        class="private-panel-section"
+        data-section-content="casas"
+        hidden
+      >
+
+        <div class="private-empty-state">
+
+          <span aria-hidden="true">🏆</span>
+
+          <p class="private-eyebrow">
+            Gestión colectiva
+          </p>
+
+          <h2>Casas y puntos</h2>
+
+          <p>
+            Aquí construiremos la gestión de las cuatro casas.
+            Empezaremos con nombres y puntuaciones ficticias.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- PRUEBAS -->
+
+      <section
+        id="sectionPruebas"
+        class="private-panel-section"
+        data-section-content="pruebas"
+        hidden
+      >
+
+        <div class="private-empty-state">
+
+          <span aria-hidden="true">🐉</span>
+
+          <p class="private-eyebrow">
+            Torneo anual
+          </p>
+
+          <h2>Las tres pruebas</h2>
+
+          <p>
+            Este espacio recogerá la planificación del Dragón,
+            el Lago Negro y el Laberinto del Santo Cáliz.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- CRÓNICAS -->
+
+      <section
+        id="sectionCronicas"
+        class="private-panel-section"
+        data-section-content="cronicas"
+        hidden
+      >
+
+        <div class="private-empty-state">
+
+          <span aria-hidden="true">📜</span>
+
+          <p class="private-eyebrow">
+            Comunicación segura
+          </p>
+
+          <h2>Crónicas de Hogwarts NSS</h2>
+
+          <p>
+            Desde aquí se prepararán únicamente historias
+            colectivas y positivas para la zona pública.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <!-- ADMINISTRACIÓN -->
+
+      <section
+        id="sectionConfiguracion"
+        class="private-panel-section"
+        data-section-content="configuracion"
+        data-admin-only
+        hidden
+      >
+
+        <div class="private-empty-state">
+
+          <span aria-hidden="true">⚙️</span>
+
+          <p class="private-eyebrow">
+            Solo administradores
+          </p>
+
+          <h2>Administración del proyecto</h2>
+
+          <p>
+            Aquí gestionaremos cuentas docentes, permisos,
+            configuración general y auditoría del sistema.
+          </p>
+
+        </div>
+
+      </section>
+
+
+      <footer class="private-panel-footer">
+
+        <p>
+          Colegio Diocesano Nuestra Señora del Socorro · Benetússer
+        </p>
+
+        <blockquote>
+          La magia nace cuando nadie se queda atrás.
+        </blockquote>
+
+      </footer>
+
+    </main>
+
+  </div>
+
+
+  <script
+    type="module"
+    src="panel-profesores.js"
+  ></script>
+
+</body>
+
+</html>
