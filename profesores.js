@@ -1,6 +1,6 @@
 /* =========================================================
    HOGWARTS NSS: EL LEGADO DEL FÉNIX
-   Acceso docente mediante Google y Firebase
+   Acceso docente autorizado mediante Google y Firestore
    ========================================================= */
 
 "use strict";
@@ -8,6 +8,7 @@
 
 import {
   auth,
+  db,
   googleProvider
 } from "./firebase-config.js";
 
@@ -17,6 +18,12 @@ import {
   signOut,
   onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-auth.js";
+
+
+import {
+  doc,
+  getDoc
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
 const CORPORATE_DOMAIN = "@colegiosocorro.es";
@@ -44,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     !guardianMessage
   ) {
     console.error(
-      "No se han encontrado todos los elementos del acceso docente."
+      "No se han encontrado los elementos del acceso docente."
     );
 
     return;
@@ -52,7 +59,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   let currentUser = null;
+  let currentTeacherProfile = null;
   let authenticationReady = false;
+  let authorizationInProgress = false;
 
 
   /* ------------------------------
@@ -78,6 +87,7 @@ document.addEventListener("DOMContentLoaded", () => {
     );
 
     if (state === "alert") {
+
       guardianPortrait.classList.add(
         "is-alert"
       );
@@ -94,7 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   /* ------------------------------
-     MENSAJE DEL ACCESO
+     MENSAJES DEL ACCESO
   ------------------------------ */
 
   const showLoginMessage = (
@@ -155,55 +165,68 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   const setLoadingState = (
-    isLoading
+    message = "Comprobando identidad..."
   ) => {
 
-    googleSignInButton.disabled =
-      isLoading;
+    googleSignInButton.disabled = true;
 
-    googleSignInButton.classList.toggle(
-      "is-loading",
-      isLoading
+    googleSignInButton.classList.add(
+      "is-loading"
     );
 
-    if (isLoading) {
+    renderButton(
+      "✦",
+      message
+    );
+  };
 
-      renderButton(
-        "✦",
-        "Comprobando identidad..."
-      );
-    }
+
+  const stopLoadingState = () => {
+
+    googleSignInButton.disabled = false;
+
+    googleSignInButton.classList.remove(
+      "is-loading"
+    );
   };
 
 
   const showSignedOutState = () => {
 
     currentUser = null;
+    currentTeacherProfile = null;
 
     googleSignInButton.classList.remove(
       "is-signed-in"
     );
 
+    stopLoadingState();
+
     renderButton(
       "G",
       "Continuar con Google"
     );
-
-    googleSignInButton.disabled = false;
   };
 
 
-  const showSignedInState = (
-    user
+  const showAuthorizedState = (
+    user,
+    profile
   ) => {
 
     currentUser = user;
+    currentTeacherProfile = profile;
 
     googleSignInButton.classList.add(
       "is-signed-in"
     );
 
+    stopLoadingState();
+
     const firstName =
+      profile.displayName
+        ?.trim()
+        .split(/\s+/)[0] ||
       user.displayName
         ?.trim()
         .split(/\s+/)[0] ||
@@ -213,27 +236,187 @@ document.addEventListener("DOMContentLoaded", () => {
       "✓",
       `Cerrar sesión de ${firstName}`
     );
-
-    googleSignInButton.disabled = false;
   };
 
 
   /* ------------------------------
-     COMPROBAR CUENTA CORPORATIVA
+     COMPROBACIONES BÁSICAS
   ------------------------------ */
+
+  const normaliseEmail = (
+    email
+  ) => {
+
+    return String(email || "")
+      .trim()
+      .toLowerCase();
+  };
+
 
   const isCorporateAccount = (
     user
   ) => {
 
-    const email =
+    return normaliseEmail(
       user?.email
-        ?.trim()
-        .toLowerCase() ||
-      "";
-
-    return email.endsWith(
+    ).endsWith(
       CORPORATE_DOMAIN
+    );
+  };
+
+
+  const getRoleLabel = (
+    role
+  ) => {
+
+    const roleLabels = {
+      admin: "administrador",
+      coordinator: "coordinador",
+      tutor: "tutor",
+      teacher: "docente"
+    };
+
+    return roleLabels[role] || "docente";
+  };
+
+
+  /* ------------------------------
+     CONSULTAR AUTORIZACIÓN
+  ------------------------------ */
+
+  const getAuthorizedTeacherProfile =
+    async (user) => {
+
+      const teacherReference =
+        doc(
+          db,
+          "authorizedTeachers",
+          user.uid
+        );
+
+      const teacherSnapshot =
+        await getDoc(
+          teacherReference
+        );
+
+
+      if (!teacherSnapshot.exists()) {
+
+        const error =
+          new Error(
+            "El docente no está autorizado."
+          );
+
+        error.code =
+          "teacher/not-authorized";
+
+        throw error;
+      }
+
+
+      const profile =
+        teacherSnapshot.data();
+
+
+      if (profile.active !== true) {
+
+        const error =
+          new Error(
+            "La cuenta docente está desactivada."
+          );
+
+        error.code =
+          "teacher/inactive";
+
+        throw error;
+      }
+
+
+      if (
+        normaliseEmail(profile.email) !==
+        normaliseEmail(user.email)
+      ) {
+
+        const error =
+          new Error(
+            "El correo no coincide."
+          );
+
+        error.code =
+          "teacher/email-mismatch";
+
+        throw error;
+      }
+
+
+      if (
+        typeof profile.role !== "string" ||
+        !profile.role.trim()
+      ) {
+
+        const error =
+          new Error(
+            "El docente no tiene un rol válido."
+          );
+
+        error.code =
+          "teacher/invalid-role";
+
+        throw error;
+      }
+
+
+      return {
+        displayName:
+          profile.displayName || "Docente",
+
+        email:
+          profile.email,
+
+        jobTitle:
+          profile.jobTitle || "Profesorado",
+
+        role:
+          profile.role,
+
+        active:
+          profile.active
+      };
+    };
+
+
+  /* ------------------------------
+     DENEGAR Y CERRAR SESIÓN
+  ------------------------------ */
+
+  const rejectAccess = async (
+    guardianText,
+    interfaceText
+  ) => {
+
+    try {
+
+      await signOut(auth);
+
+    } catch (error) {
+
+      console.error(
+        "Error al cerrar una sesión no autorizada:",
+        error
+      );
+    }
+
+
+    showSignedOutState();
+
+    speak(
+      guardianText,
+      "alert"
+    );
+
+    showLoginMessage(
+      interfaceText,
+      "error"
     );
   };
 
@@ -257,43 +440,117 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
-      if (!isCorporateAccount(user)) {
-
-        await signOut(auth);
-
-        speak(
-          "Esa cuenta no pertenece a los guardianes del Colegio del Socorro.",
-          "alert"
-        );
-
-        showLoginMessage(
-          "Debes utilizar una cuenta corporativa terminada en @colegiosocorro.es.",
-          "error"
-        );
+      if (authorizationInProgress) {
 
         return;
       }
 
 
-      showSignedInState(user);
+      authorizationInProgress = true;
 
-
-      const firstName =
-        user.displayName
-          ?.trim()
-          .split(/\s+/)[0] ||
-        "guardián";
-
-
-      speak(
-        `Identidad reconocida. Bienvenido, ${firstName}. El Cáliz ha respondido correctamente.`
+      setLoadingState(
+        "Consultando el Cáliz..."
       );
 
 
-      showLoginMessage(
-        `Cuenta verificada: ${user.email}. La autenticación con Google funciona correctamente.`,
-        "info"
-      );
+      try {
+
+        if (!isCorporateAccount(user)) {
+
+          await rejectAccess(
+            "Esa cuenta no pertenece a los guardianes del Colegio del Socorro.",
+            "Debes utilizar una cuenta corporativa terminada en @colegiosocorro.es."
+          );
+
+          return;
+        }
+
+
+        const teacherProfile =
+          await getAuthorizedTeacherProfile(
+            user
+          );
+
+
+        showAuthorizedState(
+          user,
+          teacherProfile
+        );
+
+
+        const firstName =
+          teacherProfile.displayName
+            .trim()
+            .split(/\s+/)[0];
+
+        const roleLabel =
+          getRoleLabel(
+            teacherProfile.role
+          );
+
+
+        speak(
+          `Acceso autorizado. Bienvenido, ${firstName}. El Cáliz te reconoce como ${teacherProfile.jobTitle}.`
+        );
+
+
+        showLoginMessage(
+          `Autorización confirmada: ${teacherProfile.jobTitle} · ${roleLabel}.`,
+          "info"
+        );
+
+
+      } catch (error) {
+
+        console.error(
+          "Error al comprobar la autorización:",
+          error
+        );
+
+
+        if (
+          error.code ===
+          "firestore/unavailable"
+        ) {
+
+          try {
+
+            await signOut(auth);
+
+          } catch (signOutError) {
+
+            console.error(
+              "Error al cerrar sesión:",
+              signOutError
+            );
+          }
+
+          showSignedOutState();
+
+          speak(
+            "No puedo consultar ahora mismo el registro de guardianes.",
+            "alert"
+          );
+
+          showLoginMessage(
+            "No se ha podido conectar con Firestore. Comprueba la conexión y vuelve a intentarlo.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        await rejectAccess(
+          "Tu identidad de Google es válida, pero no figuras entre los guardianes autorizados.",
+          "Esta cuenta no dispone de autorización activa para acceder a la Sala de Profesores."
+        );
+
+
+      } finally {
+
+        authorizationInProgress = false;
+      }
     }
   );
 
@@ -312,7 +569,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!authenticationReady) {
 
         speak(
-          "Espera un instante. Las protecciones de la puerta todavía se están preparando."
+          "Espera un instante. Las protecciones todavía se están preparando."
         );
 
         showLoginMessage(
@@ -324,18 +581,32 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
 
+      if (authorizationInProgress) {
+
+        speak(
+          "El Cáliz todavía está comprobando tu autorización."
+        );
+
+        return;
+      }
+
+
       /*
-       Si ya existe una sesión,
-       el botón permite cerrarla.
+       Cerrar la sesión autorizada.
       */
 
       if (currentUser) {
 
-        setLoadingState(true);
+        setLoadingState(
+          "Cerrando sesión..."
+        );
+
 
         try {
 
           await signOut(auth);
+
+          showSignedOutState();
 
           speak(
             "La sesión ha quedado cerrada. La puerta vuelve a estar protegida."
@@ -346,11 +617,17 @@ document.addEventListener("DOMContentLoaded", () => {
             "info"
           );
 
+
         } catch (error) {
 
           console.error(
             "Error al cerrar sesión:",
             error
+          );
+
+          showAuthorizedState(
+            currentUser,
+            currentTeacherProfile
           );
 
           speak(
@@ -362,10 +639,6 @@ document.addEventListener("DOMContentLoaded", () => {
             "Se ha producido un error al cerrar la sesión.",
             "error"
           );
-
-        } finally {
-
-          showSignedOutState();
         }
 
         return;
@@ -373,47 +646,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
       /*
-       Inicio de sesión mediante
-       la ventana oficial de Google.
+       Abrir la ventana oficial de Google.
       */
 
-      setLoadingState(true);
+      setLoadingState(
+        "Comprobando identidad..."
+      );
 
       speak(
-        "El Cáliz comprobará ahora tu identidad mediante Google."
+        "El Cáliz comprobará tu identidad mediante Google."
       );
 
 
       try {
 
-        const result =
-          await signInWithPopup(
-            auth,
-            googleProvider
-          );
-
-
-        if (!isCorporateAccount(result.user)) {
-
-          await signOut(auth);
-
-          speak(
-            "Esa cuenta no pertenece al dominio autorizado del colegio.",
-            "alert"
-          );
-
-          showLoginMessage(
-            "Selecciona tu cuenta corporativa @colegiosocorro.es.",
-            "error"
-          );
-
-          return;
-        }
-
+        await signInWithPopup(
+          auth,
+          googleProvider
+        );
 
         /*
-         El observador onAuthStateChanged
-         completará la interfaz.
+         onAuthStateChanged comprobará después
+         el documento privado del docente.
         */
 
 
@@ -423,6 +677,8 @@ document.addEventListener("DOMContentLoaded", () => {
           "Error de Firebase Authentication:",
           error
         );
+
+        showSignedOutState();
 
 
         switch (error.code) {
@@ -449,7 +705,7 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             showLoginMessage(
-              "Permite las ventanas emergentes para esta página y vuelve a intentarlo.",
+              "Permite las ventanas emergentes y vuelve a intentarlo.",
               "error"
             );
 
@@ -484,27 +740,12 @@ document.addEventListener("DOMContentLoaded", () => {
           case "auth/unauthorized-domain":
 
             speak(
-              "Esta puerta todavía no reconoce el dominio desde el que intentas entrar.",
+              "Esta puerta no reconoce el dominio desde el que intentas entrar.",
               "alert"
             );
 
             showLoginMessage(
-              "El dominio de GitHub Pages no está autorizado correctamente en Firebase.",
-              "error"
-            );
-
-            break;
-
-
-          case "auth/operation-not-allowed":
-
-            speak(
-              "El método de acceso con Google no está habilitado.",
-              "alert"
-            );
-
-            showLoginMessage(
-              "Google debe estar habilitado en Firebase Authentication.",
+              "El dominio de GitHub Pages no está autorizado en Firebase.",
               "error"
             );
 
@@ -519,27 +760,9 @@ document.addEventListener("DOMContentLoaded", () => {
             );
 
             showLoginMessage(
-              "Se ha producido un error inesperado durante el acceso con Google.",
+              "Se ha producido un error inesperado durante el acceso.",
               "error"
             );
-        }
-
-
-      } finally {
-
-        googleSignInButton.disabled = false;
-
-        googleSignInButton.classList.remove(
-          "is-loading"
-        );
-
-
-        if (!currentUser) {
-
-          renderButton(
-            "G",
-            "Continuar con Google"
-          );
         }
       }
     }
