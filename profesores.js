@@ -36,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const loginMessage =
     document.getElementById("loginMessage");
+   const teacherPanelButton =
+  document.getElementById("teacherPanelButton");
 
   const guardianPortrait =
     document.getElementById("guardianPortrait");
@@ -44,12 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("guardianMessage");
 
 
-  if (
-    !googleSignInButton ||
-    !loginMessage ||
-    !guardianPortrait ||
-    !guardianMessage
-  ) {
+if (
+  !googleSignInButton ||
+  !teacherPanelButton ||
+  !loginMessage ||
+  !guardianPortrait ||
+  !guardianMessage
+) {
+  
     console.error(
       "No se han encontrado los elementos del acceso docente."
     );
@@ -169,7 +173,7 @@ document.addEventListener("DOMContentLoaded", () => {
   ) => {
 
     googleSignInButton.disabled = true;
-
+teacherPanelButton.hidden = true;
     googleSignInButton.classList.add(
       "is-loading"
     );
@@ -192,9 +196,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
   const showSignedOutState = () => {
+     
 
     currentUser = null;
     currentTeacherProfile = null;
+     teacherPanelButton.hidden = true;
 
     googleSignInButton.classList.remove(
       "is-signed-in"
@@ -216,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     currentUser = user;
     currentTeacherProfile = profile;
+     teacherPanelButton.hidden = false;
 
     googleSignInButton.classList.add(
       "is-signed-in"
