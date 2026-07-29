@@ -240,7 +240,7 @@ document.addEventListener(
 
     let deniedMessageOverride =
       "";
-
+    let currentHouses = [];
 
     /* =====================================================
        FUNCIONES AUXILIARES
@@ -465,7 +465,53 @@ document.addEventListener(
 
       return card;
     };
+    const populateHouseSelector = (
+      houses
+    ) => {
 
+      const placeholder =
+        document.createElement(
+          "option"
+        );
+
+      placeholder.value = "";
+      placeholder.textContent =
+        "Selecciona una casa";
+
+
+      const options =
+        houses
+          .filter(
+            house =>
+              house.active === true
+          )
+          .map(
+            house => {
+
+              const option =
+                document.createElement(
+                  "option"
+                );
+
+              option.value =
+                house.id;
+
+              option.textContent =
+                house.name;
+
+              return option;
+            }
+          );
+
+
+      movementHouse.replaceChildren(
+        placeholder,
+        ...options
+      );
+
+      movementHouse.disabled =
+        options.length === 0;
+    };
 
     const loadHouses =
       async () => {
@@ -564,7 +610,12 @@ document.addEventListener(
               "No existen casas configuradas."
             );
           }
+          currentHouses =
+            houses;
 
+          populateHouseSelector(
+            currentHouses
+          );
 
           const cards =
             houses.map(
