@@ -105,6 +105,20 @@ document.addEventListener(
       document.getElementById(
         "panelLogoutButton"
       );
+         const housesLoading =
+      document.getElementById(
+        "housesLoading"
+      );
+
+    const housesError =
+      document.getElementById(
+        "housesError"
+      );
+
+    const housesGrid =
+      document.getElementById(
+        "housesGrid"
+      );
 
 
     const navigationButtons =
@@ -152,6 +166,9 @@ document.addEventListener(
       panelWelcomeName,
       panelWelcomeJob,
       panelLogoutButton
+      housesLoading,
+      housesError,
+      housesGrid
     ];
 
 
