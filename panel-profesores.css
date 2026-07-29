@@ -2014,3 +2014,352 @@ a:focus-visible {
     min-height: 255px;
   }
 }
+/* =========================================================
+   FORMULARIO DE MOVIMIENTOS
+   ========================================================= */
+
+.house-movement-panel {
+  position: relative;
+
+  margin-top: 28px;
+  padding: 28px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.18);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      circle at 100% 0,
+      rgba(201, 154, 66, 0.12),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 25, 43, 0.96),
+      rgba(6, 10, 19, 0.99)
+    );
+
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.28);
+}
+
+.house-movement-panel::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold-400),
+      var(--gold-200),
+      var(--gold-400),
+      transparent
+    );
+}
+
+
+/* CABECERA */
+
+.movement-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid rgba(230, 196, 123, 0.12);
+}
+
+.movement-panel-heading h3 {
+  margin: 3px 0 0;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 600;
+}
+
+.movement-panel-heading div > span {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.movement-panel-heading > strong {
+  flex: 0 0 auto;
+
+  padding: 8px 11px;
+
+  color: var(--gold-300);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.22);
+  border-radius: 20px;
+
+  background:
+    rgba(230, 196, 123, 0.055);
+}
+
+
+/* FORMULARIO */
+
+.house-movement-form {
+  margin-top: 24px;
+}
+
+.movement-form-grid {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1.2fr)
+    minmax(150px, 0.65fr)
+    minmax(0, 1fr);
+  gap: 18px;
+}
+
+.movement-field {
+  display: grid;
+  gap: 9px;
+}
+
+.movement-field > span {
+  color: var(--gold-200);
+  font-size: 0.59rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.movement-field input,
+.movement-field select,
+.movement-field textarea {
+  width: 100%;
+
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.76rem;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+
+  outline: none;
+
+  background:
+    rgba(3, 7, 15, 0.62);
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.movement-field input,
+.movement-field select {
+  min-height: 48px;
+  padding: 0 14px;
+}
+
+.movement-field textarea {
+  min-height: 105px;
+  padding: 14px;
+
+  resize: vertical;
+  line-height: 1.6;
+}
+
+.movement-field input::placeholder,
+.movement-field textarea::placeholder {
+  color: #69758a;
+}
+
+.movement-field select {
+  cursor: pointer;
+}
+
+.movement-field select option {
+  color: #172033;
+  background: #f4efe4;
+}
+
+.movement-field input:focus,
+.movement-field select:focus,
+.movement-field textarea:focus {
+  border-color:
+    rgba(230, 196, 123, 0.55);
+
+  background:
+    rgba(7, 13, 24, 0.88);
+
+  box-shadow:
+    0 0 0 3px rgba(230, 196, 123, 0.08),
+    0 0 20px rgba(201, 154, 66, 0.08);
+}
+
+
+/* MOTIVO */
+
+.movement-reason-field {
+  margin-top: 18px;
+}
+
+.movement-reason-field small {
+  color: var(--soft);
+  font-size: 0.6rem;
+  line-height: 1.5;
+}
+
+
+/* PIE DEL FORMULARIO */
+
+.movement-form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+
+  margin-top: 22px;
+  padding-top: 20px;
+
+  border-top:
+    1px solid rgba(255, 255, 255, 0.065);
+}
+
+.movement-message {
+  flex: 1;
+
+  min-height: 20px;
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.5;
+}
+
+.movement-message.success {
+  color: #bce5c9;
+}
+
+.movement-message.error {
+  color: #f1c0c0;
+}
+
+
+/* BOTÓN */
+
+.movement-submit-button {
+  flex: 0 0 auto;
+
+  min-height: 48px;
+  padding: 12px 22px;
+
+  color: #201508;
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.055em;
+
+  border:
+    1px solid var(--gold-300);
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold-200),
+      var(--gold-500)
+    );
+
+  box-shadow:
+    0 12px 26px rgba(0, 0, 0, 0.3),
+    0 0 24px rgba(201, 154, 66, 0.1);
+
+  transition:
+    transform 0.2s ease,
+    filter 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.movement-submit-button:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.06);
+
+  box-shadow:
+    0 16px 34px rgba(0, 0, 0, 0.36),
+    0 0 32px rgba(201, 154, 66, 0.17);
+}
+
+.movement-submit-button:active {
+  transform: translateY(0);
+}
+
+.movement-submit-button:disabled {
+  cursor: wait;
+  opacity: 0.62;
+  transform: none;
+  filter: none;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 900px) {
+
+  .movement-form-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .movement-form-grid .movement-field:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 650px) {
+
+  .house-movement-panel {
+    padding: 22px 17px;
+  }
+
+  .movement-panel-heading {
+    flex-direction: column;
+  }
+
+  .movement-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .movement-form-grid .movement-field:last-child {
+    grid-column: auto;
+  }
+
+  .movement-form-footer {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .movement-submit-button {
+    width: 100%;
+  }
+}
