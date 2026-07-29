@@ -915,7 +915,379 @@ document.addEventListener(
 
       loadHouses();
     };
+    /* =====================================================
+       REGISTRAR MOVIMIENTO DE PUNTOS
+       ===================================================== */
 
+    const setMovementMessage = (
+      message,
+      type = ""
+    ) => {
+
+      movementMessage.textContent =
+        message;
+
+      movementMessage.classList.remove(
+        "success",
+        "error"
+      );
+
+      if (type) {
+        movementMessage.classList.add(
+          type
+        );
+      }
+    };
+
+
+    const formatSignedPoints = (
+      amount
+    ) => {
+
+      return amount > 0
+        ? `+${amount}`
+        : String(amount);
+    };
+
+
+    const submitHouseMovement =
+      async (event) => {
+
+        event.preventDefault();
+
+
+        if (
+          movementSubmitButton.disabled
+        ) {
+          return;
+        }
+
+
+        const user =
+          auth.currentUser;
+
+        const houseId =
+          movementHouse.value.trim();
+
+        const category =
+          movementCategory.value.trim();
+
+        const amount =
+          Number(
+            movementAmount.value
+          );
+
+        const optionalComment =
+          movementReason.value.trim();
+
+        const selectedHouse =
+          currentHouses.find(
+            house =>
+              house.id === houseId &&
+              house.active === true
+          );
+
+
+        if (
+          !user ||
+          !currentTeacherProfile
+        ) {
+
+          setMovementMessage(
+            "La sesión docente ya no está disponible.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (!selectedHouse) {
+
+          setMovementMessage(
+            "Selecciona una casa activa.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (!category) {
+
+          setMovementMessage(
+            "Selecciona una categoría.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        if (
+          !Number.isInteger(amount) ||
+          amount === 0 ||
+          amount < -100 ||
+          amount > 100
+        ) {
+
+          setMovementMessage(
+            "La puntuación debe ser un número entero entre -100 y 100, distinto de cero.",
+            "error"
+          );
+
+          return;
+        }
+
+
+        /*
+         Si no se escribe comentario,
+         se utiliza la categoría como motivo.
+        */
+
+        const reason =
+          optionalComment ||
+          category;
+
+
+        movementSubmitButton.disabled =
+          true;
+
+        movementSubmitButton.textContent =
+          "Registrando...";
+
+        movementHouse.disabled =
+          true;
+
+        movementCategory.disabled =
+          true;
+
+        movementAmount.disabled =
+          true;
+
+        movementReason.disabled =
+          true;
+
+
+        setMovementMessage(
+          "Guardando el movimiento en Firestore..."
+        );
+
+
+        try {
+
+          const houseReference =
+            doc(
+              db,
+              "houses",
+              houseId
+            );
+
+          const movementReference =
+            doc(
+              collection(
+                db,
+                "houseMovements"
+              )
+            );
+
+
+          const result =
+            await runTransaction(
+              db,
+              async transaction => {
+
+                /*
+                 Todas las lecturas deben realizarse
+                 antes de empezar las escrituras.
+                */
+
+                const houseSnapshot =
+                  await transaction.get(
+                    houseReference
+                  );
+
+
+                if (
+                  !houseSnapshot.exists()
+                ) {
+
+                  throw new Error(
+                    "La casa seleccionada ya no existe."
+                  );
+                }
+
+
+                const houseData =
+                  houseSnapshot.data();
+
+
+                if (
+                  houseData.active !== true
+                ) {
+
+                  throw new Error(
+                    "La casa seleccionada está desactivada."
+                  );
+                }
+
+
+                const previousTotal =
+                  Number.isInteger(
+                    houseData.totalPoints
+                  )
+                    ? houseData.totalPoints
+                    : 0;
+
+                const newTotal =
+                  previousTotal +
+                  amount;
+
+
+                if (
+                  !Number.isSafeInteger(
+                    newTotal
+                  )
+                ) {
+
+                  throw new Error(
+                    "El nuevo total de puntos no es válido."
+                  );
+                }
+
+
+                transaction.update(
+                  houseReference,
+                  {
+                    totalPoints:
+                      newTotal,
+
+                    updatedAt:
+                      serverTimestamp(),
+
+                    updatedBy:
+                      user.uid,
+
+                    lastMovementId:
+                      movementReference.id
+                  }
+                );
+
+
+                transaction.set(
+                  movementReference,
+                  {
+                    houseId,
+
+                    amount,
+
+                    reason,
+
+                    category,
+
+                    createdBy:
+                      user.uid,
+
+                    createdByName:
+                      currentTeacherProfile
+                        .displayName,
+
+                    teacherRole:
+                      currentTeacherProfile
+                        .role,
+
+                    createdAt:
+                      serverTimestamp(),
+
+                    previousTotal,
+
+                    newTotal,
+
+                    corrected:
+                      false
+                  }
+                );
+
+
+                return {
+                  previousTotal,
+                  newTotal
+                };
+              }
+            );
+
+
+          houseMovementForm.reset();
+
+          movementAmount.readOnly =
+            true;
+
+          updateMovementAmount();
+
+
+          setMovementMessage(
+            `${selectedHouse.name}: ${formatSignedPoints(amount)} puntos registrados. Nuevo total: ${result.newTotal}.`,
+            "success"
+          );
+
+
+          await loadHouses();
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido registrar el movimiento:",
+            error
+          );
+
+
+          const message =
+            error.code ===
+              "permission-denied"
+              ? "Firestore ha rechazado la operación. Revisa los permisos y las reglas de seguridad."
+              : error.message ||
+                "No se ha podido registrar el movimiento.";
+
+
+          setMovementMessage(
+            message,
+            "error"
+          );
+
+        } finally {
+
+          const hasActiveHouses =
+            currentHouses.some(
+              house =>
+                house.active === true
+            );
+
+
+          movementHouse.disabled =
+            !hasActiveHouses;
+
+          movementCategory.disabled =
+            false;
+
+          movementAmount.disabled =
+            false;
+
+          movementReason.disabled =
+            false;
+
+          movementSubmitButton.disabled =
+            false;
+
+          movementSubmitButton.textContent =
+            "Registrar movimiento";
+        }
+      };
+
+
+    houseMovementForm.addEventListener(
+      "submit",
+      submitHouseMovement
+    );
 
     /* =====================================================
        CONSULTAR FIRESTORE
