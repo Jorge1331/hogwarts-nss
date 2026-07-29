@@ -763,7 +763,8 @@
                   min="-100"
                   max="100"
                   step="1"
-                  placeholder="+5 o -3"
+                  placeholder="Selecciona una categoría"
+                  readonly
                   required
                 >
 
@@ -774,79 +775,117 @@
 
                 <span>Categoría</span>
 
-                <select
-                  id="movementCategory"
-                  name="category"
-                  required
-                >
+               <select
+  id="movementCategory"
+  name="category"
+  required
+>
 
-                  <option value="">
-                    Selecciona una categoría
-                  </option>
+  <option value="">
+    Selecciona una categoría
+  </option>
 
-                 <option value="Libro de lectura">
-                    Libro de lectura
-                  </option>
-                  
-                  <option value="Trabajo voluntario">
-                    Trabajo voluntario
-                  </option>
-                  
-                  <option value="Tareas y responsabilidad">
-                    Tareas y responsabilidad
-                  </option>
-                  
-                  <option value="Convivencia">
-                    Convivencia
-                  </option>
-                  
-                  <option value="Esfuerzo">
-                    Esfuerzo y superación
-                  </option>
-                  
-                  <option value="Participación">
-                    Participación
-                  </option>
-                  
-                  <option value="Ayuda y servicio">
-                    Ayuda y servicio
-                  </option>
-                  
-                  <option value="Prueba del torneo">
-                    Prueba del torneo
-                  </option>
-                  
-                  <option value="Otro">
-                    Otro motivo
-                  </option>
+  <option
+    value="Libro de lectura"
+    data-points="3"
+  >
+    Libro de lectura · +3
+  </option>
 
-                </select>
+  <option
+    value="Trabajo voluntario"
+    data-points="1"
+  >
+    Trabajo voluntario · +1
+  </option>
+
+  <option
+    value="Tareas y responsabilidad"
+    data-points="1"
+  >
+    Tareas y responsabilidad · +1
+  </option>
+
+  <option
+    value="Convivencia positiva"
+    data-points="1"
+  >
+    Convivencia positiva · +1
+  </option>
+
+  <option
+    value="Esfuerzo y superación"
+    data-points="1"
+  >
+    Esfuerzo y superación · +1
+  </option>
+
+  <option
+    value="Participación"
+    data-points="1"
+  >
+    Participación · +1
+  </option>
+
+  <option
+    value="Ayuda y servicio"
+    data-points="1"
+  >
+    Ayuda y servicio · +1
+  </option>
+
+  <option
+    value="Prueba del torneo"
+    data-points="5"
+  >
+    Prueba del torneo · +5
+  </option>
+
+  <option
+    value="Falta de convivencia"
+    data-points="-1"
+  >
+    Falta de convivencia · −1
+  </option>
+
+  <option
+    value="Incidencia"
+    data-points="-3"
+  >
+    Incidencia · −3
+  </option>
+
+  <option
+    value="Puntuación libre"
+    data-points="free"
+  >
+    Puntuación libre
+  </option>
+
+</select>
 
               </label>
 
             </div>
 
 
-            <label class="movement-field movement-reason-field">
+          <label class="movement-field movement-reason-field">
 
-              <span>Motivo del movimiento</span>
-
-              <textarea
-                id="movementReason"
-                name="reason"
-                minlength="3"
-                maxlength="160"
-                rows="3"
-                placeholder="Describe brevemente por qué se modifican los puntos."
-                required
-              ></textarea>
-
-              <small>
-                Entre 3 y 160 caracteres. No escribas nombres del alumnado.
-              </small>
-
-            </label>
-
+                <span>Comentario opcional</span>
+              
+                <textarea
+                  id="movementReason"
+                  name="reason"
+                  maxlength="160"
+                  rows="3"
+                  placeholder="Puedes añadir una aclaración, pero no es obligatorio."
+                ></textarea>
+              
+                <small>
+                  No escribas nombres ni información identificativa del alumnado.
+                </small>
+              
+              </label>
 
             <div class="movement-form-footer">
 
