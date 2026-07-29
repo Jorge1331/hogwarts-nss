@@ -639,14 +639,6 @@
         hidden
       >
 
-             <!-- CASAS -->
-
-      <section
-        id="sectionCasas"
-        class="private-panel-section"
-        data-section-content="casas"
-        hidden
-      >
 
         <div class="private-section-heading">
 
@@ -711,7 +703,163 @@
 
       </section>
 
+        <article class="house-movement-panel">
 
+          <div class="movement-panel-heading">
+
+            <div>
+
+              <p class="private-eyebrow">
+                Nuevo movimiento
+              </p>
+
+              <h3>Registrar puntos</h3>
+
+              <span>
+                Cada modificación quedará guardada en el historial.
+              </span>
+
+            </div>
+
+            <strong>
+              Operación protegida
+            </strong>
+
+          </div>
+
+
+          <form
+            id="houseMovementForm"
+            class="house-movement-form"
+          >
+
+            <div class="movement-form-grid">
+
+              <label class="movement-field">
+
+                <span>Casa</span>
+
+                <select
+                  id="movementHouse"
+                  name="houseId"
+                  required
+                >
+
+                  <option value="">
+                    Selecciona una casa
+                  </option>
+
+                </select>
+
+              </label>
+
+
+              <label class="movement-field">
+
+                <span>Puntos</span>
+
+                <input
+                  id="movementAmount"
+                  name="amount"
+                  type="number"
+                  min="-100"
+                  max="100"
+                  step="1"
+                  placeholder="+5 o -3"
+                  required
+                >
+
+              </label>
+
+
+              <label class="movement-field">
+
+                <span>Categoría</span>
+
+                <select
+                  id="movementCategory"
+                  name="category"
+                  required
+                >
+
+                  <option value="">
+                    Selecciona una categoría
+                  </option>
+
+                  <option value="Convivencia">
+                    Convivencia
+                  </option>
+
+                  <option value="Esfuerzo">
+                    Esfuerzo
+                  </option>
+
+                  <option value="Participación">
+                    Participación
+                  </option>
+
+                  <option value="Ayuda">
+                    Ayuda y servicio
+                  </option>
+
+                  <option value="Prueba">
+                    Prueba del torneo
+                  </option>
+
+                  <option value="Otro">
+                    Otro motivo
+                  </option>
+
+                </select>
+
+              </label>
+
+            </div>
+
+
+            <label class="movement-field movement-reason-field">
+
+              <span>Motivo del movimiento</span>
+
+              <textarea
+                id="movementReason"
+                name="reason"
+                minlength="3"
+                maxlength="160"
+                rows="3"
+                placeholder="Describe brevemente por qué se modifican los puntos."
+                required
+              ></textarea>
+
+              <small>
+                Entre 3 y 160 caracteres. No escribas nombres del alumnado.
+              </small>
+
+            </label>
+
+
+            <div class="movement-form-footer">
+
+              <p
+                id="movementMessage"
+                class="movement-message"
+                role="status"
+                aria-live="polite"
+              ></p>
+
+              <button
+                id="movementSubmitButton"
+                class="movement-submit-button"
+                type="submit"
+              >
+                Registrar movimiento
+              </button>
+
+            </div>
+
+          </form>
+
+        </article>
       <!-- PRUEBAS -->
 
       <section
