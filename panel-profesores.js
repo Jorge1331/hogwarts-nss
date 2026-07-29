@@ -119,7 +119,40 @@ document.addEventListener(
       document.getElementById(
         "housesGrid"
       );
+    const houseMovementForm =
+      document.getElementById(
+        "houseMovementForm"
+      );
 
+    const movementHouse =
+      document.getElementById(
+        "movementHouse"
+      );
+
+    const movementAmount =
+      document.getElementById(
+        "movementAmount"
+      );
+
+    const movementCategory =
+      document.getElementById(
+        "movementCategory"
+      );
+
+    const movementReason =
+      document.getElementById(
+        "movementReason"
+      );
+
+    const movementMessage =
+      document.getElementById(
+        "movementMessage"
+      );
+
+    const movementSubmitButton =
+      document.getElementById(
+        "movementSubmitButton"
+      );
 
     const navigationButtons =
       Array.from(
@@ -154,7 +187,7 @@ document.addEventListener(
        COMPROBACIÓN DEL HTML
        ===================================================== */
 
-    const requiredElements = [
+        const requiredElements = [
       panelLoading,
       panelDenied,
       panelDeniedMessage,
@@ -168,7 +201,14 @@ document.addEventListener(
       panelLogoutButton,
       housesLoading,
       housesError,
-      housesGrid
+      housesGrid,
+      houseMovementForm,
+      movementHouse,
+      movementAmount,
+      movementCategory,
+      movementReason,
+      movementMessage,
+      movementSubmitButton
     ];
 
 
