@@ -639,22 +639,75 @@
         hidden
       >
 
-        <div class="private-empty-state">
+             <!-- CASAS -->
 
-          <span aria-hidden="true">🏆</span>
+      <section
+        id="sectionCasas"
+        class="private-panel-section"
+        data-section-content="casas"
+        hidden
+      >
 
-          <p class="private-eyebrow">
-            Gestión colectiva
-          </p>
+        <div class="private-section-heading">
 
-          <h2>Casas y puntos</h2>
+          <div>
+
+            <p class="private-eyebrow">
+              Gestión colectiva
+            </p>
+
+            <h2>Casas y puntos</h2>
+
+          </div>
+
+          <span class="private-course-badge">
+            Datos de Firestore
+          </span>
+
+        </div>
+
+
+        <div
+          id="housesLoading"
+          class="houses-status-card"
+          role="status"
+          aria-live="polite"
+        >
+
+          <strong>
+            Consultando las cuatro casas
+          </strong>
 
           <p>
-            Aquí construiremos la gestión de las cuatro casas.
-            Empezaremos con nombres y puntuaciones ficticias.
+            Recuperando la clasificación desde Firestore.
           </p>
 
         </div>
+
+
+        <div
+          id="housesError"
+          class="houses-status-card houses-error"
+          role="alert"
+          hidden
+        >
+
+          <strong>
+            No se han podido cargar las casas
+          </strong>
+
+          <p>
+            Comprueba la conexión y vuelve a intentarlo.
+          </p>
+
+        </div>
+
+
+        <div
+          id="housesGrid"
+          class="houses-data-grid"
+          aria-live="polite"
+        ></div>
 
       </section>
 
