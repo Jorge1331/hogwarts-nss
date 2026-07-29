@@ -465,7 +465,7 @@ document.addEventListener(
 
       return card;
     };
-    const populateHouseSelector = (
+        const populateHouseSelector = (
       houses
     ) => {
 
@@ -512,6 +512,81 @@ document.addEventListener(
       movementHouse.disabled =
         options.length === 0;
     };
+
+
+    /* =====================================================
+       PUNTUACIÓN AUTOMÁTICA POR CATEGORÍA
+       ===================================================== */
+
+    const updateMovementAmount = () => {
+
+      const selectedOption =
+        movementCategory.options[
+          movementCategory.selectedIndex
+        ];
+
+      const configuredPoints =
+        selectedOption?.dataset.points ||
+        "";
+
+
+      movementMessage.textContent = "";
+
+      movementMessage.classList.remove(
+        "success",
+        "error"
+      );
+
+
+      if (
+        configuredPoints === "free"
+      ) {
+
+        movementAmount.readOnly =
+          false;
+
+        movementAmount.value =
+          "";
+
+        movementAmount.placeholder =
+          "Escribe entre -100 y +100";
+
+        movementAmount.focus();
+
+        return;
+      }
+
+
+      movementAmount.readOnly =
+        true;
+
+
+      if (
+        configuredPoints !== ""
+      ) {
+
+        movementAmount.value =
+          configuredPoints;
+
+        movementAmount.placeholder =
+          "Puntuación automática";
+
+        return;
+      }
+
+
+      movementAmount.value =
+        "";
+
+      movementAmount.placeholder =
+        "Selecciona una categoría";
+    };
+
+
+    movementCategory.addEventListener(
+      "change",
+      updateMovementAmount
+    );
 
     const loadHouses =
       async () => {
