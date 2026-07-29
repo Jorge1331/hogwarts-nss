@@ -743,7 +743,9 @@ document.addEventListener(
       );
 
 
-      showPrivatePanel();
+           showPrivatePanel();
+
+      loadHouses();
     };
 
 
