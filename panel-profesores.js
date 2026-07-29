@@ -980,11 +980,10 @@ document.addEventListener(
         const optionalComment =
           movementReason.value.trim();
 
-        const selectedHouse =
+               const selectedHouse =
           currentHouses.find(
             house =>
-              house.id === houseId &&
-              house.active === true
+              house.id === houseId
           );
 
 
@@ -1002,10 +1001,10 @@ document.addEventListener(
         }
 
 
-        if (!selectedHouse) {
+               if (!houseId) {
 
           setMovementMessage(
-            "Selecciona una casa activa.",
+            "Selecciona una casa.",
             "error"
           );
 
