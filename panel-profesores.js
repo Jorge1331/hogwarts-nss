@@ -311,7 +311,248 @@ document.addEventListener(
       panelDenied.hidden = true;
       privatePanelApp.hidden = false;
     };
+    /* =====================================================
+       CASAS DE FIRESTORE
+       ===================================================== */
 
+    const createHouseCard = (
+      house
+    ) => {
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+      card.className =
+        "house-data-card";
+
+      card.dataset.houseId =
+        house.id;
+
+      card.style.setProperty(
+        "--house-primary",
+        house.primaryColor
+      );
+
+      card.style.setProperty(
+        "--house-accent",
+        house.accentColor
+      );
+
+
+      const position =
+        document.createElement(
+          "span"
+        );
+
+      position.className =
+        "house-position";
+
+      position.textContent =
+        String(
+          house.displayOrder
+        );
+
+
+      const mascot =
+        document.createElement(
+          "p"
+        );
+
+      mascot.className =
+        "house-mascot";
+
+      mascot.textContent =
+        house.mascot;
+
+
+      const name =
+        document.createElement(
+          "h3"
+        );
+
+      name.textContent =
+        house.name;
+
+
+      const pointsLabel =
+        document.createElement(
+          "span"
+        );
+
+      pointsLabel.className =
+        "house-points-label";
+
+      pointsLabel.textContent =
+        "Puntuación actual";
+
+
+      const points =
+        document.createElement(
+          "strong"
+        );
+
+      points.className =
+        "house-points-value";
+
+      points.textContent =
+        `${house.totalPoints} puntos`;
+
+
+      const status =
+        document.createElement(
+          "small"
+        );
+
+      status.className =
+        "house-status";
+
+      status.textContent =
+        house.active
+          ? "Casa activa"
+          : "Casa desactivada";
+
+
+      card.append(
+        position,
+        mascot,
+        name,
+        pointsLabel,
+        points,
+        status
+      );
+
+      return card;
+    };
+
+
+    const loadHouses =
+      async () => {
+
+        housesLoading.hidden =
+          false;
+
+        housesError.hidden =
+          true;
+
+        housesGrid.replaceChildren();
+
+
+        try {
+
+          const housesQuery =
+            query(
+              collection(
+                db,
+                "houses"
+              ),
+              orderBy(
+                "displayOrder",
+                "asc"
+              )
+            );
+
+
+          const housesSnapshot =
+            await getDocsFromServer(
+              housesQuery
+            );
+
+
+          const houses =
+            housesSnapshot.docs.map(
+              houseDocument => {
+
+                const data =
+                  houseDocument.data();
+
+                return {
+                  id:
+                    houseDocument.id,
+
+                  name:
+                    cleanText(
+                      data.name,
+                      houseDocument.id
+                    ),
+
+                  mascot:
+                    cleanText(
+                      data.mascot,
+                      "Casa de Hogwarts"
+                    ),
+
+                  primaryColor:
+                    cleanText(
+                      data.primaryColor,
+                      "#17223a"
+                    ),
+
+                  accentColor:
+                    cleanText(
+                      data.accentColor,
+                      "#efc873"
+                    ),
+
+                  totalPoints:
+                    Number.isFinite(
+                      data.totalPoints
+                    )
+                      ? data.totalPoints
+                      : 0,
+
+                  displayOrder:
+                    Number.isFinite(
+                      data.displayOrder
+                    )
+                      ? data.displayOrder
+                      : 99,
+
+                  active:
+                    data.active === true
+                };
+              }
+            );
+
+
+          if (
+            houses.length === 0
+          ) {
+
+            throw new Error(
+              "No existen casas configuradas."
+            );
+          }
+
+
+          const cards =
+            houses.map(
+              createHouseCard
+            );
+
+
+          housesGrid.append(
+            ...cards
+          );
+
+          housesLoading.hidden =
+            true;
+
+        } catch (error) {
+
+          console.error(
+            "No se han podido cargar las casas:",
+            error
+          );
+
+          housesLoading.hidden =
+            true;
+
+          housesError.hidden =
+            false;
+        }
+      };
 
     /* =====================================================
        CONTROL DE ADMINISTRACIÓN
