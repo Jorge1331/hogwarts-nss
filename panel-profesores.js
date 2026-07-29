@@ -165,7 +165,7 @@ document.addEventListener(
       panelUserRole,
       panelWelcomeName,
       panelWelcomeJob,
-      panelLogoutButton
+      panelLogoutButton,
       housesLoading,
       housesError,
       housesGrid
