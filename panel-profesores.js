@@ -1578,11 +1578,10 @@ document.addEventListener(
       );
 
 
-           showPrivatePanel();
+                showPrivatePanel();
 
-               loadHouses();
+      loadHouses();
       loadMovementHistory();
-          );
     };
     /* =====================================================
        REGISTRAR MOVIMIENTO DE PUNTOS
