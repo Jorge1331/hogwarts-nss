@@ -906,11 +906,107 @@
 
             </div>
 
-          </form>
+                  </form>
+        </article>
+
+
+        <!-- HISTORIAL DE MOVIMIENTOS -->
+
+        <article
+          class="house-history-panel"
+          aria-labelledby="movementHistoryTitle"
+        >
+
+          <div class="history-panel-heading">
+
+            <div>
+
+              <p class="private-eyebrow">
+                Registro de actividad
+              </p>
+
+              <h3 id="movementHistoryTitle">
+                Historial de movimientos
+              </h3>
+
+              <span>
+                Consulta las últimas modificaciones realizadas
+                sobre la puntuación de las casas.
+              </span>
+
+            </div>
+
+            <strong id="movementHistoryCount">
+              0 movimientos
+            </strong>
+
+          </div>
+
+
+          <div
+            id="movementHistoryLoading"
+            class="movement-history-status"
+            role="status"
+            aria-live="polite"
+          >
+
+            <strong>
+              Consultando el registro
+            </strong>
+
+            <p>
+              Recuperando los movimientos guardados en Firestore.
+            </p>
+
+          </div>
+
+
+          <div
+            id="movementHistoryError"
+            class="movement-history-status movement-history-error"
+            role="alert"
+            hidden
+          >
+
+            <strong>
+              No se ha podido cargar el historial
+            </strong>
+
+            <p>
+              Comprueba la conexión y vuelve a intentarlo.
+            </p>
+
+          </div>
+
+
+          <div
+            id="movementHistoryEmpty"
+            class="movement-history-status movement-history-empty"
+            hidden
+          >
+
+            <strong>
+              Todavía no existen movimientos
+            </strong>
+
+            <p>
+              Los registros aparecerán aquí después de modificar
+              la puntuación de una casa.
+            </p>
+
+          </div>
+
+
+          <div
+            id="movementHistoryList"
+            class="movement-history-list"
+            aria-live="polite"
+            hidden
+          ></div>
 
         </article>
-        
-        </section>
+
+      </section>
       <!-- PRUEBAS -->
 
       <section
