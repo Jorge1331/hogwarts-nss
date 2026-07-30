@@ -295,6 +295,14 @@ document.addEventListener(
       null;
     let unsubscribeHouses =
       null;
+         let previousHouseRanks =
+      new Map();
+
+    let previousHousePoints =
+      new Map();
+
+    let houseRankChanges =
+      new Map();
     /* =====================================================
        FUNCIONES AUXILIARES
        ===================================================== */
@@ -497,7 +505,61 @@ document.addEventListener(
             ? "punto"
             : "puntos"
         }`;
+      const rankChange =
+        Number.isInteger(
+          house.rankChange
+        )
+          ? house.rankChange
+          : 0;
 
+
+      const trend =
+        document.createElement(
+          "span"
+        );
+
+      trend.className =
+        "house-rank-trend";
+
+
+      if (rankChange > 0) {
+
+        trend.classList.add(
+          "rank-trend-up"
+        );
+
+        trend.textContent =
+          `↑ Sube ${rankChange} ${
+            rankChange === 1
+              ? "puesto"
+              : "puestos"
+          }`;
+
+      } else if (rankChange < 0) {
+
+        const lostPositions =
+          Math.abs(rankChange);
+
+        trend.classList.add(
+          "rank-trend-down"
+        );
+
+        trend.textContent =
+          `↓ Baja ${lostPositions} ${
+            lostPositions === 1
+              ? "puesto"
+              : "puestos"
+          }`;
+
+      } else {
+
+        trend.classList.add(
+          "rank-trend-stable"
+        );
+
+        trend.textContent =
+          "— Se mantiene";
+      }
 
       const status =
         document.createElement(
@@ -519,6 +581,7 @@ document.addEventListener(
         name,
         pointsLabel,
         points,
+        trend,
         status
       );
 
@@ -957,9 +1020,89 @@ document.addEventListener(
               captureHouseCardPositions();
 
 
-            currentHouses =
+                       const rankedHouses =
               createHouseRanking(
                 houses
+              );
+
+
+            rankedHouses.forEach(
+              house => {
+
+                const previousRank =
+                  previousHouseRanks.get(
+                    house.id
+                  );
+
+                const previousPoints =
+                  previousHousePoints.get(
+                    house.id
+                  );
+
+
+                if (
+                  Number.isInteger(
+                    previousRank
+                  )
+                ) {
+
+                  if (
+                    previousRank !==
+                    house.rankPosition
+                  ) {
+
+                    /*
+                     Resultado positivo:
+                     la casa ha subido.
+                    */
+
+                    houseRankChanges.set(
+                      house.id,
+                      previousRank -
+                        house.rankPosition
+                    );
+
+                  } else if (
+                    previousPoints !==
+                    house.totalPoints
+                  ) {
+
+                    /*
+                     Ha cambiado su puntuación,
+                     pero mantiene posición.
+                    */
+
+                    houseRankChanges.set(
+                      house.id,
+                      0
+                    );
+                  }
+                }
+
+
+                previousHouseRanks.set(
+                  house.id,
+                  house.rankPosition
+                );
+
+                previousHousePoints.set(
+                  house.id,
+                  house.totalPoints
+                );
+              }
+            );
+
+
+            currentHouses =
+              rankedHouses.map(
+                house => ({
+                  ...house,
+
+                  rankChange:
+                    houseRankChanges.get(
+                      house.id
+                    ) || 0
+                })
               );
 
 
