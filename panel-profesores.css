@@ -1961,7 +1961,166 @@ a:focus-visible {
   font-weight: 600;
 }
 
+/* =========================================================
+   EVOLUCIÓN DE LA CLASIFICACIÓN
+   ========================================================= */
 
+.house-rank-trend {
+  position: relative;
+  z-index: 1;
+
+  display: inline-flex;
+  align-items: center;
+
+  width: fit-content;
+  min-height: 28px;
+  margin-top: 14px;
+  padding: 6px 11px;
+
+  font-size: 0.58rem;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+
+  border: 1px solid;
+  border-radius: 999px;
+
+  backdrop-filter: blur(8px);
+
+  animation:
+    houseRankTrendReveal
+    0.55s
+    cubic-bezier(0.22, 1, 0.36, 1)
+    both;
+}
+
+
+.rank-trend-up {
+  color: #bce5c9;
+
+  border-color:
+    rgba(127, 201, 154, 0.32);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(127, 201, 154, 0.13),
+      rgba(127, 201, 154, 0.035)
+    );
+
+  box-shadow:
+    0 0 18px
+      rgba(127, 201, 154, 0.09);
+}
+
+
+.rank-trend-down {
+  color: #f1c0c0;
+
+  border-color:
+    rgba(217, 137, 137, 0.32);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(217, 137, 137, 0.13),
+      rgba(217, 137, 137, 0.035)
+    );
+
+  box-shadow:
+    0 0 18px
+      rgba(217, 137, 137, 0.08);
+}
+
+
+.rank-trend-stable {
+  color: var(--gold-300);
+
+  border-color:
+    rgba(230, 196, 123, 0.22);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(230, 196, 123, 0.09),
+      rgba(230, 196, 123, 0.025)
+    );
+}
+
+
+@keyframes houseRankTrendReveal {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(7px)
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* CASA LÍDER */
+
+.house-data-card[
+  data-rank-position="1"
+] {
+  border-color:
+    rgba(230, 196, 123, 0.38);
+
+  box-shadow:
+    0 24px 54px rgba(0, 0, 0, 0.36),
+    0 0 32px rgba(230, 196, 123, 0.09);
+}
+
+
+.house-data-card[
+  data-rank-position="1"
+]::before {
+  height: 5px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold-500),
+      var(--gold-200),
+      var(--gold-500),
+      transparent
+    );
+
+  box-shadow:
+    0 0 20px
+      rgba(230, 196, 123, 0.42);
+}
+
+
+.house-data-card[
+  data-rank-position="1"
+] .house-position {
+  color: #1b1308;
+
+  border-color:
+    rgba(255, 235, 184, 0.7);
+
+  background:
+    linear-gradient(
+      145deg,
+      var(--gold-200),
+      var(--gold-500)
+    );
+
+  box-shadow:
+    0 9px 24px
+      rgba(201, 154, 66, 0.38);
+}
 /* ESTADO */
 
 .house-status {
