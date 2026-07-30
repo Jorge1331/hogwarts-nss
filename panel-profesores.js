@@ -442,11 +442,13 @@ document.addEventListener(
       position.className =
         "house-position";
 
-      position.textContent =
-        String(
-          house.displayOrder
-        );
+           position.textContent =
+        `${house.rankPosition}.º`;
 
+      card.dataset.rankPosition =
+        String(
+          house.rankPosition
+        );
 
       const mascot =
         document.createElement(
@@ -521,6 +523,193 @@ document.addEventListener(
       );
 
       return card;
+    };
+         const createHouseRanking = (
+      houses
+    ) => {
+
+      const sortedHouses =
+        [...houses].sort(
+          (firstHouse, secondHouse) => {
+
+            if (
+              firstHouse.totalPoints !==
+              secondHouse.totalPoints
+            ) {
+
+              return (
+                secondHouse.totalPoints -
+                firstHouse.totalPoints
+              );
+            }
+
+            /*
+             En caso de empate conserva el
+             orden institucional original.
+            */
+
+            return (
+              firstHouse.displayOrder -
+              secondHouse.displayOrder
+            );
+          }
+        );
+
+
+      let previousPoints = null;
+      let previousRank = 0;
+
+
+      return sortedHouses.map(
+        (house, index) => {
+
+          const rankPosition =
+            previousPoints ===
+              house.totalPoints
+              ? previousRank
+              : index + 1;
+
+
+          previousPoints =
+            house.totalPoints;
+
+          previousRank =
+            rankPosition;
+
+
+          return {
+            ...house,
+            rankPosition
+          };
+        }
+      );
+    };
+
+
+    const captureHouseCardPositions =
+      () => {
+
+        const positions =
+          new Map();
+
+
+        housesGrid
+          .querySelectorAll(
+            ".house-data-card"
+          )
+          .forEach(
+            card => {
+
+              positions.set(
+                card.dataset.houseId,
+                card.getBoundingClientRect()
+              );
+            }
+          );
+
+
+        return positions;
+      };
+
+
+    const animateHouseRanking = (
+      previousPositions
+    ) => {
+
+      if (
+        window.matchMedia(
+          "(prefers-reduced-motion: reduce)"
+        ).matches
+      ) {
+
+        return;
+      }
+
+
+      window.requestAnimationFrame(
+        () => {
+
+          housesGrid
+            .querySelectorAll(
+              ".house-data-card"
+            )
+            .forEach(
+              card => {
+
+                const previousRectangle =
+                  previousPositions.get(
+                    card.dataset.houseId
+                  );
+
+
+                if (!previousRectangle) {
+                  return;
+                }
+
+
+                const currentRectangle =
+                  card.getBoundingClientRect();
+
+
+                const differenceX =
+                  previousRectangle.left -
+                  currentRectangle.left;
+
+                const differenceY =
+                  previousRectangle.top -
+                  currentRectangle.top;
+
+
+                if (
+                  Math.abs(differenceX) < 1 &&
+                  Math.abs(differenceY) < 1
+                ) {
+
+                  return;
+                }
+
+
+                card.style.zIndex =
+                  "3";
+
+
+                const animation =
+                  card.animate(
+                    [
+                      {
+                        transform:
+                          `translate(${differenceX}px, ${differenceY}px)`
+                      },
+                      {
+                        transform:
+                          "translate(0, 0)"
+                      }
+                    ],
+                    {
+                      duration: 750,
+                      easing:
+                        "cubic-bezier(0.22, 1, 0.36, 1)"
+                    }
+                  );
+
+
+                animation.addEventListener(
+                  "finish",
+                  () => {
+
+                    card.style
+                      .removeProperty(
+                        "z-index"
+                      );
+                  },
+                  {
+                    once: true
+                  }
+                );
+              }
+            );
+        }
+      );
     };
         const populateHouseSelector = (
       houses
@@ -760,16 +949,27 @@ document.addEventListener(
              mientras se actualiza el marcador.
             */
 
-            const selectedHouseId =
+                       const selectedHouseId =
               movementHouse.value;
 
 
-            currentHouses =
-              houses;
+            const previousCardPositions =
+              captureHouseCardPositions();
 
+
+            currentHouses =
+              createHouseRanking(
+                houses
+              );
+
+
+            /*
+             El formulario mantiene el orden
+             tradicional de las cuatro casas.
+            */
 
             populateHouseSelector(
-              currentHouses
+              houses
             );
 
 
@@ -797,7 +997,9 @@ document.addEventListener(
             housesGrid.replaceChildren(
               ...cards
             );
-
+            animateHouseRanking(
+              previousCardPositions
+            );
 
             housesLoading.hidden =
               true;
