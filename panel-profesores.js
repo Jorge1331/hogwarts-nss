@@ -180,7 +180,20 @@ document.addEventListener(
       document.getElementById(
         "movementHistoryList"
       );
+    const movementHistoryHouseFilter =
+      document.getElementById(
+        "movementHistoryHouseFilter"
+      );
 
+    const movementHistoryTypeFilter =
+      document.getElementById(
+        "movementHistoryTypeFilter"
+      );
+
+    const movementHistoryClearFilters =
+      document.getElementById(
+        "movementHistoryClearFilters"
+      );
     const navigationButtons =
       Array.from(
         document.querySelectorAll(
@@ -240,7 +253,10 @@ document.addEventListener(
       movementHistoryLoading,
       movementHistoryError,
       movementHistoryEmpty,
-      movementHistoryList
+      movementHistoryList,
+      movementHistoryHouseFilter,
+      movementHistoryTypeFilter,
+      movementHistoryClearFilters
     ];
 
 
@@ -273,6 +289,7 @@ document.addEventListener(
     let deniedMessageOverride =
       "";
     let currentHouses = [];
+         let currentMovements = [];
 
     /* =====================================================
        FUNCIONES AUXILIARES
@@ -1046,6 +1063,153 @@ document.addEventListener(
     };
 
 
+       const showFilteredHistoryEmptyState = (
+      title,
+      message
+    ) => {
+
+      const emptyTitle =
+        movementHistoryEmpty.querySelector(
+          "strong"
+        );
+
+      const emptyMessage =
+        movementHistoryEmpty.querySelector(
+          "p"
+        );
+
+      if (emptyTitle) {
+        emptyTitle.textContent =
+          title;
+      }
+
+      if (emptyMessage) {
+        emptyMessage.textContent =
+          message;
+      }
+
+      movementHistoryEmpty.hidden =
+        false;
+
+      movementHistoryList.hidden =
+        true;
+    };
+
+
+    const renderMovementHistory = () => {
+
+      const selectedHouse =
+        movementHistoryHouseFilter.value;
+
+      const selectedType =
+        movementHistoryTypeFilter.value;
+
+
+      const filteredMovements =
+        currentMovements.filter(
+          movement => {
+
+            const matchesHouse =
+              selectedHouse === "all" ||
+              movement.houseId ===
+                selectedHouse;
+
+            const amount =
+              Number.isInteger(
+                movement.amount
+              )
+                ? movement.amount
+                : 0;
+
+            const matchesType =
+              selectedType === "all" ||
+              (
+                selectedType ===
+                  "positive" &&
+                amount > 0
+              ) ||
+              (
+                selectedType ===
+                  "negative" &&
+                amount < 0
+              );
+
+            return (
+              matchesHouse &&
+              matchesType
+            );
+          }
+        );
+
+
+      if (
+        filteredMovements.length ===
+        currentMovements.length
+      ) {
+
+        movementHistoryCount.textContent =
+          `${currentMovements.length} ${
+            currentMovements.length === 1
+              ? "movimiento"
+              : "movimientos"
+          }`;
+
+      } else {
+
+        movementHistoryCount.textContent =
+          `${filteredMovements.length} de ${
+            currentMovements.length
+          } movimientos`;
+      }
+
+
+      movementHistoryList
+        .replaceChildren();
+
+      movementHistoryEmpty.hidden =
+        true;
+
+
+      if (
+        currentMovements.length === 0
+      ) {
+
+        showFilteredHistoryEmptyState(
+          "Todavía no existen movimientos",
+          "Los registros aparecerán aquí después de modificar la puntuación de una casa."
+        );
+
+        return;
+      }
+
+
+      if (
+        filteredMovements.length === 0
+      ) {
+
+        showFilteredHistoryEmptyState(
+          "No hay movimientos con estos filtros",
+          "Prueba con otra casa o tipo de movimiento."
+        );
+
+        return;
+      }
+
+
+      const historyItems =
+        filteredMovements.map(
+          createMovementHistoryItem
+        );
+
+      movementHistoryList.append(
+        ...historyItems
+      );
+
+      movementHistoryList.hidden =
+        false;
+    };
+
+
     const loadMovementHistory =
       async () => {
 
@@ -1087,7 +1251,7 @@ document.addEventListener(
             );
 
 
-          const movements =
+          currentMovements =
             movementsSnapshot.docs.map(
               movementDocument => ({
                 id:
@@ -1097,41 +1261,10 @@ document.addEventListener(
             );
 
 
-          movementHistoryCount.textContent =
-            `${movements.length} ${
-              movements.length === 1
-                ? "movimiento"
-                : "movimientos"
-            }`;
-
-
           movementHistoryLoading.hidden =
             true;
 
-
-          if (
-            movements.length === 0
-          ) {
-
-            movementHistoryEmpty.hidden =
-              false;
-
-            return;
-          }
-
-
-          const historyItems =
-            movements.map(
-              createMovementHistoryItem
-            );
-
-
-          movementHistoryList.append(
-            ...historyItems
-          );
-
-          movementHistoryList.hidden =
-            false;
+          renderMovementHistory();
 
         } catch (error) {
 
@@ -1139,6 +1272,11 @@ document.addEventListener(
             "No se ha podido cargar el historial:",
             error
           );
+
+          currentMovements = [];
+
+          movementHistoryCount.textContent =
+            "0 movimientos";
 
           movementHistoryLoading.hidden =
             true;
@@ -1148,6 +1286,35 @@ document.addEventListener(
         }
       };
 
+
+    movementHistoryHouseFilter
+      .addEventListener(
+        "change",
+        renderMovementHistory
+      );
+
+
+    movementHistoryTypeFilter
+      .addEventListener(
+        "change",
+        renderMovementHistory
+      );
+
+
+    movementHistoryClearFilters
+      .addEventListener(
+        "click",
+        () => {
+
+          movementHistoryHouseFilter.value =
+            "all";
+
+          movementHistoryTypeFilter.value =
+            "all";
+
+          renderMovementHistory();
+        }
+      );
     /* =====================================================
        CONTROL DE ADMINISTRACIÓN
        ===================================================== */
