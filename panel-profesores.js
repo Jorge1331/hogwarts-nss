@@ -293,7 +293,8 @@ document.addEventListener(
          let currentMovements = [];
          let unsubscribeMovementHistory =
       null;
-
+    let unsubscribeHouses =
+      null;
     /* =====================================================
        FUNCIONES AUXILIARES
        ===================================================== */
@@ -644,137 +645,195 @@ document.addEventListener(
       updateMovementAmount
     );
 
-    const loadHouses =
-      async () => {
+       const loadHouses = () => {
 
-        housesLoading.hidden =
-          false;
+      /*
+       Evita crear varios observadores
+       sobre las mismas casas.
+      */
 
-        housesError.hidden =
-          true;
+      if (unsubscribeHouses) {
+        return;
+      }
 
-        housesGrid.replaceChildren();
+
+      housesLoading.hidden =
+        false;
+
+      housesError.hidden =
+        true;
+
+      housesGrid.replaceChildren();
 
 
-        try {
+      const housesQuery =
+        query(
+          collection(
+            db,
+            "houses"
+          ),
+          orderBy(
+            "displayOrder",
+            "asc"
+          )
+        );
 
-          const housesQuery =
-            query(
-              collection(
-                db,
-                "houses"
-              ),
-              orderBy(
-                "displayOrder",
-                "asc"
+
+      unsubscribeHouses =
+        onSnapshot(
+          housesQuery,
+
+          housesSnapshot => {
+
+            const houses =
+              housesSnapshot.docs.map(
+                houseDocument => {
+
+                  const data =
+                    houseDocument.data();
+
+                  return {
+                    id:
+                      houseDocument.id,
+
+                    name:
+                      cleanText(
+                        data.name,
+                        houseDocument.id
+                      ),
+
+                    mascot:
+                      cleanText(
+                        data.mascot,
+                        "Casa de Hogwarts"
+                      ),
+
+                    primaryColor:
+                      cleanText(
+                        data.primaryColor,
+                        "#17223a"
+                      ),
+
+                    accentColor:
+                      cleanText(
+                        data.accentColor,
+                        "#efc873"
+                      ),
+
+                    totalPoints:
+                      Number.isFinite(
+                        data.totalPoints
+                      )
+                        ? data.totalPoints
+                        : 0,
+
+                    displayOrder:
+                      Number.isFinite(
+                        data.displayOrder
+                      )
+                        ? data.displayOrder
+                        : 99,
+
+                    active:
+                      data.active === true
+                  };
+                }
+              );
+
+
+            if (houses.length === 0) {
+
+              currentHouses = [];
+
+              housesLoading.hidden =
+                true;
+
+              housesError.hidden =
+                false;
+
+              return;
+            }
+
+
+            /*
+             Conserva la casa seleccionada
+             mientras se actualiza el marcador.
+            */
+
+            const selectedHouseId =
+              movementHouse.value;
+
+
+            currentHouses =
+              houses;
+
+
+            populateHouseSelector(
+              currentHouses
+            );
+
+
+            if (
+              selectedHouseId &&
+              currentHouses.some(
+                house =>
+                  house.id ===
+                    selectedHouseId &&
+                  house.active === true
               )
+            ) {
+
+              movementHouse.value =
+                selectedHouseId;
+            }
+
+
+            const cards =
+              currentHouses.map(
+                createHouseCard
+              );
+
+
+            housesGrid.replaceChildren(
+              ...cards
             );
 
 
-          const housesSnapshot =
-            await getDocsFromServer(
-              housesQuery
+            housesLoading.hidden =
+              true;
+
+            housesError.hidden =
+              true;
+
+
+            /*
+             Actualiza también los nombres y
+             colores mostrados en el historial.
+            */
+
+            if (
+              currentMovements.length > 0
+            ) {
+
+              renderMovementHistory();
+            }
+          },
+
+          error => {
+
+            console.error(
+              "No se han podido sincronizar las casas:",
+              error
             );
 
+            housesLoading.hidden =
+              true;
 
-          const houses =
-            housesSnapshot.docs.map(
-              houseDocument => {
-
-                const data =
-                  houseDocument.data();
-
-                return {
-                  id:
-                    houseDocument.id,
-
-                  name:
-                    cleanText(
-                      data.name,
-                      houseDocument.id
-                    ),
-
-                  mascot:
-                    cleanText(
-                      data.mascot,
-                      "Casa de Hogwarts"
-                    ),
-
-                  primaryColor:
-                    cleanText(
-                      data.primaryColor,
-                      "#17223a"
-                    ),
-
-                  accentColor:
-                    cleanText(
-                      data.accentColor,
-                      "#efc873"
-                    ),
-
-                  totalPoints:
-                    Number.isFinite(
-                      data.totalPoints
-                    )
-                      ? data.totalPoints
-                      : 0,
-
-                  displayOrder:
-                    Number.isFinite(
-                      data.displayOrder
-                    )
-                      ? data.displayOrder
-                      : 99,
-
-                  active:
-                    data.active === true
-                };
-              }
-            );
-
-
-          if (
-            houses.length === 0
-          ) {
-
-            throw new Error(
-              "No existen casas configuradas."
-            );
+            housesError.hidden =
+              false;
           }
-          currentHouses =
-            houses;
-
-          populateHouseSelector(
-            currentHouses
-          );
-
-          const cards =
-            houses.map(
-              createHouseCard
-            );
-
-
-          housesGrid.append(
-            ...cards
-          );
-
-          housesLoading.hidden =
-            true;
-
-        } catch (error) {
-
-          console.error(
-            "No se han podido cargar las casas:",
-            error
-          );
-
-          housesLoading.hidden =
-            true;
-
-          housesError.hidden =
-            false;
-        }
-      };
+        );
+    };
          /* =====================================================
        HISTORIAL DE MOVIMIENTOS
        ===================================================== */
@@ -1521,9 +1580,8 @@ document.addEventListener(
 
            showPrivatePanel();
 
-            loadHouses()
-        .then(
-          loadMovementHistory
+               loadHouses();
+      loadMovementHistory();
           );
     };
     /* =====================================================
