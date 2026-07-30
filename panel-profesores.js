@@ -1342,7 +1342,8 @@ document.addEventListener(
             loadHouses()
         .then(
           loadMovementHistory
-        );
+          );
+    };
     /* =====================================================
        REGISTRAR MOVIMIENTO DE PUNTOS
        ===================================================== */
