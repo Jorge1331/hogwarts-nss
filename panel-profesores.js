@@ -1617,7 +1617,20 @@ document.addEventListener(
 
           return;
         }
+        if (
+          optionalComment &&
+          optionalComment.length < 3
+        ) {
 
+          setMovementMessage(
+            "El comentario debe tener al menos 3 caracteres o dejarse vacío.",
+            "error"
+          );
+
+          movementReason.focus();
+
+          return;
+        }
 
         if (
           !Number.isInteger(amount) ||
