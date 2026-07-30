@@ -2363,3 +2363,418 @@ a:focus-visible {
     width: 100%;
   }
 }
+/* =========================================================
+   HISTORIAL DE MOVIMIENTOS
+   ========================================================= */
+
+.house-history-panel {
+  position: relative;
+
+  margin-top: 28px;
+  padding: 28px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.18);
+  border-radius: 16px;
+
+  background:
+    radial-gradient(
+      circle at 0 0,
+      rgba(78, 109, 158, 0.12),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 25, 43, 0.96),
+      rgba(6, 10, 19, 0.99)
+    );
+
+  box-shadow:
+    0 20px 42px rgba(0, 0, 0, 0.28);
+}
+
+.house-history-panel::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 3px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(78, 109, 158, 0.9),
+      var(--gold-300),
+      rgba(78, 109, 158, 0.9),
+      transparent
+    );
+}
+
+
+/* CABECERA */
+
+.history-panel-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding-bottom: 22px;
+
+  border-bottom:
+    1px solid rgba(230, 196, 123, 0.12);
+}
+
+.history-panel-heading h3 {
+  margin: 3px 0 0;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 2.2vw, 1.8rem);
+  font-weight: 600;
+}
+
+.history-panel-heading div > span {
+  display: block;
+
+  margin-top: 8px;
+
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.6;
+}
+
+.history-panel-heading > strong {
+  flex: 0 0 auto;
+
+  padding: 8px 11px;
+
+  color: var(--gold-300);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.22);
+  border-radius: 20px;
+
+  background:
+    rgba(230, 196, 123, 0.055);
+}
+
+
+/* ESTADOS DE CARGA, ERROR Y VACÍO */
+
+.movement-history-status {
+  margin-top: 22px;
+  padding: 20px 22px;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.13);
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+.movement-history-status strong {
+  display: block;
+
+  color: var(--gold-200);
+  font-family: var(--font-display);
+  font-size: 0.82rem;
+}
+
+.movement-history-status p {
+  margin: 7px 0 0;
+
+  color: var(--muted);
+  font-size: 0.68rem;
+  line-height: 1.6;
+}
+
+.movement-history-error {
+  border-color:
+    rgba(217, 137, 137, 0.3);
+
+  background:
+    rgba(217, 137, 137, 0.06);
+}
+
+.movement-history-error strong {
+  color: #f1c0c0;
+}
+
+.movement-history-empty {
+  text-align: center;
+}
+
+
+/* LISTA */
+
+.movement-history-list {
+  display: grid;
+  gap: 12px;
+
+  margin-top: 22px;
+}
+
+
+/* MOVIMIENTO INDIVIDUAL */
+
+.movement-history-item {
+  position: relative;
+
+  display: grid;
+  grid-template-columns:
+    minmax(135px, 0.8fr)
+    minmax(240px, 1.7fr)
+    minmax(150px, 0.9fr)
+    minmax(90px, 0.45fr);
+  gap: 18px;
+  align-items: center;
+
+  min-width: 0;
+  padding: 17px 18px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.075);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 30, 50, 0.86),
+      rgba(7, 12, 22, 0.96)
+    );
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+.movement-history-item::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 3px;
+
+  background:
+    linear-gradient(
+      var(--movement-house-primary, var(--gold-500)),
+      var(--movement-house-accent, var(--gold-300))
+    );
+}
+
+.movement-history-item:hover {
+  transform: translateY(-2px);
+
+  border-color:
+    rgba(230, 196, 123, 0.18);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(22, 36, 59, 0.92),
+      rgba(8, 14, 25, 0.98)
+    );
+}
+
+
+/* CASA */
+
+.movement-history-house {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  min-width: 0;
+}
+
+.movement-history-house-dot {
+  flex: 0 0 auto;
+
+  width: 11px;
+  height: 11px;
+
+  border:
+    2px solid var(
+      --movement-house-accent,
+      var(--gold-300)
+    );
+  border-radius: 50%;
+
+  background:
+    var(
+      --movement-house-primary,
+      var(--gold-500)
+    );
+
+  box-shadow:
+    0 0 13px
+    var(
+      --movement-house-primary,
+      rgba(201, 154, 66, 0.45)
+    );
+}
+
+.movement-history-house strong {
+  overflow: hidden;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* CATEGORÍA Y COMENTARIO */
+
+.movement-history-main {
+  min-width: 0;
+}
+
+.movement-history-category {
+  display: block;
+
+  overflow: hidden;
+
+  color: var(--gold-200);
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movement-history-reason {
+  margin: 5px 0 0;
+
+  overflow: hidden;
+
+  color: var(--muted);
+  font-size: 0.64rem;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+/* PROFESOR Y FECHA */
+
+.movement-history-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  min-width: 0;
+}
+
+.movement-history-teacher {
+  overflow: hidden;
+
+  color: #c5cedb;
+  font-size: 0.64rem;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.movement-history-date {
+  color: var(--soft);
+  font-size: 0.58rem;
+}
+
+
+/* PUNTUACIÓN */
+
+.movement-history-score {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.movement-history-points {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.movement-history-points.positive {
+  color: #9de2b5;
+}
+
+.movement-history-points.negative {
+  color: #efa3a3;
+}
+
+.movement-history-total {
+  color: var(--muted);
+  font-size: 0.56rem;
+  white-space: nowrap;
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 1100px) {
+
+  .movement-history-item {
+    grid-template-columns:
+      minmax(125px, 0.8fr)
+      minmax(220px, 1.5fr)
+      minmax(120px, 0.8fr);
+  }
+
+  .movement-history-score {
+    grid-column: 1 / -1;
+
+    align-items: center;
+    justify-content: flex-end;
+    flex-direction: row;
+  }
+}
+
+
+@media (max-width: 720px) {
+
+  .house-history-panel {
+    padding: 22px 17px;
+  }
+
+  .history-panel-heading {
+    flex-direction: column;
+  }
+
+  .movement-history-item {
+    grid-template-columns: 1fr;
+    gap: 13px;
+  }
+
+  .movement-history-reason {
+    white-space: normal;
+  }
+
+  .movement-history-score {
+    grid-column: auto;
+
+    align-items: flex-start;
+    justify-content: flex-start;
+  }
+}
