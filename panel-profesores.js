@@ -24,6 +24,7 @@ import {
   getDocFromServer,
   getDocsFromServer,
   limit,
+  onSnapshot,
   orderBy,
   query,
   runTransaction,
@@ -290,6 +291,8 @@ document.addEventListener(
       "";
     let currentHouses = [];
          let currentMovements = [];
+         let unsubscribeMovementHistory =
+      null;
 
     /* =====================================================
        FUNCIONES AUXILIARES
@@ -1210,81 +1213,93 @@ document.addEventListener(
     };
 
 
-    const loadMovementHistory =
-      async () => {
+       const loadMovementHistory = () => {
 
-        movementHistoryLoading.hidden =
-          false;
+      /*
+       Evita crear varios observadores si la función
+       vuelve a ejecutarse después de registrar puntos.
+      */
 
-        movementHistoryError.hidden =
-          true;
-
-        movementHistoryEmpty.hidden =
-          true;
-
-        movementHistoryList.hidden =
-          true;
-
-        movementHistoryList
-          .replaceChildren();
+      if (unsubscribeMovementHistory) {
+        return;
+      }
 
 
-        try {
+      movementHistoryLoading.hidden =
+        false;
 
-          const movementsQuery =
-            query(
-              collection(
-                db,
-                "houseMovements"
-              ),
-              orderBy(
-                "createdAt",
-                "desc"
-              ),
-              limit(50)
+      movementHistoryError.hidden =
+        true;
+
+      movementHistoryEmpty.hidden =
+        true;
+
+      movementHistoryList.hidden =
+        true;
+
+      movementHistoryList
+        .replaceChildren();
+
+
+      const movementsQuery =
+        query(
+          collection(
+            db,
+            "houseMovements"
+          ),
+          orderBy(
+            "createdAt",
+            "desc"
+          ),
+          limit(50)
+        );
+
+
+      unsubscribeMovementHistory =
+        onSnapshot(
+          movementsQuery,
+
+          movementsSnapshot => {
+
+            currentMovements =
+              movementsSnapshot.docs.map(
+                movementDocument => ({
+                  id:
+                    movementDocument.id,
+                  ...movementDocument.data()
+                })
+              );
+
+
+            movementHistoryLoading.hidden =
+              true;
+
+            movementHistoryError.hidden =
+              true;
+
+            renderMovementHistory();
+          },
+
+          error => {
+
+            console.error(
+              "No se ha podido sincronizar el historial:",
+              error
             );
 
+            currentMovements = [];
 
-          const movementsSnapshot =
-            await getDocsFromServer(
-              movementsQuery
-            );
+            movementHistoryCount.textContent =
+              "0 movimientos";
 
+            movementHistoryLoading.hidden =
+              true;
 
-          currentMovements =
-            movementsSnapshot.docs.map(
-              movementDocument => ({
-                id:
-                  movementDocument.id,
-                ...movementDocument.data()
-              })
-            );
-
-
-          movementHistoryLoading.hidden =
-            true;
-
-          renderMovementHistory();
-
-        } catch (error) {
-
-          console.error(
-            "No se ha podido cargar el historial:",
-            error
-          );
-
-          currentMovements = [];
-
-          movementHistoryCount.textContent =
-            "0 movimientos";
-
-          movementHistoryLoading.hidden =
-            true;
-
-          movementHistoryError.hidden =
-            false;
-        }
-      };
+            movementHistoryError.hidden =
+              false;
+          }
+        );
+    };
 
 
     movementHistoryHouseFilter
