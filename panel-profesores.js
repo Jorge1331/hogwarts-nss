@@ -23,6 +23,7 @@ import {
   doc,
   getDocFromServer,
   getDocsFromServer,
+  limit,
   orderBy,
   query,
   runTransaction,
@@ -155,6 +156,30 @@ document.addEventListener(
       document.getElementById(
         "movementSubmitButton"
       );
+         const movementHistoryCount =
+      document.getElementById(
+        "movementHistoryCount"
+      );
+
+    const movementHistoryLoading =
+      document.getElementById(
+        "movementHistoryLoading"
+      );
+
+    const movementHistoryError =
+      document.getElementById(
+        "movementHistoryError"
+      );
+
+    const movementHistoryEmpty =
+      document.getElementById(
+        "movementHistoryEmpty"
+      );
+
+    const movementHistoryList =
+      document.getElementById(
+        "movementHistoryList"
+      );
 
     const navigationButtons =
       Array.from(
@@ -210,7 +235,12 @@ document.addEventListener(
       movementCategory,
       movementReason,
       movementMessage,
-      movementSubmitButton
+      movementSubmitButton,
+      movementHistoryCount,
+      movementHistoryLoading,
+      movementHistoryError,
+      movementHistoryEmpty,
+      movementHistoryList
     ];
 
 
@@ -438,8 +468,12 @@ document.addEventListener(
       points.className =
         "house-points-value";
 
-      points.textContent =
-        `${house.totalPoints} puntos`;
+           points.textContent =
+        `${house.totalPoints} ${
+          Math.abs(house.totalPoints) === 1
+            ? "punto"
+            : "puntos"
+        }`;
 
 
       const status =
@@ -721,6 +755,398 @@ document.addEventListener(
             false;
         }
       };
+         /* =====================================================
+       HISTORIAL DE MOVIMIENTOS
+       ===================================================== */
+
+    const formatMovementDate = (
+      timestamp
+    ) => {
+
+      if (
+        !timestamp ||
+        typeof timestamp.toDate !==
+          "function"
+      ) {
+
+        return "Fecha pendiente";
+      }
+
+
+      return new Intl.DateTimeFormat(
+        "es-ES",
+        {
+          day: "2-digit",
+          month: "2-digit",
+          year: "numeric",
+          hour: "2-digit",
+          minute: "2-digit"
+        }
+      ).format(
+        timestamp.toDate()
+      );
+    };
+
+
+    const getMovementHouse = (
+      houseId
+    ) => {
+
+      return (
+        currentHouses.find(
+          house =>
+            house.id === houseId
+        ) || {
+          id: houseId,
+          name: cleanText(
+            houseId,
+            "Casa desconocida"
+          ),
+          primaryColor: "#755019",
+          accentColor: "#e6c47b"
+        }
+      );
+    };
+
+
+    const createMovementHistoryItem = (
+      movement
+    ) => {
+
+      const house =
+        getMovementHouse(
+          movement.houseId
+        );
+
+      const item =
+        document.createElement(
+          "article"
+        );
+
+      item.className =
+        "movement-history-item";
+
+      item.dataset.movementId =
+        movement.id;
+
+      item.style.setProperty(
+        "--movement-house-primary",
+        house.primaryColor
+      );
+
+      item.style.setProperty(
+        "--movement-house-accent",
+        house.accentColor
+      );
+
+
+      const houseBlock =
+        document.createElement(
+          "div"
+        );
+
+      houseBlock.className =
+        "movement-history-house";
+
+
+      const houseDot =
+        document.createElement(
+          "span"
+        );
+
+      houseDot.className =
+        "movement-history-house-dot";
+
+      houseDot.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+
+      const houseName =
+        document.createElement(
+          "strong"
+        );
+
+      houseName.textContent =
+        house.name;
+
+      houseBlock.append(
+        houseDot,
+        houseName
+      );
+
+
+      const mainBlock =
+        document.createElement(
+          "div"
+        );
+
+      mainBlock.className =
+        "movement-history-main";
+
+
+      const category =
+        document.createElement(
+          "strong"
+        );
+
+      category.className =
+        "movement-history-category";
+
+      category.textContent =
+        cleanText(
+          movement.category,
+          "Movimiento de puntos"
+        );
+
+
+      const reason =
+        document.createElement(
+          "p"
+        );
+
+      reason.className =
+        "movement-history-reason";
+
+      const reasonText =
+        cleanText(
+          movement.reason,
+          ""
+        );
+
+      const categoryText =
+        cleanText(
+          movement.category,
+          ""
+        );
+
+      reason.textContent =
+        reasonText &&
+        reasonText !== categoryText
+          ? reasonText
+          : "Sin comentario adicional";
+
+      mainBlock.append(
+        category,
+        reason
+      );
+
+
+      const metaBlock =
+        document.createElement(
+          "div"
+        );
+
+      metaBlock.className =
+        "movement-history-meta";
+
+
+      const teacher =
+        document.createElement(
+          "span"
+        );
+
+      teacher.className =
+        "movement-history-teacher";
+
+      teacher.textContent =
+        cleanText(
+          movement.createdByName,
+          "Profesorado"
+        );
+
+
+      const date =
+        document.createElement(
+          "time"
+        );
+
+      date.className =
+        "movement-history-date";
+
+      date.textContent =
+        formatMovementDate(
+          movement.createdAt
+        );
+
+      metaBlock.append(
+        teacher,
+        date
+      );
+
+
+      const scoreBlock =
+        document.createElement(
+          "div"
+        );
+
+      scoreBlock.className =
+        "movement-history-score";
+
+
+      const amount =
+        Number.isInteger(
+          movement.amount
+        )
+          ? movement.amount
+          : 0;
+
+
+      const points =
+        document.createElement(
+          "strong"
+        );
+
+      points.className =
+        `movement-history-points ${
+          amount >= 0
+            ? "positive"
+            : "negative"
+        }`;
+
+      points.textContent =
+        amount > 0
+          ? `+${amount}`
+          : String(amount);
+
+
+      const total =
+        document.createElement(
+          "span"
+        );
+
+      total.className =
+        "movement-history-total";
+
+      total.textContent =
+        `Total: ${
+          Number.isInteger(
+            movement.newTotal
+          )
+            ? movement.newTotal
+            : 0
+        }`;
+
+
+      scoreBlock.append(
+        points,
+        total
+      );
+
+
+      item.append(
+        houseBlock,
+        mainBlock,
+        metaBlock,
+        scoreBlock
+      );
+
+      return item;
+    };
+
+
+    const loadMovementHistory =
+      async () => {
+
+        movementHistoryLoading.hidden =
+          false;
+
+        movementHistoryError.hidden =
+          true;
+
+        movementHistoryEmpty.hidden =
+          true;
+
+        movementHistoryList.hidden =
+          true;
+
+        movementHistoryList
+          .replaceChildren();
+
+
+        try {
+
+          const movementsQuery =
+            query(
+              collection(
+                db,
+                "houseMovements"
+              ),
+              orderBy(
+                "createdAt",
+                "desc"
+              ),
+              limit(50)
+            );
+
+
+          const movementsSnapshot =
+            await getDocsFromServer(
+              movementsQuery
+            );
+
+
+          const movements =
+            movementsSnapshot.docs.map(
+              movementDocument => ({
+                id:
+                  movementDocument.id,
+                ...movementDocument.data()
+              })
+            );
+
+
+          movementHistoryCount.textContent =
+            `${movements.length} ${
+              movements.length === 1
+                ? "movimiento"
+                : "movimientos"
+            }`;
+
+
+          movementHistoryLoading.hidden =
+            true;
+
+
+          if (
+            movements.length === 0
+          ) {
+
+            movementHistoryEmpty.hidden =
+              false;
+
+            return;
+          }
+
+
+          const historyItems =
+            movements.map(
+              createMovementHistoryItem
+            );
+
+
+          movementHistoryList.append(
+            ...historyItems
+          );
+
+          movementHistoryList.hidden =
+            false;
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido cargar el historial:",
+            error
+          );
+
+          movementHistoryLoading.hidden =
+            true;
+
+          movementHistoryError.hidden =
+            false;
+        }
+      };
 
     /* =====================================================
        CONTROL DE ADMINISTRACIÓN
@@ -913,8 +1339,10 @@ document.addEventListener(
 
            showPrivatePanel();
 
-      loadHouses();
-    };
+            loadHouses()
+        .then(
+          loadMovementHistory
+        );
     /* =====================================================
        REGISTRAR MOVIMIENTO DE PUNTOS
        ===================================================== */
@@ -1231,6 +1659,7 @@ document.addEventListener(
 
 
           await loadHouses();
+          await loadMovementHistory();
 
         } catch (error) {
 
