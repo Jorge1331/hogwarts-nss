@@ -942,7 +942,71 @@
 
           </div>
 
+          <div class="movement-history-filters">
 
+            <label class="history-filter-field">
+
+              <span>Casa</span>
+
+              <select id="movementHistoryHouseFilter">
+
+                <option value="all">
+                  Todas las casas
+                </option>
+
+                <option value="gryffindor">
+                  Gryffindor
+                </option>
+
+                <option value="slytherin">
+                  Slytherin
+                </option>
+
+                <option value="ravenclaw">
+                  Ravenclaw
+                </option>
+
+                <option value="hufflepuff">
+                  Hufflepuff
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label class="history-filter-field">
+
+              <span>Movimiento</span>
+
+              <select id="movementHistoryTypeFilter">
+
+                <option value="all">
+                  Todos los movimientos
+                </option>
+
+                <option value="positive">
+                  Puntos positivos
+                </option>
+
+                <option value="negative">
+                  Puntos retirados
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <button
+              id="movementHistoryClearFilters"
+              class="history-clear-filters"
+              type="button"
+            >
+              Limpiar filtros
+            </button>
+
+          </div>
           <div
             id="movementHistoryLoading"
             class="movement-history-status"
