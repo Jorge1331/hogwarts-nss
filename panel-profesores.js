@@ -2100,7 +2100,13 @@ document.addEventListener(
 
 
         try {
-
+         
+         const publicRankingReference =
+            doc(
+              db,
+              "publicRanking",
+              houseId
+            );
           const houseReference =
             doc(
               db,
@@ -2197,7 +2203,16 @@ document.addEventListener(
                       movementReference.id
                   }
                 );
+                transaction.update(
+                  publicRankingReference,
+                  {
+                    totalPoints:
+                      newTotal,
 
+                    updatedAt:
+                      serverTimestamp()
+                  }
+                );
 
                 transaction.set(
                   movementReference,
