@@ -163,48 +163,275 @@ function initializePublicRanking() {
   );
 }
 function renderHouseRanking() {
-  const rankingElement = document.querySelector("#houseRanking");
+
+  const rankingElement =
+    document.querySelector(
+      "#houseRanking"
+    );
+
 
   if (!rankingElement) {
     return;
   }
 
-  const sortedHouses = [...houses].sort(
-    (houseA, houseB) => houseB.points - houseA.points
+
+  /*
+   Guarda la posición visual anterior
+   de cada casa antes de reconstruir la lista.
+  */
+
+  const previousPositions =
+    new Map();
+
+
+  rankingElement
+    .querySelectorAll(
+      ".ranking-row[data-house-id]"
+    )
+    .forEach(
+      (row) => {
+
+        previousPositions.set(
+          row.dataset.houseId,
+          row.getBoundingClientRect()
+        );
+      }
+    );
+
+
+  const sortedHouses =
+    [...houses].sort(
+      (houseA, houseB) => {
+
+        if (
+          houseA.points !==
+          houseB.points
+        ) {
+
+          return (
+            houseB.points -
+            houseA.points
+          );
+        }
+
+
+        return (
+          houseA.displayOrder -
+          houseB.displayOrder
+        );
+      }
+    );
+
+
+  /*
+   Dos casas con los mismos puntos
+   comparten la misma posición.
+  */
+
+  let previousPoints = null;
+  let previousRank = 0;
+
+
+  const rankedHouses =
+    sortedHouses.map(
+      (house, index) => {
+
+        const rankPosition =
+          previousPoints ===
+            house.points
+            ? previousRank
+            : index + 1;
+
+
+        previousPoints =
+          house.points;
+
+        previousRank =
+          rankPosition;
+
+
+        return {
+          ...house,
+          rankPosition
+        };
+      }
+    );
+
+
+  rankingElement.replaceChildren();
+
+
+  rankedHouses.forEach(
+    (house) => {
+
+      const rankingRow =
+        document.createElement(
+          "li"
+        );
+
+
+      rankingRow.className =
+        `ranking-row ${house.id}`;
+
+      rankingRow.dataset.houseId =
+        house.id;
+
+      rankingRow.dataset.rankPosition =
+        String(
+          house.rankPosition
+        );
+
+
+      rankingRow.innerHTML = `
+        <span class="ranking-position">
+          ${house.rankPosition}.º
+        </span>
+
+        <span
+          class="house-emblem"
+          aria-hidden="true"
+        >
+          ${house.emblem}
+        </span>
+
+        <strong>
+          ${house.name}
+        </strong>
+
+        <span
+          class="house-score"
+          data-house="${house.id}"
+        >
+          ${formatPoints(house.points)} pts
+        </span>
+      `;
+
+
+      rankingElement.appendChild(
+        rankingRow
+      );
+    }
   );
 
-  rankingElement.innerHTML = "";
 
-  sortedHouses.forEach((house, index) => {
-    const rankingRow = document.createElement("li");
-
-    rankingRow.className = `ranking-row ${house.id}`;
-
-    rankingRow.innerHTML = `
-      <span class="ranking-position">${index + 1}.º</span>
-
-      <span
-        class="house-emblem"
-        aria-hidden="true"
-      >
-        ${house.emblem}
-      </span>
-
-      <strong>${house.name}</strong>
-
-      <span
-        class="house-score"
-        data-house="${house.id}"
-      >
-        ${formatPoints(house.points)} pts
-      </span>
-    `;
-
-    rankingElement.appendChild(rankingRow);
-  });
+  animatePublicRanking(
+    rankingElement,
+    previousPositions
+  );
 }
+function animatePublicRanking(
+  rankingElement,
+  previousPositions
+) {
+
+  if (
+    previousPositions.size === 0 ||
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches
+  ) {
+
+    return;
+  }
 
 
+  window.requestAnimationFrame(
+    () => {
+
+      rankingElement
+        .querySelectorAll(
+          ".ranking-row[data-house-id]"
+        )
+        .forEach(
+          (row) => {
+
+            const previousRectangle =
+              previousPositions.get(
+                row.dataset.houseId
+              );
+
+
+            if (!previousRectangle) {
+              return;
+            }
+
+
+            const currentRectangle =
+              row.getBoundingClientRect();
+
+
+            const differenceX =
+              previousRectangle.left -
+              currentRectangle.left;
+
+            const differenceY =
+              previousRectangle.top -
+              currentRectangle.top;
+
+
+            if (
+              Math.abs(differenceX) < 1 &&
+              Math.abs(differenceY) < 1
+            ) {
+
+              return;
+            }
+
+
+            row.style.zIndex = "3";
+
+
+            const animation =
+              row.animate(
+                [
+                  {
+                    transform:
+                      `translate(${differenceX}px, ${differenceY}px)`,
+
+                    boxShadow:
+                      "0 0 0 rgba(239, 200, 115, 0)"
+                  },
+                  {
+                    transform:
+                      "translate(0, 0)",
+
+                    boxShadow:
+                      "0 0 22px rgba(239, 200, 115, 0.22)"
+                  },
+                  {
+                    transform:
+                      "translate(0, 0)",
+
+                    boxShadow:
+                      "0 0 0 rgba(239, 200, 115, 0)"
+                  }
+                ],
+                {
+                  duration: 850,
+
+                  easing:
+                    "cubic-bezier(0.22, 1, 0.36, 1)"
+                }
+              );
+
+
+            animation.addEventListener(
+              "finish",
+              () => {
+
+                row.style.removeProperty(
+                  "z-index"
+                );
+              },
+              {
+                once: true
+              }
+            );
+          }
+        );
+    }
+  );
+}
 function formatPoints(points) {
   return new Intl.NumberFormat("es-ES").format(points);
 }
