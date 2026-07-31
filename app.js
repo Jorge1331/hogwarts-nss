@@ -4,7 +4,14 @@
    ========================================================= */
 
 "use strict";
+import {
+  db
+} from "./firebase-config.js";
 
+import {
+  doc,
+  onSnapshot
+} from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 /* ---------------------------------------------------------
    CONFIGURACIÓN PROVISIONAL
@@ -22,40 +29,24 @@ const CONFIG = {
    Más adelante estos datos procederán de Firebase.
 --------------------------------------------------------- */
 
-const houses = [
-  {
-    id: "gryffindor",
-    name: "Gryffindor",
-    emblem: "🦁",
-    points: 12540
-  },
-  {
-    id: "slytherin",
-    name: "Slytherin",
-    emblem: "🐍",
-    points: 11230
-  },
-  {
-    id: "ravenclaw",
-    name: "Ravenclaw",
-    emblem: "🦅",
-    points: 9870
-  },
-  {
-    id: "hufflepuff",
-    name: "Hufflepuff",
-    emblem: "🦡",
-    points: 8420
-  }
+const PUBLIC_HOUSE_IDS = [
+  "gryffindor",
+  "slytherin",
+  "ravenclaw",
+  "hufflepuff"
 ];
 
+const publicRankingDocuments =
+  new Map();
+
+let houses = [];
 
 /* ---------------------------------------------------------
    INICIO DE LA APLICACIÓN
 --------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
-  renderHouseRanking();
+  initializePublicRanking();
   initializeNavigation();
   initializeCountdown();
   initializeButtons();
@@ -67,7 +58,110 @@ document.addEventListener("DOMContentLoaded", () => {
 /* ---------------------------------------------------------
    CLASIFICACIÓN DE LAS CASAS
 --------------------------------------------------------- */
+function initializePublicRanking() {
 
+  PUBLIC_HOUSE_IDS.forEach(
+    (houseId) => {
+
+      const houseReference =
+        doc(
+          db,
+          "publicRanking",
+          houseId
+        );
+
+
+      onSnapshot(
+        houseReference,
+
+        (houseSnapshot) => {
+
+          if (!houseSnapshot.exists()) {
+
+            console.error(
+              `No existe la casa pública ${houseId}.`
+            );
+
+            return;
+          }
+
+
+          const data =
+            houseSnapshot.data();
+
+
+          publicRankingDocuments.set(
+            houseId,
+            {
+              id: houseId,
+
+              name:
+                String(
+                  data.name || houseId
+                ).trim(),
+
+              emblem:
+                String(
+                  data.emblem || "✦"
+                ).trim(),
+
+              points:
+                Number.isInteger(
+                  data.totalPoints
+                )
+                  ? data.totalPoints
+                  : 0,
+
+              displayOrder:
+                Number.isInteger(
+                  data.displayOrder
+                )
+                  ? data.displayOrder
+                  : 99,
+
+              active:
+                data.active === true
+            }
+          );
+
+
+          /*
+           Esperamos a recibir las cuatro casas
+           antes de sustituir el ranking inicial.
+          */
+
+          if (
+            publicRankingDocuments.size !==
+            PUBLIC_HOUSE_IDS.length
+          ) {
+
+            return;
+          }
+
+
+          houses =
+            Array.from(
+              publicRankingDocuments.values()
+            ).filter(
+              (house) =>
+                house.active === true
+            );
+
+
+          renderHouseRanking();
+        },
+
+        (error) => {
+
+          console.error(
+            `No se ha podido sincronizar ${houseId}:`,
+            error
+          );
+        }
+      );
+    }
+  );
+}
 function renderHouseRanking() {
   const rankingElement = document.querySelector("#houseRanking");
 
@@ -303,9 +397,26 @@ function initializeButtons() {
 --------------------------------------------------------- */
 
 function showRankingSummary() {
-  const sortedHouses = [...houses].sort(
-    (houseA, houseB) => houseB.points - houseA.points
-  );
+ const sortedHouses = [...houses].sort(
+  (houseA, houseB) => {
+
+    if (
+      houseA.points !==
+      houseB.points
+    ) {
+
+      return (
+        houseB.points -
+        houseA.points
+      );
+    }
+
+    return (
+      houseA.displayOrder -
+      houseB.displayOrder
+    );
+  }
+);
 
   const leader = sortedHouses[0];
   const secondHouse = sortedHouses[1];
