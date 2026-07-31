@@ -40,7 +40,11 @@ const publicRankingDocuments =
   new Map();
 
 let houses = [];
+let previousPublicRanks =
+  new Map();
 
+let publicRankingHasRendered =
+  false;
 /* ---------------------------------------------------------
    INICIO DE LA APLICACIÓN
 --------------------------------------------------------- */
@@ -256,12 +260,51 @@ function renderHouseRanking() {
         };
       }
     );
+  const rankedHousesWithTrend =
+    rankedHouses.map(
+      (house) => {
 
+        const previousRank =
+          previousPublicRanks.get(
+            house.id
+          );
+
+        const rankChange =
+          publicRankingHasRendered &&
+          Number.isInteger(
+            previousRank
+          )
+            ? previousRank -
+              house.rankPosition
+            : 0;
+
+
+        return {
+          ...house,
+          rankChange
+        };
+      }
+    );
+
+
+  rankedHousesWithTrend.forEach(
+    (house) => {
+
+      previousPublicRanks.set(
+        house.id,
+        house.rankPosition
+      );
+    }
+  );
+
+
+  publicRankingHasRendered =
+    true;
 
   rankingElement.replaceChildren();
 
 
-  rankedHouses.forEach(
+  rankedHousesWithTrend.forEach(
     (house) => {
 
       const rankingRow =
@@ -281,7 +324,30 @@ function renderHouseRanking() {
           house.rankPosition
         );
 
+      const rankChange =
+        house.rankChange;
 
+
+      const trendClass =
+        rankChange > 0
+          ? "ranking-trend-up"
+          : rankChange < 0
+            ? "ranking-trend-down"
+            : "ranking-trend-stable";
+
+
+      const changedPositions =
+        Math.abs(
+          rankChange
+        );
+
+
+      const trendText =
+        rankChange > 0
+          ? `↑ Sube ${changedPositions}`
+          : rankChange < 0
+            ? `↓ Baja ${changedPositions}`
+            : "— Se mantiene";
       rankingRow.innerHTML = `
         <span class="ranking-position">
           ${house.rankPosition}.º
@@ -291,16 +357,21 @@ function renderHouseRanking() {
           class="house-emblem"
           aria-hidden="true"
         >
-          ${house.emblem}
+        ${escapeHTML(house.emblem)}
         </span>
 
-        <strong>
-          ${house.name}
+               <strong>
+          ${escapeHTML(house.name)}
         </strong>
 
         <span
+          class="ranking-trend ${trendClass}"
+        >
+          ${trendText}
+        </span>
+
+        <span
           class="house-score"
-          data-house="${house.id}"
         >
           ${formatPoints(house.points)} pts
         </span>
