@@ -410,125 +410,137 @@
         </div>
 
 
-        <div class="private-summary-grid">
+       <div class="private-summary-grid">
 
 
-          <article class="private-summary-card houses-summary">
+  <article class="private-summary-card leader-summary">
 
-            <div class="summary-card-icon" aria-hidden="true">
-              🏆
-            </div>
+    <div
+      class="summary-card-icon"
+      aria-hidden="true"
+    >
+      🏆
+    </div>
 
-            <p>Competición colectiva</p>
+    <p>Clasificación en directo</p>
 
-            <h3>Casas y puntos</h3>
+    <h3>Casa líder</h3>
 
-            <strong>4 casas</strong>
+    <strong id="overviewLeaderName">
+      Consultando el Gran Comedor
+    </strong>
 
-            <span>
-              La puntuación se conectará con Firestore
-              cuando definamos su estructura.
-            </span>
+    <span id="overviewLeaderDetail">
+      Recuperando la clasificación desde Firestore.
+    </span>
 
-            <button
-              class="summary-card-action"
-              type="button"
-              data-open-section="casas"
-            >
-              Preparar gestión
-            </button>
+    <button
+      class="summary-card-action"
+      type="button"
+      data-open-section="casas"
+    >
+      Ver clasificación
+    </button>
 
-          </article>
-
-
-          <article class="private-summary-card trials-summary">
-
-            <div class="summary-card-icon" aria-hidden="true">
-              🐉
-            </div>
-
-            <p>Torneo anual</p>
-
-            <h3>Las tres pruebas</h3>
-
-            <strong>3 desafíos</strong>
-
-            <span>
-              Dragón del Valor, Lago de la Unidad
-              y Laberinto del Socorro.
-            </span>
-
-            <button
-              class="summary-card-action"
-              type="button"
-              data-open-section="pruebas"
-            >
-              Ver planificación
-            </button>
-
-          </article>
+  </article>
 
 
-          <article class="private-summary-card chronicles-summary">
+  <article class="private-summary-card points-summary">
 
-            <div class="summary-card-icon" aria-hidden="true">
-              📜
-            </div>
+    <div
+      class="summary-card-icon"
+      aria-hidden="true"
+    >
+      ✦
+    </div>
 
-            <p>Comunicación pública</p>
+    <p>Marcador colectivo</p>
 
-            <h3>Crónicas de Hogwarts</h3>
+    <h3>Puntos acumulados</h3>
 
-            <strong>Solo logros colectivos</strong>
+    <strong id="overviewTotalPoints">
+      0 puntos
+    </strong>
 
-            <span>
-              Nunca se publicarán nombres ni movimientos
-              individuales del alumnado.
-            </span>
+    <span id="overviewPointsDetail">
+      Calculando el total de las cuatro casas.
+    </span>
 
-            <button
-              class="summary-card-action"
-              type="button"
-              data-open-section="cronicas"
-            >
-              Preparar crónicas
-            </button>
+    <button
+      class="summary-card-action"
+      type="button"
+      data-open-section="casas"
+    >
+      Registrar movimiento
+    </button>
 
-          </article>
+  </article>
 
 
-          <article
-            class="private-summary-card admin-summary"
-            data-admin-only
-            hidden
-          >
+  <article class="private-summary-card movements-summary">
 
-            <div class="summary-card-icon" aria-hidden="true">
-              ⚙️
-            </div>
+    <div
+      class="summary-card-icon"
+      aria-hidden="true"
+    >
+      📜
+    </div>
 
-            <p>Permisos globales</p>
+    <p>Actividad protegida</p>
 
-            <h3>Administración</h3>
+    <h3>Movimientos registrados</h3>
 
-            <strong>Rol administrador</strong>
+    <strong id="overviewMovementCount">
+      0 movimientos
+    </strong>
 
-            <span>
-              Gestión de docentes, configuración general
-              y revisión del sistema.
-            </span>
+    <span id="overviewLastMovement">
+      Consultando el historial del proyecto.
+    </span>
 
-            <button
-              class="summary-card-action"
-              type="button"
-              data-open-section="configuracion"
-            >
-              Abrir administración
-            </button>
+    <button
+      class="summary-card-action"
+      type="button"
+      data-open-section="casas"
+    >
+      Abrir historial
+    </button>
 
-          </article>
+  </article>
 
-        </div>
+
+  <article class="private-summary-card sync-summary">
+
+    <div
+      class="summary-card-icon"
+      aria-hidden="true"
+    >
+      🔥
+    </div>
+
+    <p>Estado del sistema</p>
+
+    <h3>Sincronización pública</h3>
+
+    <strong id="overviewSyncStatus">
+      Conectando
+    </strong>
+
+    <span id="overviewSyncDetail">
+      Comprobando la conexión entre el panel y el Gran Comedor.
+    </span>
+
+    <a
+      class="summary-card-action"
+      href="index.html"
+    >
+      Ver ranking público
+    </a>
+
+  </article>
+
+
+</div>
 
 
         <div class="private-dashboard-grid">
