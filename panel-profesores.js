@@ -195,46 +195,6 @@ document.addEventListener(
       document.getElementById(
         "movementHistoryClearFilters"
       );
-   
-         const overviewLeaderName =
-      document.getElementById(
-        "overviewLeaderName"
-      );
-
-    const overviewLeaderDetail =
-      document.getElementById(
-        "overviewLeaderDetail"
-      );
-
-    const overviewTotalPoints =
-      document.getElementById(
-        "overviewTotalPoints"
-      );
-
-    const overviewPointsDetail =
-      document.getElementById(
-        "overviewPointsDetail"
-      );
-
-    const overviewMovementCount =
-      document.getElementById(
-        "overviewMovementCount"
-      );
-
-    const overviewLastMovement =
-      document.getElementById(
-        "overviewLastMovement"
-      );
-
-    const overviewSyncStatus =
-      document.getElementById(
-        "overviewSyncStatus"
-      );
-
-    const overviewSyncDetail =
-      document.getElementById(
-        "overviewSyncDetail"
-      );
     const navigationButtons =
       Array.from(
         document.querySelectorAll(
@@ -297,16 +257,8 @@ document.addEventListener(
       movementHistoryList,
       movementHistoryHouseFilter,
       movementHistoryTypeFilter,
-      movementHistoryClearFilters,
-      overviewLeaderName,
-      overviewLeaderDetail,
-      overviewTotalPoints,
-      overviewPointsDetail,
-      overviewMovementCount,
-      overviewLastMovement,
-      overviewSyncStatus,
-      overviewSyncDetail
-          ];
+      movementHistoryClearFilters
+    ];
 
 
     if (
@@ -341,16 +293,10 @@ document.addEventListener(
          let currentMovements = [];
          let unsubscribeMovementHistory =
       null;
-      let unsubscribeHouses =
+    let unsubscribeHouses =
       null;
-
-    let currentPublicRanking = [];
-
-    let unsubscribePublicRanking =
-      null;
-
-   let previousHouseRanks =
-  new Map();
+         let previousHouseRanks =
+      new Map();
 
     let previousHousePoints =
       new Map();
@@ -951,504 +897,7 @@ document.addEventListener(
       updateMovementAmount
     );
 
-    /*
-     CASA LÍDER Y PUNTOS TOTALES
-    */
-
-    const activeHouses =
-      currentHouses.filter(
-        house =>
-          house.active === true
-      );
-
-
-    if (activeHouses.length > 0) {
-
-      const leader =
-        activeHouses[0];
-
-      const tiedLeaders =
-        activeHouses.filter(
-          house =>
-            house.totalPoints ===
-            leader.totalPoints
-        );
-
-
-      if (tiedLeaders.length > 1) {
-
-        overviewLeaderName.textContent =
-          tiedLeaders
-            .map(
-              house => house.name
-            )
-            .join(" · ");
-
-        overviewLeaderDetail.textContent =
-          `${leader.totalPoints} puntos · Liderato compartido`;
-
-      } else {
-
-        overviewLeaderName.textContent =
-          leader.name;
-
-        const secondHouse =
-          activeHouses[1];
-
-        const advantage =
-          secondHouse
-            ? leader.totalPoints -
-              secondHouse.totalPoints
-            : 0;
-
-        overviewLeaderDetail.textContent =
-          secondHouse
-            ? `${leader.totalPoints} puntos · ${advantage} de ventaja`
-            : `${leader.totalPoints} puntos`;
-      }
-
-
-      const totalPoints =
-        activeHouses.reduce(
-          (
-            accumulatedPoints,
-            house
-          ) =>
-            accumulatedPoints +
-            house.totalPoints,
-          0
-        );
-
-
-      overviewTotalPoints.textContent =
-        `${totalPoints} ${
-          Math.abs(totalPoints) === 1
-            ? "punto"
-            : "puntos"
-        }`;
-
-      overviewPointsDetail.textContent =
-        `Suma actual de las ${activeHouses.length} casas.`;
-
-    } else {
-
-      overviewLeaderName.textContent =
-        "Sin clasificación";
-
-      overviewLeaderDetail.textContent =
-        "No existen casas activas.";
-
-      overviewTotalPoints.textContent =
-        "0 puntos";
-
-      overviewPointsDetail.textContent =
-        "Esperando datos de las casas.";
-    }
-
-
-    /*
-     MOVIMIENTOS
-    */
-
-    const movementCount =
-      currentMovements.length;
-
-
-    overviewMovementCount.textContent =
-      movementCount >= 50
-        ? "50+ movimientos"
-        : `${movementCount} ${
-            movementCount === 1
-              ? "movimiento"
-              : "movimientos"
-          }`;
-
-
-    const lastMovement =
-      currentMovements[0];
-
-
-    if (lastMovement) {
-
-      const movementHouse =
-        currentHouses.find(
-          house =>
-            house.id ===
-            lastMovement.houseId
-        );
-
-      const houseName =
-        movementHouse?.name ||
-        "Casa";
-
-      const amount =
-        Number.isInteger(
-          lastMovement.amount
-        )
-          ? lastMovement.amount
-          : 0;
-
-      const signedAmount =
-        amount > 0
-          ? `+${amount}`
-          : String(amount);
-
-
-      overviewLastMovement.textContent =
-        `${houseName}: ${signedAmount} puntos · ${formatMovementDate(
-          lastMovement.createdAt
-        )}`;
-
-    } else {
-
-      overviewLastMovement.textContent =
-        "Todavía no existen movimientos.";
-    }
-
-
-    /*
-     SINCRONIZACIÓN PRIVADO → PÚBLICO
-    */
-
-    if (
-      currentHouses.length === 0 ||
-      currentPublicRanking.length === 0
-    ) {
-
-      overviewSyncStatus.textContent =
-        "Conectando";
-
-      overviewSyncDetail.textContent =
-        "Comprobando los marcadores privado y público.";
-
-      return;
-    }
-
-
-    const rankingMatches =
-      currentHouses.every(
-        house => {
-
-          const publicHouse =
-            currentPublicRanking.find(
-              publicRankingHouse =>
-                publicRankingHouse.id ===
-                house.id
-            );
-
-          return (
-            publicHouse &&
-            publicHouse.totalPoints ===
-              house.totalPoints
-          );
-        }
-      );
-
-
-    if (rankingMatches) {
-
-      overviewSyncStatus.textContent =
-        "Sincronización activa";
-
-      overviewSyncDetail.textContent =
-        "El panel privado y el Gran Comedor muestran los mismos totales.";
-
-    } else {
-
-      overviewSyncStatus.textContent =
-        "Revisar sincronización";
-
-      overviewSyncDetail.textContent =
-        "Se ha detectado una diferencia entre los marcadores.";
-    }
-  };
-         /* =====================================================
-       VISTA GENERAL EN TIEMPO REAL
-       ===================================================== */
-
-    const updateOverviewDashboard =
-      () => {
-
-        const activeHouses =
-          currentHouses.filter(
-            house =>
-              house.active === true
-          );
-
-
-        /* CASA LÍDER */
-
-        if (activeHouses.length > 0) {
-
-          const leader =
-            activeHouses[0];
-
-          const tiedLeaders =
-            activeHouses.filter(
-              house =>
-                house.totalPoints ===
-                leader.totalPoints
-            );
-
-
-          if (tiedLeaders.length > 1) {
-
-            overviewLeaderName.textContent =
-              tiedLeaders
-                .map(
-                  house =>
-                    house.name
-                )
-                .join(" · ");
-
-            overviewLeaderDetail.textContent =
-              `${leader.totalPoints} puntos · Liderato compartido`;
-
-          } else {
-
-            overviewLeaderName.textContent =
-              leader.name;
-
-            const secondHouse =
-              activeHouses[1];
-
-            const advantage =
-              secondHouse
-                ? leader.totalPoints -
-                  secondHouse.totalPoints
-                : 0;
-
-            overviewLeaderDetail.textContent =
-              secondHouse
-                ? `${leader.totalPoints} puntos · ${advantage} de ventaja`
-                : `${leader.totalPoints} puntos`;
-          }
-
-
-          /* PUNTOS TOTALES */
-
-          const totalPoints =
-            activeHouses.reduce(
-              (
-                accumulatedPoints,
-                house
-              ) =>
-                accumulatedPoints +
-                house.totalPoints,
-              0
-            );
-
-          overviewTotalPoints.textContent =
-            `${totalPoints} ${
-              Math.abs(totalPoints) === 1
-                ? "punto"
-                : "puntos"
-            }`;
-
-          overviewPointsDetail.textContent =
-            `Suma actual de las ${activeHouses.length} casas.`;
-
-        } else {
-
-          overviewLeaderName.textContent =
-            "Sin clasificación";
-
-          overviewLeaderDetail.textContent =
-            "No existen casas activas.";
-
-          overviewTotalPoints.textContent =
-            "0 puntos";
-
-          overviewPointsDetail.textContent =
-            "Esperando datos de las casas.";
-        }
-
-
-        /* MOVIMIENTOS */
-
-        const movementCount =
-          currentMovements.length;
-
-        overviewMovementCount.textContent =
-          movementCount >= 50
-            ? "50+ movimientos"
-            : `${movementCount} ${
-                movementCount === 1
-                  ? "movimiento"
-                  : "movimientos"
-              }`;
-
-
-        const lastMovement =
-          currentMovements[0];
-
-
-        if (lastMovement) {
-
-          const movementHouseData =
-            currentHouses.find(
-              house =>
-                house.id ===
-                lastMovement.houseId
-            );
-
-          const houseName =
-            movementHouseData?.name ||
-            "Casa";
-
-          const amount =
-            Number.isInteger(
-              lastMovement.amount
-            )
-              ? lastMovement.amount
-              : 0;
-
-          const signedAmount =
-            amount > 0
-              ? `+${amount}`
-              : String(amount);
-
-
-          overviewLastMovement.textContent =
-            `${houseName}: ${signedAmount} puntos · ${formatMovementDate(
-              lastMovement.createdAt
-            )}`;
-
-        } else {
-
-          overviewLastMovement.textContent =
-            "Todavía no existen movimientos.";
-        }
-
-
-        /* SINCRONIZACIÓN PÚBLICA */
-
-        if (
-          currentHouses.length === 0 ||
-          currentPublicRanking.length === 0
-        ) {
-
-          overviewSyncStatus.textContent =
-            "Conectando";
-
-          overviewSyncDetail.textContent =
-            "Comprobando los marcadores privado y público.";
-
-          return;
-        }
-
-
-        const rankingMatches =
-          currentHouses.length ===
-            currentPublicRanking.length &&
-          currentHouses.every(
-            house => {
-
-              const publicHouse =
-                currentPublicRanking.find(
-                  rankingHouse =>
-                    rankingHouse.id ===
-                    house.id
-                );
-
-              return (
-                publicHouse &&
-                publicHouse.totalPoints ===
-                  house.totalPoints
-              );
-            }
-          );
-
-
-        if (rankingMatches) {
-
-          overviewSyncStatus.textContent =
-            "Sincronización activa";
-
-          overviewSyncDetail.textContent =
-            "El panel privado y el Gran Comedor muestran los mismos totales.";
-
-        } else {
-
-          overviewSyncStatus.textContent =
-            "Revisar sincronización";
-
-          overviewSyncDetail.textContent =
-            "Se ha detectado una diferencia entre los marcadores.";
-        }
-      };
-
-
-    const loadPublicRankingStatus =
-      () => {
-
-        if (unsubscribePublicRanking) {
-          return;
-        }
-
-
-        const publicRankingQuery =
-          query(
-            collection(
-              db,
-              "publicRanking"
-            ),
-            orderBy(
-              "displayOrder",
-              "asc"
-            )
-          );
-
-
-        unsubscribePublicRanking =
-          onSnapshot(
-            publicRankingQuery,
-
-            publicRankingSnapshot => {
-
-              currentPublicRanking =
-                publicRankingSnapshot.docs.map(
-                  publicHouseDocument => {
-
-                    const data =
-                      publicHouseDocument.data();
-
-                    return {
-                      id:
-                        publicHouseDocument.id,
-
-                      totalPoints:
-                        Number.isInteger(
-                          data.totalPoints
-                        )
-                          ? data.totalPoints
-                          : 0
-                    };
-                  }
-                );
-
-
-              updateOverviewDashboard();
-            },
-
-            error => {
-
-              console.error(
-                "No se ha podido comprobar el ranking público:",
-                error
-              );
-
-              overviewSyncStatus.textContent =
-                "Sin conexión pública";
-
-              overviewSyncDetail.textContent =
-                "No se ha podido comprobar el Gran Comedor.";
-            }
-          );
-      };
-
-
-    const loadHouses = () => {
+       const loadHouses = () => {
 
       /*
        Evita crear varios observadores
@@ -1644,7 +1093,7 @@ document.addEventListener(
             );
 
 
-                     currentHouses =
+            currentHouses =
               rankedHouses.map(
                 house => ({
                   ...house,
@@ -1655,13 +1104,6 @@ document.addEventListener(
                     ) || 0
                 })
               );
-
-
-            updateOverviewDashboard();
-
-
-            /*
-             El formulario mantiene el orden
 
 
             /*
@@ -2223,7 +1665,7 @@ document.addEventListener(
 
           movementsSnapshot => {
 
-                       currentMovements =
+            currentMovements =
               movementsSnapshot.docs.map(
                 movementDocument => ({
                   id:
@@ -2231,9 +1673,6 @@ document.addEventListener(
                   ...movementDocument.data()
                 })
               );
-
-
-            updateOverviewDashboard();
 
 
             movementHistoryLoading.hidden =
@@ -2486,9 +1925,8 @@ document.addEventListener(
 
                 showPrivatePanel();
 
-          loadHouses();
+      loadHouses();
       loadMovementHistory();
-      loadPublicRankingStatus();
     };
     /* =====================================================
        REGISTRAR MOVIMIENTO DE PUNTOS
