@@ -533,3 +533,147 @@
     transition: none;
   }
 }
+/* =========================================================
+   IDENTIDAD DINÁMICA DE LA CASA LÍDER
+   ========================================================= */
+
+#sectionResumen .leader-summary {
+  --leader-primary: #66552c;
+  --leader-accent: #e6c47b;
+  --leader-glow: rgba(230, 196, 123, 0.14);
+
+  transition:
+    background 0.6s ease,
+    border-color 0.6s ease,
+    box-shadow 0.6s ease;
+}
+
+
+/* SLYTHERIN */
+
+#sectionResumen
+.leader-summary[data-leader-house="slytherin"] {
+  --leader-primary: #1a472a;
+  --leader-accent: #9fc8ad;
+  --leader-glow: rgba(71, 151, 98, 0.2);
+}
+
+
+/* GRYFFINDOR */
+
+#sectionResumen
+.leader-summary[data-leader-house="gryffindor"] {
+  --leader-primary: #740001;
+  --leader-accent: #e1b74d;
+  --leader-glow: rgba(181, 48, 51, 0.19);
+}
+
+
+/* RAVENCLAW */
+
+#sectionResumen
+.leader-summary[data-leader-house="ravenclaw"] {
+  --leader-primary: #0e1a40;
+  --leader-accent: #c18d53;
+  --leader-glow: rgba(52, 93, 164, 0.21);
+}
+
+
+/* HUFFLEPUFF */
+
+#sectionResumen
+.leader-summary[data-leader-house="hufflepuff"] {
+  --leader-primary: #705817;
+  --leader-accent: #f0cf67;
+  --leader-glow: rgba(236, 185, 57, 0.18);
+}
+
+
+/* EMPATE */
+
+#sectionResumen
+.leader-summary[data-leader-house="tie"] {
+  --leader-primary: #403724;
+  --leader-accent: #f0d894;
+  --leader-glow: rgba(230, 196, 123, 0.18);
+}
+
+
+/* APLICAR COLOR */
+
+#sectionResumen
+.leader-summary[data-leader-house] {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--leader-accent) 42%,
+      transparent
+    );
+
+  background:
+    radial-gradient(
+      circle at 86% 15%,
+      var(--leader-glow),
+      transparent 34%
+    ),
+    linear-gradient(
+      145deg,
+      color-mix(
+        in srgb,
+        var(--leader-primary) 38%,
+        #121925
+      ),
+      #080e19 86%
+    );
+
+  box-shadow:
+    0 20px 48px rgba(0, 0, 0, 0.32),
+    inset 0 0 38px var(--leader-glow);
+}
+
+
+#sectionResumen
+.leader-summary[data-leader-house]
+#overviewLeaderName {
+  color: var(--leader-accent);
+
+  text-shadow:
+    0 0 20px var(--leader-glow);
+}
+
+
+#sectionResumen
+.leader-summary[data-leader-house]
+.summary-card-icon {
+  border-color:
+    color-mix(
+      in srgb,
+      var(--leader-accent) 40%,
+      transparent
+    );
+
+  background:
+    color-mix(
+      in srgb,
+      var(--leader-primary) 38%,
+      transparent
+    );
+
+  box-shadow:
+    0 0 20px var(--leader-glow);
+}
+
+
+#sectionResumen
+.leader-summary[data-leader-house]::after {
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--leader-accent),
+      transparent
+    );
+
+  box-shadow:
+    0 0 18px var(--leader-glow);
+}
