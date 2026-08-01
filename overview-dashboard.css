@@ -1,0 +1,535 @@
+/* =========================================================
+   HOGWARTS NSS · VISTA GENERAL
+   Capa visual independiente del centro de mando
+   ========================================================= */
+
+
+/* ---------------------------------------------------------
+   TARJETAS SUPERIORES
+--------------------------------------------------------- */
+
+#sectionResumen .private-summary-grid {
+  gap: 16px;
+}
+
+
+#sectionResumen .private-summary-card {
+  min-height: 258px;
+
+  padding:
+    24px
+    21px
+    20px;
+
+  border-color:
+    rgba(230, 196, 123, 0.17);
+
+  box-shadow:
+    0 18px 42px
+      rgba(0, 0, 0, 0.27);
+
+  isolation: isolate;
+}
+
+
+/* brillo atmosférico */
+
+#sectionResumen .private-summary-card::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  width: auto;
+  height: auto;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(255, 255, 255, 0.075),
+      transparent 25%
+    );
+
+  opacity: 1;
+
+  box-shadow: none;
+  z-index: -1;
+}
+
+
+/* línea superior */
+
+#sectionResumen .private-summary-card::after {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 20px;
+
+  width: 58px;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--gold-300),
+      transparent
+    );
+
+  box-shadow:
+    0 0 16px
+      rgba(230, 196, 123, 0.45);
+}
+
+
+/* ---------------------------------------------------------
+   ICONOS
+--------------------------------------------------------- */
+
+#sectionResumen .summary-card-icon {
+  display: grid;
+  place-items: center;
+
+  width: 38px;
+  height: 38px;
+
+  margin-bottom: 13px;
+
+  font-size: 1.15rem;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.18);
+
+  border-radius: 10px;
+
+  background:
+    rgba(230, 196, 123, 0.055);
+
+  box-shadow:
+    inset 0 0 18px
+      rgba(230, 196, 123, 0.025);
+}
+
+
+/* ---------------------------------------------------------
+   TEXTOS
+--------------------------------------------------------- */
+
+#sectionResumen .private-summary-card > p {
+  margin:
+    0
+    0
+    7px;
+
+  font-size: 0.52rem;
+  letter-spacing: 0.13em;
+}
+
+
+#sectionResumen .private-summary-card h3 {
+  font-size: 0.93rem;
+}
+
+
+#sectionResumen .private-summary-card > strong {
+  margin-top: 17px;
+
+  font-size:
+    clamp(
+      1.18rem,
+      1.5vw,
+      1.45rem
+    );
+
+  line-height: 1.25;
+}
+
+
+#sectionResumen .private-summary-card > span {
+  max-width: 95%;
+
+  margin-top: 9px;
+
+  font-size: 0.64rem;
+  line-height: 1.6;
+}
+
+
+/* ---------------------------------------------------------
+   TARJETA LÍDER
+--------------------------------------------------------- */
+
+#sectionResumen .leader-summary {
+  border-color:
+    rgba(230, 196, 123, 0.32);
+
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(230, 196, 123, 0.14),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(31, 31, 38, 0.97),
+      rgba(11, 16, 26, 0.99)
+    );
+
+  box-shadow:
+    0 20px 48px
+      rgba(0, 0, 0, 0.3),
+    inset 0 0 30px
+      rgba(230, 196, 123, 0.025);
+}
+
+
+#sectionResumen .leader-summary
+#overviewLeaderName {
+  color: #f3d998;
+
+  text-shadow:
+    0 0 18px
+      rgba(230, 196, 123, 0.18);
+}
+
+
+#sectionResumen .leader-summary
+.summary-card-icon {
+  border-color:
+    rgba(230, 196, 123, 0.38);
+
+  background:
+    rgba(230, 196, 123, 0.1);
+
+  box-shadow:
+    0 0 18px
+      rgba(230, 196, 123, 0.08);
+}
+
+
+/* ---------------------------------------------------------
+   PUNTOS
+--------------------------------------------------------- */
+
+#sectionResumen .points-summary {
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(88, 123, 177, 0.15),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(18, 31, 52, 0.96),
+      rgba(8, 15, 27, 0.99)
+    );
+}
+
+
+#overviewTotalPoints {
+  color: #f6e4b9;
+}
+
+
+/* ---------------------------------------------------------
+   MOVIMIENTOS
+--------------------------------------------------------- */
+
+#sectionResumen .movements-summary {
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(150, 111, 67, 0.12),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(23, 29, 43, 0.96),
+      rgba(9, 15, 26, 0.99)
+    );
+}
+
+
+/* ---------------------------------------------------------
+   SINCRONIZACIÓN
+--------------------------------------------------------- */
+
+#sectionResumen .sync-summary {
+  border-color:
+    rgba(127, 201, 154, 0.23);
+
+  background:
+    radial-gradient(
+      circle at 88% 12%,
+      rgba(127, 201, 154, 0.11),
+      transparent 32%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 34, 36, 0.94),
+      rgba(8, 16, 25, 0.99)
+    );
+
+  box-shadow:
+    0 18px 42px
+      rgba(0, 0, 0, 0.27),
+    inset 0 0 28px
+      rgba(127, 201, 154, 0.025);
+}
+
+
+#sectionResumen .sync-summary
+.summary-card-icon {
+  border-color:
+    rgba(127, 201, 154, 0.27);
+
+  background:
+    rgba(127, 201, 154, 0.065);
+}
+
+
+#overviewSyncStatus {
+  color: #aee0bf;
+
+  text-shadow:
+    0 0 16px
+      rgba(127, 201, 154, 0.18);
+}
+
+
+/* pulso suave del sistema */
+
+@keyframes overviewSyncPulse {
+
+  0%,
+  100% {
+    box-shadow:
+      0 18px 42px
+        rgba(0, 0, 0, 0.27),
+      inset 0 0 28px
+        rgba(127, 201, 154, 0.02);
+  }
+
+  50% {
+    box-shadow:
+      0 18px 42px
+        rgba(0, 0, 0, 0.27),
+      inset 0 0 35px
+        rgba(127, 201, 154, 0.055);
+  }
+}
+
+
+#sectionResumen .sync-summary {
+  animation:
+    overviewSyncPulse
+    4.5s
+    ease-in-out
+    infinite;
+}
+
+
+/* ---------------------------------------------------------
+   BOTONES / ACCESOS
+--------------------------------------------------------- */
+
+#sectionResumen .summary-card-action {
+  position: relative;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+
+  margin-top: auto;
+  padding:
+    9px
+    0
+    3px;
+
+  transition:
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+
+#sectionResumen .summary-card-action::after {
+  content: "→";
+
+  font-size: 0.72rem;
+
+  transition:
+    transform 0.2s ease;
+}
+
+
+#sectionResumen .summary-card-action:hover {
+  transform:
+    translateX(2px);
+}
+
+
+#sectionResumen
+.summary-card-action:hover::after {
+  transform:
+    translateX(3px);
+}
+
+
+/* ---------------------------------------------------------
+   BLOQUES INFERIORES
+--------------------------------------------------------- */
+
+#sectionResumen .private-dashboard-grid {
+  gap: 16px;
+  margin-top: 16px;
+}
+
+
+#sectionResumen .private-dashboard-card {
+  position: relative;
+
+  overflow: hidden;
+
+  padding: 22px;
+
+  border-color:
+    rgba(230, 196, 123, 0.15);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 29, 49, 0.92),
+      rgba(7, 13, 24, 0.98)
+    );
+}
+
+
+#sectionResumen
+.private-dashboard-card::before {
+  content: "";
+
+  position: absolute;
+  top: 0;
+  left: 22px;
+
+  width: 45px;
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold-400),
+      transparent
+    );
+}
+
+
+/* ---------------------------------------------------------
+   PROTECCIONES
+--------------------------------------------------------- */
+
+#sectionResumen .private-check-list li {
+  min-height: 43px;
+
+  border-color:
+    rgba(127, 201, 154, 0.075);
+
+  background:
+    rgba(127, 201, 154, 0.018);
+}
+
+
+#sectionResumen
+.private-check-list li > span {
+  background:
+    rgba(127, 201, 154, 0.035);
+}
+
+
+/* ---------------------------------------------------------
+   HOJA DE RUTA
+--------------------------------------------------------- */
+
+#sectionResumen
+.private-roadmap-list li.done {
+  color: #a9cfb6;
+
+  border-color:
+    rgba(127, 201, 154, 0.15);
+
+  background:
+    rgba(127, 201, 154, 0.035);
+}
+
+
+#sectionResumen
+.private-roadmap-list li.done > span {
+  color: #aee0bf;
+
+  border-color:
+    rgba(127, 201, 154, 0.32);
+
+  background:
+    rgba(127, 201, 154, 0.065);
+
+  font-family: inherit;
+  font-weight: 800;
+}
+
+
+#sectionResumen
+.private-roadmap-list li.current {
+  box-shadow:
+    inset 3px 0 0
+      rgba(230, 196, 123, 0.75);
+}
+
+
+/* ---------------------------------------------------------
+   MOVIMIENTO AL PASAR EL RATÓN
+--------------------------------------------------------- */
+
+#sectionResumen .private-dashboard-card {
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease;
+}
+
+
+#sectionResumen
+.private-dashboard-card:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(230, 196, 123, 0.24);
+}
+
+
+/* ---------------------------------------------------------
+   ACCESIBILIDAD
+--------------------------------------------------------- */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  #sectionResumen .sync-summary {
+    animation: none;
+  }
+
+  #sectionResumen
+  .private-summary-card,
+
+  #sectionResumen
+  .private-dashboard-card,
+
+  #sectionResumen
+  .summary-card-action {
+
+    transition: none;
+  }
+}
