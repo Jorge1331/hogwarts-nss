@@ -195,45 +195,7 @@ document.addEventListener(
       document.getElementById(
         "movementHistoryClearFilters"
       );
-     const overviewLeaderName =
-  document.getElementById(
-    "overviewLeaderName"
-  );
-
-const overviewLeaderDetail =
-  document.getElementById(
-    "overviewLeaderDetail"
-  );
-
-const overviewTotalPoints =
-  document.getElementById(
-    "overviewTotalPoints"
-  );
-
-const overviewPointsDetail =
-  document.getElementById(
-    "overviewPointsDetail"
-  );
-
-const overviewMovementCount =
-  document.getElementById(
-    "overviewMovementCount"
-  );
-
-const overviewLastMovement =
-  document.getElementById(
-    "overviewLastMovement"
-  );
-
-const overviewSyncStatus =
-  document.getElementById(
-    "overviewSyncStatus"
-  );
-
-const overviewSyncDetail =
-  document.getElementById(
-    "overviewSyncDetail"
-  );
+   
          const overviewLeaderName =
       document.getElementById(
         "overviewLeaderName"
@@ -387,9 +349,8 @@ const overviewSyncDetail =
     let unsubscribePublicRanking =
       null;
 
-    let previousHouseRanks =
-         let previousHouseRanks =
-      new Map();
+   let previousHouseRanks =
+  new Map();
 
     let previousHousePoints =
       new Map();
@@ -989,8 +950,6 @@ const overviewSyncDetail =
       "change",
       updateMovementAmount
     );
-const updateOverviewDashboard =
-  () => {
 
     /*
      CASA LÍDER Y PUNTOS TOTALES
