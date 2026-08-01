@@ -83,7 +83,10 @@ const overviewSyncDetail =
   document.getElementById(
     "overviewSyncDetail"
   );
-
+const leaderSummaryCard =
+  document.querySelector(
+    "#sectionResumen .leader-summary"
+  );
 
 const overviewElements = [
   overviewLeaderName,
@@ -93,8 +96,9 @@ const overviewElements = [
   overviewMovementCount,
   overviewLastMovement,
   overviewSyncStatus,
-  overviewSyncDetail
-];
+  overviewSyncDetail,
+  leaderSummaryCard
+  ];
 
 
 /* ---------------------------------------------------------
@@ -189,6 +193,8 @@ const renderOverview =
 
       const leader =
         activeHouses[0];
+       leaderSummaryCard.dataset.leaderHouse =
+  leader.id;
 
       const tiedLeaders =
         activeHouses.filter(
@@ -262,7 +268,7 @@ const renderOverview =
         `Suma actual de las ${activeHouses.length} casas.`;
 
     } else {
-
+delete leaderSummaryCard.dataset.leaderHouse;
       overviewLeaderName.textContent =
         "Sin clasificación";
 
