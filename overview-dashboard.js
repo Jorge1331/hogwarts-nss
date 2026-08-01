@@ -191,18 +191,20 @@ const renderOverview =
 
     if (activeHouses.length > 0) {
 
-      const leader =
-        activeHouses[0];
-       leaderSummaryCard.dataset.leaderHouse =
-  leader.id;
+     const leader =
+  activeHouses[0];
 
-      const tiedLeaders =
-        activeHouses.filter(
-          house =>
-            house.totalPoints ===
-            leader.totalPoints
-        );
+const tiedLeaders =
+  activeHouses.filter(
+    house =>
+      house.totalPoints ===
+      leader.totalPoints
+  );
 
+leaderSummaryCard.dataset.leaderHouse =
+  tiedLeaders.length > 1
+    ? "tie"
+    : leader.id;
 
       if (tiedLeaders.length > 1) {
 
