@@ -677,3 +677,70 @@
   box-shadow:
     0 0 18px var(--leader-glow);
 }
+/* =========================================================
+   PIE INFORMATIVO DE LAS TARJETAS
+   ========================================================= */
+
+#sectionResumen .summary-card-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  margin-top: auto;
+  padding-top: 18px;
+
+  color: rgba(190, 200, 215, 0.72);
+
+  font-size: 0.57rem;
+  letter-spacing: 0.025em;
+}
+
+
+#sectionResumen
+.summary-card-footer > span {
+  display: grid;
+  place-items: center;
+
+  min-width: 17px;
+  height: 17px;
+
+  color: var(--gold-300);
+
+  font-size: 0.54rem;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.18);
+
+  border-radius: 50%;
+
+  background:
+    rgba(230, 196, 123, 0.045);
+}
+
+
+#sectionResumen .summary-live-dot {
+  min-width: 7px;
+  width: 7px;
+  height: 7px;
+
+  border: 0;
+
+  background: #7fc99a;
+
+  box-shadow:
+    0 0 10px
+      rgba(127, 201, 154, 0.65);
+}
+
+
+#sectionResumen .sync-footer {
+  color: rgba(174, 224, 191, 0.75);
+}
+
+
+/* Al no haber botones,
+   hacemos las tarjetas algo más compactas */
+
+#sectionResumen .private-summary-card {
+  min-height: 235px;
+}
