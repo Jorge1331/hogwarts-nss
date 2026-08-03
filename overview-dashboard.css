@@ -744,3 +744,245 @@
 #sectionResumen .private-summary-card {
   min-height: 235px;
 }
+/* =========================================================
+   HERO · EQUIPO DOCENTE
+   ========================================================= */
+
+#sectionResumen .overview-faculty-hero {
+  position: relative;
+
+  margin-top: 18px;
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.26);
+
+  border-radius: 18px;
+
+  background: #080e18;
+
+  box-shadow:
+    0 24px 55px
+      rgba(0, 0, 0, 0.38),
+    inset 0 0 40px
+      rgba(230, 196, 123, 0.025);
+
+  isolation: isolate;
+}
+
+
+/* IMAGEN */
+
+#sectionResumen .overview-faculty-image {
+  display: block;
+
+  width: 100%;
+  height: auto;
+
+  object-fit: contain;
+
+  transition:
+    transform 0.8s ease,
+    filter 0.8s ease;
+}
+
+
+/* SOMBRA CINEMATOGRÁFICA INFERIOR */
+
+#sectionResumen
+.overview-faculty-hero::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 45%,
+      rgba(5, 10, 18, 0.28) 68%,
+      rgba(5, 10, 18, 0.93) 100%
+    );
+
+  z-index: 1;
+}
+
+
+/* PEQUEÑO RESPLANDOR DORADO */
+
+#sectionResumen
+.overview-faculty-hero::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 50% 100%,
+      rgba(230, 196, 123, 0.14),
+      transparent 38%
+    );
+
+  z-index: 2;
+}
+
+
+/* TEXTO */
+
+#sectionResumen .overview-faculty-content {
+  position: absolute;
+
+  left: 30px;
+  right: 30px;
+  bottom: 27px;
+
+  z-index: 3;
+
+  max-width: 630px;
+}
+
+
+#sectionResumen
+.overview-faculty-content
+.private-eyebrow {
+  margin-bottom: 7px;
+
+  color: #e6c47b;
+
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+}
+
+
+#sectionResumen
+.overview-faculty-content h3 {
+  margin: 0;
+
+  color: #f7ead0;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      1.3rem,
+      2.2vw,
+      2rem
+    );
+
+  line-height: 1.15;
+
+  text-shadow:
+    0 2px 15px
+      rgba(0, 0, 0, 0.55);
+}
+
+
+#sectionResumen
+.overview-faculty-content > p:last-child {
+  max-width: 540px;
+
+  margin:
+    9px
+    0
+    0;
+
+  color:
+    rgba(226, 232, 240, 0.86);
+
+  font-size: 0.72rem;
+  line-height: 1.65;
+
+  text-shadow:
+    0 2px 12px
+      rgba(0, 0, 0, 0.6);
+}
+
+
+/* LÍNEA DORADA SUPERIOR */
+
+#sectionResumen
+.overview-faculty-content::before {
+  content: "";
+
+  display: block;
+
+  width: 62px;
+  height: 2px;
+
+  margin-bottom: 14px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #e6c47b,
+      transparent
+    );
+
+  box-shadow:
+    0 0 16px
+      rgba(230, 196, 123, 0.4);
+}
+
+
+/* EFECTO MUY SUAVE */
+
+#sectionResumen
+.overview-faculty-hero:hover
+.overview-faculty-image {
+  transform: scale(1.012);
+
+  filter:
+    brightness(1.025)
+    contrast(1.015);
+}
+
+
+/* RESPONSIVE */
+
+@media (max-width: 760px) {
+
+  #sectionResumen
+  .overview-faculty-content {
+    left: 18px;
+    right: 18px;
+    bottom: 18px;
+  }
+
+
+  #sectionResumen
+  .overview-faculty-content h3 {
+    font-size: 1.25rem;
+  }
+
+
+  #sectionResumen
+  .overview-faculty-content
+  > p:last-child {
+    font-size: 0.64rem;
+    line-height: 1.5;
+  }
+
+}
+
+
+/* ACCESIBILIDAD */
+
+@media (
+  prefers-reduced-motion: reduce
+) {
+
+  #sectionResumen
+  .overview-faculty-image {
+    transition: none;
+  }
+
+}
