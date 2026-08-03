@@ -1042,3 +1042,83 @@
 
   font-size: 0.66rem;
 }
+/* =========================================================
+   HERO DOCENTE · ENCUADRE DEFINITIVO
+   ========================================================= */
+
+#sectionResumen .overview-faculty-hero {
+  height: clamp(
+    300px,
+    36vh,
+    350px
+  );
+}
+
+
+#sectionResumen .overview-faculty-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  /*
+    Priorizamos la parte superior:
+    caras completas + más arquitectura de la sala
+  */
+  object-position:
+    center 18%;
+}
+
+
+/* degradado más discreto para enseñar más sala */
+
+#sectionResumen
+.overview-faculty-hero::after {
+  background:
+    linear-gradient(
+      180deg,
+      transparent 52%,
+      rgba(5, 10, 18, 0.12) 68%,
+      rgba(5, 10, 18, 0.88) 100%
+    );
+}
+
+
+/* texto todavía algo más recogido */
+
+#sectionResumen .overview-faculty-content {
+  left: 24px;
+  bottom: 17px;
+}
+
+
+#sectionResumen
+.overview-faculty-content::before {
+  margin-bottom: 7px;
+}
+
+
+#sectionResumen
+.overview-faculty-content
+.private-eyebrow {
+  margin-bottom: 4px;
+}
+
+
+#sectionResumen
+.overview-faculty-content h3 {
+  font-size:
+    clamp(
+      1.1rem,
+      1.55vw,
+      1.45rem
+    );
+}
+
+
+#sectionResumen
+.overview-faculty-content
+> p:last-child {
+  margin-top: 4px;
+  font-size: 0.62rem;
+}
