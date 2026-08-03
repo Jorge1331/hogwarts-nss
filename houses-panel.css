@@ -1,0 +1,422 @@
+/* =========================================================
+   HOGWARTS NSS · CASAS Y PUNTOS
+   Capa visual independiente
+   ========================================================= */
+
+
+/* =========================================================
+   TARJETAS DE LAS CUATRO CASAS
+   ========================================================= */
+
+#sectionCasas .houses-data-grid {
+  gap: 16px;
+  margin-top: 20px;
+}
+
+
+#sectionCasas .house-data-card {
+  min-height: 330px;
+
+  padding:
+    28px
+    25px
+    24px;
+
+  border-radius: 17px;
+
+  box-shadow:
+    0 22px 46px
+      rgba(0, 0, 0, 0.3);
+
+  background:
+    radial-gradient(
+      circle at 95% 5%,
+      color-mix(
+        in srgb,
+        var(--house-primary) 75%,
+        transparent
+      ),
+      transparent 48%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(18, 30, 50, 0.98),
+      rgba(6, 10, 19, 0.99)
+    );
+}
+
+
+/* línea de identidad */
+
+#sectionCasas .house-data-card::before {
+  height: 5px;
+}
+
+
+/* posición */
+
+#sectionCasas .house-position {
+  top: 21px;
+  right: 21px;
+
+  width: 42px;
+  height: 42px;
+
+  font-size: 0.95rem;
+}
+
+
+/* mascota */
+
+#sectionCasas .house-mascot {
+  min-height: 30px;
+
+  margin:
+    0
+    52px
+    28px
+    0;
+
+  padding:
+    7px
+    11px;
+
+  font-size: 0.58rem;
+}
+
+
+/* nombre de casa */
+
+#sectionCasas .house-data-card h3 {
+  font-size:
+    clamp(
+      1.45rem,
+      2vw,
+      1.85rem
+    );
+}
+
+
+/* puntuación */
+
+#sectionCasas .house-points-label {
+  margin-top: 42px;
+
+  font-size: 0.62rem;
+}
+
+
+#sectionCasas .house-points-value {
+  margin-top: 8px;
+
+  font-size:
+    clamp(
+      1.6rem,
+      2.2vw,
+      2rem
+    );
+
+  color: var(--house-accent);
+
+  text-shadow:
+    0 0 18px
+      color-mix(
+        in srgb,
+        var(--house-primary) 45%,
+        transparent
+      );
+}
+
+
+/* evolución */
+
+#sectionCasas .house-rank-trend {
+  margin-top: 16px;
+}
+
+
+/* estado inferior */
+
+#sectionCasas .house-status {
+  left: 25px;
+  bottom: 22px;
+}
+
+
+/* líder */
+
+#sectionCasas
+.house-data-card[
+  data-rank-position="1"
+] {
+  transform:
+    translateY(-3px);
+
+  box-shadow:
+    0 26px 58px
+      rgba(0, 0, 0, 0.38),
+    0 0 35px
+      rgba(230, 196, 123, 0.1);
+}
+
+
+#sectionCasas
+.house-data-card[
+  data-rank-position="1"
+]:hover {
+  transform:
+    translateY(-7px);
+}
+
+
+/* =========================================================
+   REGISTRO DE PUNTOS · MÁS COMPACTO
+   ========================================================= */
+
+#sectionCasas .house-movement-panel {
+  margin-top: 20px;
+
+  padding:
+    19px
+    22px
+    18px;
+
+  border-radius: 14px;
+}
+
+
+/* cabecera */
+
+#sectionCasas .movement-panel-heading {
+  padding-bottom: 12px;
+}
+
+
+#sectionCasas
+.movement-panel-heading h3 {
+  margin: 0;
+
+  font-size:
+    clamp(
+      1.05rem,
+      1.7vw,
+      1.3rem
+    );
+}
+
+
+/* formulario */
+
+#sectionCasas .house-movement-form {
+  margin-top: 14px;
+}
+
+
+#sectionCasas .movement-form-grid {
+  grid-template-columns:
+    minmax(0, 1.05fr)
+    minmax(120px, 0.55fr)
+    minmax(0, 1.25fr);
+
+  gap: 12px;
+}
+
+
+#sectionCasas .movement-field {
+  gap: 6px;
+}
+
+
+#sectionCasas
+.movement-field > span {
+  font-size: 0.55rem;
+}
+
+
+/* campos */
+
+#sectionCasas
+.movement-field input,
+
+#sectionCasas
+.movement-field select {
+  min-height: 42px;
+
+  padding:
+    0
+    12px;
+
+  font-size: 0.71rem;
+
+  border-radius: 8px;
+}
+
+
+/* comentario de una sola línea */
+
+#sectionCasas
+.movement-reason-field {
+  margin-top: 11px;
+}
+
+
+#sectionCasas
+.movement-reason-field textarea {
+  min-height: 42px;
+  height: 42px;
+
+  padding:
+    11px
+    12px;
+
+  overflow: hidden;
+
+  resize: none;
+
+  font-size: 0.7rem;
+  line-height: 1.3;
+
+  border-radius: 8px;
+}
+
+
+#sectionCasas
+.movement-reason-field small {
+  margin-top: 1px;
+
+  font-size: 0.55rem;
+  line-height: 1.4;
+}
+
+
+/* pie */
+
+#sectionCasas .movement-form-footer {
+  margin-top: 13px;
+  padding-top: 13px;
+}
+
+
+#sectionCasas .movement-message {
+  min-height: 16px;
+
+  font-size: 0.62rem;
+}
+
+
+/* botón */
+
+#sectionCasas
+.movement-submit-button {
+  min-height: 42px;
+
+  padding:
+    10px
+    18px;
+
+  font-size: 0.63rem;
+
+  border-radius: 8px;
+}
+
+
+/* =========================================================
+   HISTORIAL
+   De momento solo lo hacemos menos pesado.
+   Después lo convertiremos en desplegable.
+   ========================================================= */
+
+#sectionCasas .house-history-panel {
+  margin-top: 18px;
+
+  padding: 22px;
+
+  border-radius: 14px;
+}
+
+
+#sectionCasas .history-panel-heading {
+  padding-bottom: 15px;
+}
+
+
+#sectionCasas
+.history-panel-heading h3 {
+  font-size:
+    clamp(
+      1.05rem,
+      1.8vw,
+      1.35rem
+    );
+}
+
+
+#sectionCasas
+.history-panel-heading
+div > span {
+  margin-top: 5px;
+
+  font-size: 0.65rem;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1250px) {
+
+  #sectionCasas .house-data-card {
+    min-height: 300px;
+  }
+
+}
+
+
+@media (max-width: 900px) {
+
+  #sectionCasas .movement-form-grid {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+
+  #sectionCasas
+  .movement-form-grid
+  .movement-field:last-child {
+    grid-column:
+      1 / -1;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  #sectionCasas .house-data-card {
+    min-height: 285px;
+  }
+
+
+  #sectionCasas .house-movement-panel {
+    padding:
+      17px
+      15px;
+  }
+
+
+  #sectionCasas .movement-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+
+  #sectionCasas
+  .movement-form-grid
+  .movement-field:last-child {
+    grid-column: auto;
+  }
+
+}
