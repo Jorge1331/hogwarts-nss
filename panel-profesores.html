@@ -810,28 +810,45 @@
         <!-- HISTORIAL DE MOVIMIENTOS -->
 
         <article
+        <details
           class="house-history-panel"
           aria-labelledby="movementHistoryTitle"
-        >
+            >
 
-          <div class="history-panel-heading">
+          <summary class="history-panel-heading">
 
-            <div>
+  <div>
 
-              <p class="private-eyebrow">
-                Registro de actividad
-              </p>
+    <p class="private-eyebrow">
+      Registro de actividad
+    </p>
 
-              <h3 id="movementHistoryTitle">
-                Historial de movimientos
-              </h3>
+    <h3 id="movementHistoryTitle">
+      Historial de movimientos
+    </h3>
 
-              <span>
-                Consulta las últimas modificaciones realizadas
-                sobre la puntuación de las casas.
-              </span>
+    <span>
+      Consulta el registro completo de puntos.
+    </span>
 
-            </div>
+  </div>
+
+  <div class="history-summary-side">
+
+    <strong id="movementHistoryCount">
+      0 movimientos
+    </strong>
+
+    <span class="history-toggle-text">
+      Desplegar historial
+    </span>
+
+  </div>
+
+</summary>
+
+
+<div class="movement-history-body">
 
             <strong id="movementHistoryCount">
               0 movimientos
@@ -965,7 +982,9 @@
             hidden
           ></div>
 
-        </article>
+        </div>
+
+        </details>
 
       </section>
       <!-- PRUEBAS -->
