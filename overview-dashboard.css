@@ -1122,3 +1122,51 @@
   margin-top: 4px;
   font-size: 0.62rem;
 }
+/* =========================================================
+   AJUSTE FINAL DE ESPACIADOS · VISTA GENERAL
+   ========================================================= */
+
+/* Cabecera algo más compacta al eliminar el texto redundante */
+
+.private-topbar {
+  min-height: 88px;
+  padding-bottom: 17px;
+}
+
+
+/* Evitamos que El legado del Fénix parezca
+   subrayado por la línea de la cabecera */
+
+#sectionResumen {
+  padding-top: 15px;
+}
+#sectionResumen .overview-faculty-hero {
+  margin-bottom: 18px;
+}
+/* =========================================================
+   HERO DOCENTE · MÁS TÚNICA Y MÁS SALA
+   ========================================================= */
+
+#sectionResumen .overview-faculty-hero {
+  height: clamp(
+    370px,
+    42vh,
+    410px
+  );
+}
+
+
+#sectionResumen .overview-faculty-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  /*
+    Bajamos el encuadre respecto al anterior.
+    Mantiene cabezas + muestra pecho, túnicas
+    y aproximadamente hasta el ombligo.
+  */
+  object-position:
+    center 34%;
+}
