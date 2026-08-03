@@ -986,3 +986,59 @@
   }
 
 }
+/* =========================================================
+   HERO DOCENTE · FORMATO PANORÁMICO COMPACTO
+   ========================================================= */
+
+#sectionResumen .overview-faculty-hero {
+  height: clamp(
+    240px,
+    30vh,
+    320px
+  );
+}
+
+
+#sectionResumen .overview-faculty-image {
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+
+  object-position:
+    center 43%;
+}
+
+
+/* Texto algo más compacto */
+
+#sectionResumen .overview-faculty-content {
+  left: 26px;
+  bottom: 20px;
+}
+
+
+#sectionResumen
+.overview-faculty-content::before {
+  margin-bottom: 9px;
+}
+
+
+#sectionResumen
+.overview-faculty-content h3 {
+  font-size:
+    clamp(
+      1.15rem,
+      1.7vw,
+      1.6rem
+    );
+}
+
+
+#sectionResumen
+.overview-faculty-content
+> p:last-child {
+  margin-top: 6px;
+
+  font-size: 0.66rem;
+}
