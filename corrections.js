@@ -1228,9 +1228,8 @@ const submitCorrection =
             }
 
 
-            const correctionMarker =
-              `correction:${movementId}`;
-
+           const correctionMarker =
+  movementId;
 
             transaction.update(
               houseRef,
