@@ -48,7 +48,7 @@ const PERIOD_BOUNDARIES = [
   {
     before:
       Date.parse(
-        "2027-01-01T00:00:00Z"
+        "2027-01-01T00:00:00+01:00"
       ),
     closureId:
       "2026-12-31"
@@ -56,7 +56,7 @@ const PERIOD_BOUNDARIES = [
   {
     before:
       Date.parse(
-        "2027-03-20T00:00:00Z"
+        "2027-03-20T00:00:00+01:00"
       ),
     closureId:
       "2027-03-19"
@@ -64,7 +64,7 @@ const PERIOD_BOUNDARIES = [
   {
     before:
       Date.parse(
-        "2027-06-22T00:00:00Z"
+        "2027-06-22T00:00:00+02:00"
       ),
     closureId:
       "2027-06-21"
