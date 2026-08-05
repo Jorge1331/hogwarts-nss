@@ -1224,30 +1224,416 @@
       <!-- CRÓNICAS -->
 
       <section
-        id="sectionCronicas"
-        class="private-panel-section"
-        data-section-content="cronicas"
-        hidden
-      >
+  id="sectionCronicas"
+  class="private-panel-section"
+  data-section-content="cronicas"
+  hidden
+>
 
-        <div class="private-empty-state">
+  <div class="chronicles-panel-shell">
 
-          <span aria-hidden="true">📜</span>
+    <!-- CABECERA -->
 
-          <p class="private-eyebrow">
-            Comunicación segura
+    <header class="chronicles-hero">
+
+      <div class="chronicles-hero-copy">
+
+        <p class="private-eyebrow">
+          Memoria del Legado
+        </p>
+
+        <h2>
+          Crónicas de Hogwarts NSS
+        </h2>
+
+        <p>
+          Conserva los grandes momentos del curso y compártelos
+          con la comunidad a través de El Profeta.
+          Cada crónica publicada quedará firmada por su autor o autora.
+        </p>
+
+      </div>
+
+    </header>
+
+
+    <!-- ESPACIO DE TRABAJO -->
+
+    <div class="chronicle-workspace">
+
+      <!-- NUEVA CRÓNICA -->
+
+      <article class="chronicle-editor-card">
+
+        <div class="chronicle-card-heading">
+
+          <div>
+
+            <p class="private-eyebrow">
+              Nueva publicación
+            </p>
+
+            <h3>
+              Escribir una crónica
+            </h3>
+
+          </div>
+
+          <span
+            class="chronicle-heading-icon"
+            aria-hidden="true"
+          >
+            ✒️
+          </span>
+
+        </div>
+
+
+        <form
+          id="chronicleForm"
+          class="chronicle-form"
+        >
+
+          <div class="chronicle-form-grid">
+
+            <label class="chronicle-field chronicle-field-full">
+
+              <span>
+                Titular
+              </span>
+
+              <input
+                id="chronicleTitle"
+                name="title"
+                type="text"
+                maxlength="90"
+                placeholder="Ej. La llama del Fénix vuelve a arder"
+              >
+
+              <small>
+                Un título breve y reconocible para El Profeta.
+              </small>
+
+            </label>
+
+
+            <label class="chronicle-field">
+
+              <span>
+                Categoría
+              </span>
+
+              <select
+                id="chronicleCategory"
+                name="category"
+              >
+
+                <option value="">
+                  Selecciona una categoría
+                </option>
+
+                <option value="legado">
+                  🔥 Legado del Fénix
+                </option>
+
+                <option value="torneo">
+                  🪶 Torneo
+                </option>
+
+                <option value="casas">
+                  🏆 Casas
+                </option>
+
+                <option value="comunidad">
+                  🤝 Comunidad
+                </option>
+
+                <option value="aprendizaje">
+                  📚 Aprendizaje
+                </option>
+
+                <option value="acontecimiento">
+                  ✨ Acontecimiento
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label class="chronicle-field">
+
+              <span>
+                Relacionada con
+              </span>
+
+              <select
+                id="chronicleScope"
+                name="scope"
+              >
+
+                <option value="hogwarts">
+                  Hogwarts NSS
+                </option>
+
+                <option value="all">
+                  Las cuatro casas
+                </option>
+
+                <option value="gryffindor">
+                  Gryffindor
+                </option>
+
+                <option value="slytherin">
+                  Slytherin
+                </option>
+
+                <option value="ravenclaw">
+                  Ravenclaw
+                </option>
+
+                <option value="hufflepuff">
+                  Hufflepuff
+                </option>
+
+              </select>
+
+            </label>
+
+
+            <label class="chronicle-field chronicle-field-full">
+
+              <span>
+                Crónica
+              </span>
+
+              <textarea
+                id="chronicleBody"
+                name="body"
+                maxlength="500"
+                placeholder="Cuenta brevemente qué ha ocurrido y por qué merece formar parte del Legado..."
+              ></textarea>
+
+              <small>
+                Máximo 500 caracteres. La crónica debe describir
+                acontecimientos colectivos y positivos.
+              </small>
+
+            </label>
+
+          </div>
+
+
+          <div class="chronicle-privacy-note">
+
+            <span aria-hidden="true">
+              🛡️
+            </span>
+
+            <span>
+              No incluyas nombres, fotografías ni información
+              identificativa del alumnado. La firma del profesor
+              o profesora se añadirá automáticamente al publicar.
+            </span>
+
+          </div>
+
+
+          <div class="chronicle-form-actions">
+
+            <button
+              id="chronicleDraftButton"
+              class="chronicle-draft-button"
+              type="button"
+            >
+              Guardar borrador
+            </button>
+
+            <button
+              id="chroniclePublishButton"
+              class="chronicle-publish-button"
+              type="button"
+            >
+              Publicar en El Profeta
+            </button>
+
+          </div>
+
+        </form>
+
+      </article>
+
+
+      <!-- VISTA PREVIA -->
+
+      <aside class="chronicle-preview-card">
+
+        <div class="chronicle-preview-heading">
+
+          <div>
+
+            <p class="private-eyebrow">
+              Vista previa pública
+            </p>
+
+            <h3>
+              El Profeta
+            </h3>
+
+          </div>
+
+          <span class="chronicle-preview-live">
+            Previsualización
+          </span>
+
+        </div>
+
+
+        <article class="prophet-preview">
+
+          <div class="prophet-preview-brand">
+
+            <strong>
+              EL PROFETA
+            </strong>
+
+            <span>
+              Hogwarts NSS
+            </span>
+
+          </div>
+
+
+          <span
+            id="chroniclePreviewCategory"
+            class="prophet-preview-category"
+          >
+            Categoría
+          </span>
+
+
+          <h4 id="chroniclePreviewTitle">
+            El titular de la crónica aparecerá aquí
+          </h4>
+
+
+          <p
+            id="chroniclePreviewText"
+            class="prophet-preview-text"
+          >
+            Mientras escribes, este espacio mostrará una vista
+            previa de cómo se presentará la noticia en El Profeta.
           </p>
 
-          <h2>Crónicas de Hogwarts NSS</h2>
+
+          <footer class="prophet-preview-footer">
+
+            <span id="chroniclePreviewAuthor">
+              Firma del profesor/a
+            </span>
+
+            <span id="chroniclePreviewDate">
+              Fecha de publicación
+            </span>
+
+          </footer>
+
+        </article>
+
+      </aside>
+
+    </div>
+
+
+    <!-- ARCHIVO -->
+
+    <article class="chronicles-archive-card">
+
+      <div class="chronicles-archive-heading">
+
+        <div>
+
+          <p class="private-eyebrow">
+            Memoria del curso
+          </p>
+
+          <h3>
+            Archivo de crónicas
+          </h3>
+
+        </div>
+
+        <span
+          id="chroniclesCounter"
+          class="chronicles-counter"
+        >
+          0 crónicas
+        </span>
+
+      </div>
+
+
+      <div class="chronicles-filters">
+
+        <button
+          class="chronicles-filter-button active"
+          type="button"
+          data-chronicle-filter="all"
+        >
+          Todas
+        </button>
+
+        <button
+          class="chronicles-filter-button"
+          type="button"
+          data-chronicle-filter="published"
+        >
+          Publicadas
+        </button>
+
+        <button
+          class="chronicles-filter-button"
+          type="button"
+          data-chronicle-filter="draft"
+        >
+          Borradores
+        </button>
+
+      </div>
+
+
+      <div
+        id="chroniclesList"
+        class="chronicles-list"
+      >
+
+        <div
+          id="chroniclesEmpty"
+          class="chronicles-empty-state"
+        >
+
+          <span aria-hidden="true">
+            📜
+          </span>
+
+          <strong>
+            El pergamino todavía está en blanco
+          </strong>
 
           <p>
-            Desde aquí se prepararán únicamente historias
-            colectivas y positivas para la zona pública.
+            Las crónicas guardadas y publicadas
+            aparecerán aquí durante el curso.
           </p>
 
         </div>
 
-      </section>
+      </div>
+
+    </article>
+
+  </div>
+
+</section>
 
 
       <!-- ADMINISTRACIÓN -->
