@@ -714,3 +714,205 @@
   }
 
 }
+/* =========================================================
+   ARCHIVO DE CRÓNICAS · DESPLEGABLE COMPACTO
+   ========================================================= */
+
+#sectionCronicas .chronicles-archive-card {
+  overflow: hidden;
+
+  padding: 0;
+
+  border:
+    1px solid rgba(239, 200, 115, 0.15);
+
+  border-radius: 18px;
+
+  background:
+    rgba(16, 25, 43, 0.76);
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+/* elimina el triángulo nativo */
+
+#sectionCronicas
+.chronicles-archive-card
+> summary {
+  list-style: none;
+}
+
+#sectionCronicas
+.chronicles-archive-card
+> summary::-webkit-details-marker {
+  display: none;
+}
+
+
+/* cabecera clicable */
+
+#sectionCronicas .chronicles-archive-heading {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  min-height: 82px;
+
+  margin: 0;
+
+  padding:
+    15px
+    54px
+    15px
+    20px;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease;
+}
+
+
+#sectionCronicas
+.chronicles-archive-heading:hover {
+  background:
+    rgba(216, 168, 78, 0.035);
+}
+
+
+#sectionCronicas
+.chronicles-archive-heading h3 {
+  margin: 2px 0 0;
+
+  font-size:
+    clamp(
+      1rem,
+      1.5vw,
+      1.25rem
+    );
+}
+
+
+#sectionCronicas
+.chronicles-archive-heading
+.private-eyebrow {
+  margin-bottom: 2px;
+}
+
+
+/* contador */
+
+#sectionCronicas .chronicles-counter {
+  padding-right: 14px;
+
+  font-size: 0.68rem;
+}
+
+
+/* texto desplegar */
+
+#sectionCronicas .chronicles-archive-toggle {
+  display: block;
+
+  margin-top: 3px;
+
+  color:
+    rgba(248, 244, 233, 0.42);
+
+  font-size: 0.58rem;
+}
+
+
+#sectionCronicas
+.chronicles-archive-toggle::before {
+  content: "Desplegar memoria";
+}
+
+
+#sectionCronicas
+.chronicles-archive-card[open]
+.chronicles-archive-toggle::before {
+  content: "Ocultar memoria";
+
+  color: #efc873;
+}
+
+
+/* flecha */
+
+#sectionCronicas
+.chronicles-archive-heading::after {
+  content: "⌄";
+
+  position: absolute;
+
+  top: 50%;
+  right: 20px;
+
+  color: #efc873;
+
+  font-size: 1.2rem;
+
+  transform:
+    translateY(-52%)
+    rotate(0deg);
+
+  transition:
+    transform 0.22s ease;
+}
+
+
+#sectionCronicas
+.chronicles-archive-card[open]
+.chronicles-archive-heading::after {
+  transform:
+    translateY(-45%)
+    rotate(180deg);
+}
+
+
+/* contenido desplegado */
+
+#sectionCronicas .chronicles-archive-body {
+  padding:
+    0
+    20px
+    20px;
+
+  border-top:
+    1px solid rgba(239, 200, 115, 0.08);
+}
+
+
+#sectionCronicas
+.chronicles-archive-card[open]
+.chronicles-archive-body {
+  padding-top: 18px;
+}
+
+
+@media (max-width: 700px) {
+
+  #sectionCronicas .chronicles-archive-heading {
+    min-height: 76px;
+
+    padding:
+      13px
+      48px
+      13px
+      16px;
+  }
+
+
+  #sectionCronicas .chronicles-archive-body {
+    padding:
+      0
+      16px
+      16px;
+  }
+
+}
