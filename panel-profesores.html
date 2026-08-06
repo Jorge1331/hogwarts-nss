@@ -1544,92 +1544,100 @@
 
     </div>
 
+<!-- ARCHIVO -->
 
-    <!-- ARCHIVO -->
+<details class="chronicles-archive-card">
 
-    <article class="chronicles-archive-card">
+  <summary class="chronicles-archive-heading">
 
-      <div class="chronicles-archive-heading">
+    <div>
 
-        <div>
+      <p class="private-eyebrow">
+        Memoria del curso
+      </p>
 
-          <p class="private-eyebrow">
-            Memoria del curso
-          </p>
+      <h3>
+        Archivo de crónicas
+      </h3>
 
-          <h3>
-            Archivo de crónicas
-          </h3>
+      <span
+        class="chronicles-archive-toggle"
+        aria-hidden="true"
+      ></span>
 
-        </div>
+    </div>
 
-        <span
-          id="chroniclesCounter"
-          class="chronicles-counter"
-        >
-          0 crónicas
-        </span>
+    <span
+      id="chroniclesCounter"
+      class="chronicles-counter"
+    >
+      0 crónicas
+    </span>
 
-      </div>
+  </summary>
 
 
-      <div class="chronicles-filters">
+  <div class="chronicles-archive-body">
 
-        <button
-          class="chronicles-filter-button active"
-          type="button"
-          data-chronicle-filter="all"
-        >
-          Todas
-        </button>
+    <div class="chronicles-filters">
 
-        <button
-          class="chronicles-filter-button"
-          type="button"
-          data-chronicle-filter="published"
-        >
-          Publicadas
-        </button>
+      <button
+        class="chronicles-filter-button active"
+        type="button"
+        data-chronicle-filter="all"
+      >
+        Todas
+      </button>
 
-        <button
-          class="chronicles-filter-button"
-          type="button"
-          data-chronicle-filter="draft"
-        >
-          Borradores
-        </button>
+      <button
+        class="chronicles-filter-button"
+        type="button"
+        data-chronicle-filter="published"
+      >
+        Publicadas
+      </button>
 
-      </div>
+      <button
+        class="chronicles-filter-button"
+        type="button"
+        data-chronicle-filter="draft"
+      >
+        Borradores
+      </button>
 
+    </div>
+
+
+    <div
+      id="chroniclesList"
+      class="chronicles-list"
+    >
 
       <div
-        id="chroniclesList"
-        class="chronicles-list"
+        id="chroniclesEmpty"
+        class="chronicles-empty-state"
       >
 
-        <div
-          id="chroniclesEmpty"
-          class="chronicles-empty-state"
-        >
+        <span aria-hidden="true">
+          📜
+        </span>
 
-          <span aria-hidden="true">
-            📜
-          </span>
+        <strong>
+          El pergamino todavía está en blanco
+        </strong>
 
-          <strong>
-            El pergamino todavía está en blanco
-          </strong>
-
-          <p>
-            Las crónicas guardadas y publicadas
-            aparecerán aquí durante el curso.
-          </p>
-
-        </div>
+        <p>
+          Las crónicas guardadas y publicadas
+          aparecerán aquí durante el curso.
+        </p>
 
       </div>
 
-    </article>
+    </div>
+
+  </div>
+
+</details>
 
   </div>
 
