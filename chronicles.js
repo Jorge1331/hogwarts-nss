@@ -1,6 +1,6 @@
 /* =========================================================
    HOGWARTS NSS · CRÓNICAS
-   Gestión editorial privada y publicación en El Profeta
+   Gestión editorial privada, vista previa y publicación en El Profeta
    ========================================================= */
 
 "use strict";
