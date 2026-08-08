@@ -916,3 +916,194 @@
   }
 
 }
+/* =========================================================
+   ARCHIVO DE CRÓNICAS · ELEMENTOS
+   ========================================================= */
+
+#sectionCronicas .chronicles-list {
+  display: grid;
+  gap: 10px;
+}
+
+
+#sectionCronicas .chronicle-archive-item {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  gap: 14px;
+
+  padding: 14px 16px;
+
+  border:
+    1px solid rgba(239, 200, 115, 0.11);
+
+  border-radius: 14px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+}
+
+
+#sectionCronicas .chronicle-archive-main {
+  min-width: 0;
+}
+
+
+#sectionCronicas .chronicle-archive-topline {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 8px;
+
+  margin-bottom: 6px;
+}
+
+
+#sectionCronicas .chronicle-status-badge,
+#sectionCronicas .chronicle-category-badge {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 22px;
+
+  padding: 0 8px;
+
+  border-radius: 999px;
+
+  font-size: 0.61rem;
+  font-weight: 800;
+
+  letter-spacing: 0.04em;
+}
+
+
+#sectionCronicas .chronicle-status-badge {
+  color:
+    rgba(248, 244, 233, 0.72);
+
+  border:
+    1px solid rgba(248, 244, 233, 0.11);
+
+  background:
+    rgba(248, 244, 233, 0.04);
+
+  text-transform: uppercase;
+}
+
+
+#sectionCronicas
+.chronicle-status-badge[data-status="draft"] {
+  color: #d9c69d;
+
+  border-color:
+    rgba(217, 198, 157, 0.22);
+
+  background:
+    rgba(217, 198, 157, 0.07);
+}
+
+
+#sectionCronicas
+.chronicle-status-badge[data-status="published"] {
+  color: #efc873;
+
+  border-color:
+    rgba(239, 200, 115, 0.28);
+
+  background:
+    rgba(216, 168, 78, 0.08);
+}
+
+
+#sectionCronicas .chronicle-category-badge {
+  color:
+    rgba(239, 200, 115, 0.76);
+
+  background:
+    rgba(216, 168, 78, 0.045);
+}
+
+
+#sectionCronicas .chronicle-archive-title {
+  margin: 0 0 5px;
+
+  overflow: hidden;
+
+  color: #f8f4e9;
+
+  font-family:
+    "Cinzel",
+    Georgia,
+    serif;
+
+  font-size: 0.92rem;
+  line-height: 1.35;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+#sectionCronicas .chronicle-archive-text {
+  display: -webkit-box;
+  overflow: hidden;
+
+  margin: 0;
+
+  color:
+    rgba(248, 244, 233, 0.5);
+
+  font-size: 0.72rem;
+  line-height: 1.5;
+
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+
+#sectionCronicas .chronicle-archive-meta {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: column;
+
+  min-width: 120px;
+
+  gap: 4px;
+
+  color:
+    rgba(248, 244, 233, 0.42);
+
+  font-size: 0.64rem;
+
+  text-align: right;
+}
+
+
+#sectionCronicas .chronicle-archive-author {
+  color:
+    rgba(248, 244, 233, 0.68);
+
+  font-weight: 700;
+}
+
+
+@media (max-width: 700px) {
+
+  #sectionCronicas .chronicle-archive-item {
+    grid-template-columns: 1fr;
+  }
+
+
+  #sectionCronicas .chronicle-archive-meta {
+    align-items: flex-start;
+
+    min-width: 0;
+
+    text-align: left;
+  }
+
+}
