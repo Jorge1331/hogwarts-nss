@@ -607,12 +607,7 @@ chronicleDraftButton.textContent =
     ? "Borrador actualizado ✓"
     : "Borrador guardado ✓";
 
-
-        chronicleDraftButton.textContent =
-          "Borrador guardado ✓";
-
-        restoreDraftButton();
-
+restoreDraftButton();
 
       } catch (error) {
 
