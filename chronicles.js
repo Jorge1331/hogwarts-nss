@@ -23,9 +23,11 @@ import {
   doc,
   getDocFromServer,
   onSnapshot,
-  serverTimestamp
+  serverTimestamp,
+  updateDoc
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
+let activeChronicleId = null;
 
 document.addEventListener(
   "DOMContentLoaded",
@@ -355,17 +357,18 @@ document.addEventListener(
 
     const restoreDraftButton = () => {
 
-      window.setTimeout(
-        () => {
+  window.setTimeout(
+    () => {
 
-          chronicleDraftButton.textContent =
-            "Guardar borrador";
+      chronicleDraftButton.textContent =
+        activeChronicleId
+          ? "Actualizar borrador"
+          : "Guardar borrador";
 
-        },
-        1800
-      );
-    };
-
+    },
+    1800
+  );
+};
 
     const saveDraft = async () => {
 
@@ -516,48 +519,93 @@ document.addEventListener(
           "Profesorado";
 
 
-        const chronicleReference =
-          await addDoc(
-            collection(
-              db,
-              "chronicles"
-            ),
-            {
-              type:
-                "chronicle",
-
-              schoolYear:
-                "2026-2027",
-
-              title,
-
-              body,
-
-              category,
-
-              scope,
-
-              status:
-                "draft",
-
-              authorUid:
-                user.uid,
-
-              authorName,
-
-              createdAt:
-                serverTimestamp(),
-
-              updatedAt:
-                serverTimestamp()
-            }
-          );
+      const wasEditing =
+  Boolean(
+    activeChronicleId
+  );
 
 
-        console.info(
-          "Borrador de Crónicas guardado:",
-          chronicleReference.id
-        );
+if (activeChronicleId) {
+
+  await updateDoc(
+    doc(
+      db,
+      "chronicles",
+      activeChronicleId
+    ),
+    {
+      title,
+      body,
+      category,
+      scope,
+
+      updatedAt:
+        serverTimestamp()
+    }
+  );
+
+
+  console.info(
+    "Borrador de Crónicas actualizado:",
+    activeChronicleId
+  );
+
+
+} else {
+
+  const chronicleReference =
+    await addDoc(
+      collection(
+        db,
+        "chronicles"
+      ),
+      {
+        type:
+          "chronicle",
+
+        schoolYear:
+          "2026-2027",
+
+        title,
+
+        body,
+
+        category,
+
+        scope,
+
+        status:
+          "draft",
+
+        authorUid:
+          user.uid,
+
+        authorName,
+
+        createdAt:
+          serverTimestamp(),
+
+        updatedAt:
+          serverTimestamp()
+      }
+    );
+
+
+  activeChronicleId =
+    chronicleReference.id;
+
+
+  console.info(
+    "Borrador de Crónicas guardado:",
+    activeChronicleId
+  );
+}
+
+
+chronicleDraftButton.textContent =
+  wasEditing
+    ? "Borrador actualizado ✓"
+    : "Borrador guardado ✓";
 
 
         chronicleDraftButton.textContent =
@@ -763,6 +811,146 @@ document.addEventListener(
 
           article.dataset.chronicleId =
             chronicle.id;
+           const canEditDraft =
+  chronicle.status === "draft" &&
+  chronicle.authorUid ===
+    auth.currentUser?.uid;
+
+
+if (canEditDraft) {
+
+  article.tabIndex = 0;
+
+  article.setAttribute(
+    "role",
+    "button"
+  );
+
+
+  const openDraft = () => {
+
+    const titleInput =
+      document.getElementById(
+        "chronicleTitle"
+      );
+
+    const categoryInput =
+      document.getElementById(
+        "chronicleCategory"
+      );
+
+    const scopeInput =
+      document.getElementById(
+        "chronicleScope"
+      );
+
+    const bodyInput =
+      document.getElementById(
+        "chronicleBody"
+      );
+
+    const draftButton =
+      document.getElementById(
+        "chronicleDraftButton"
+      );
+
+
+    if (
+      !titleInput ||
+      !categoryInput ||
+      !scopeInput ||
+      !bodyInput ||
+      !draftButton
+    ) {
+
+      return;
+    }
+
+
+    activeChronicleId =
+      chronicle.id;
+
+
+    titleInput.value =
+      chronicle.title || "";
+
+    categoryInput.value =
+      chronicle.category || "";
+
+    scopeInput.value =
+      chronicle.scope || "hogwarts";
+
+    bodyInput.value =
+      chronicle.body || "";
+
+
+    titleInput.dispatchEvent(
+      new Event(
+        "input",
+        {
+          bubbles: true
+        }
+      )
+    );
+
+
+    categoryInput.dispatchEvent(
+      new Event(
+        "change",
+        {
+          bubbles: true
+        }
+      )
+    );
+
+
+    bodyInput.dispatchEvent(
+      new Event(
+        "input",
+        {
+          bubbles: true
+        }
+      )
+    );
+
+
+    draftButton.textContent =
+      "Actualizar borrador";
+
+
+    document
+      .getElementById(
+        "chronicleForm"
+      )
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+  };
+
+
+  article.addEventListener(
+    "click",
+    openDraft
+  );
+
+
+  article.addEventListener(
+    "keydown",
+    event => {
+
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+
+        event.preventDefault();
+
+        openDraft();
+      }
+    }
+  );
+}
 
 
           const main =
