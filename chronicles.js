@@ -24,7 +24,8 @@ import {
   getDocFromServer,
   onSnapshot,
   serverTimestamp,
-  updateDoc
+  updateDoc,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 let activeChronicleId = null;
@@ -1194,6 +1195,369 @@ if (canEditDraft) {
             }
           );
       }
+    );
+
+  }
+);
+/* =========================================================
+   PUBLICACIÓN EN EL PROFETA
+   ========================================================= */
+
+document.addEventListener(
+  "DOMContentLoaded",
+  () => {
+
+    const chroniclePublishButton =
+      document.getElementById(
+        "chroniclePublishButton"
+      );
+
+    const chronicleDraftButton =
+      document.getElementById(
+        "chronicleDraftButton"
+      );
+
+    const chronicleForm =
+      document.getElementById(
+        "chronicleForm"
+      );
+
+    const chronicleTitle =
+      document.getElementById(
+        "chronicleTitle"
+      );
+
+    const chronicleCategory =
+      document.getElementById(
+        "chronicleCategory"
+      );
+
+    const chronicleScope =
+      document.getElementById(
+        "chronicleScope"
+      );
+
+    const chronicleBody =
+      document.getElementById(
+        "chronicleBody"
+      );
+
+
+    if (
+      !chroniclePublishButton ||
+      !chronicleDraftButton ||
+      !chronicleForm ||
+      !chronicleTitle ||
+      !chronicleCategory ||
+      !chronicleScope ||
+      !chronicleBody
+    ) {
+
+      console.error(
+        "No se puede iniciar la publicación de Crónicas."
+      );
+
+      return;
+    }
+
+
+    const cleanText = value =>
+      String(
+        value || ""
+      ).trim();
+
+
+    const restorePublishButton = () => {
+
+      window.setTimeout(
+        () => {
+
+          chroniclePublishButton.textContent =
+            "Publicar en El Profeta";
+
+        },
+        2200
+      );
+    };
+
+
+    const publishChronicle =
+      async () => {
+
+        const user =
+          auth.currentUser;
+
+
+        if (!user) {
+
+          chroniclePublishButton.textContent =
+            "Sesión no disponible";
+
+          restorePublishButton();
+
+          return;
+        }
+
+
+        if (!activeChronicleId) {
+
+          chroniclePublishButton.textContent =
+            "Abre un borrador primero";
+
+          restorePublishButton();
+
+          return;
+        }
+
+
+        chroniclePublishButton.disabled =
+          true;
+
+        chroniclePublishButton.textContent =
+          "Comprobando...";
+
+
+        try {
+
+          const privateReference =
+            doc(
+              db,
+              "chronicles",
+              activeChronicleId
+            );
+
+
+          const privateSnapshot =
+            await getDocFromServer(
+              privateReference
+            );
+
+
+          if (
+            !privateSnapshot.exists()
+          ) {
+
+            throw new Error(
+              "El borrador ya no existe."
+            );
+          }
+
+
+          const chronicle =
+            privateSnapshot.data();
+
+
+          if (
+            chronicle.status !==
+              "draft" ||
+            chronicle.authorUid !==
+              user.uid
+          ) {
+
+            throw new Error(
+              "Este borrador no puede publicarse."
+            );
+          }
+
+
+          const hasUnsavedChanges =
+            cleanText(
+              chronicleTitle.value
+            ) !==
+              cleanText(
+                chronicle.title
+              ) ||
+
+            cleanText(
+              chronicleBody.value
+            ) !==
+              cleanText(
+                chronicle.body
+              ) ||
+
+            cleanText(
+              chronicleCategory.value
+            ) !==
+              cleanText(
+                chronicle.category
+              ) ||
+
+            cleanText(
+              chronicleScope.value
+            ) !==
+              cleanText(
+                chronicle.scope
+              );
+
+
+          if (
+            hasUnsavedChanges
+          ) {
+
+            chroniclePublishButton.textContent =
+              "Guarda cambios primero";
+
+            restorePublishButton();
+
+            return;
+          }
+
+
+          const confirmed =
+            window.confirm(
+              "¿Publicar esta crónica en El Profeta?\n\nDejará de ser un borrador y pasará a la zona pública."
+            );
+
+
+          if (!confirmed) {
+
+            chroniclePublishButton.textContent =
+              "Publicar en El Profeta";
+
+            return;
+          }
+
+
+          chroniclePublishButton.textContent =
+            "Publicando...";
+
+
+          const publicReference =
+            doc(
+              db,
+              "publicChronicles",
+              activeChronicleId
+            );
+
+
+          const batch =
+            writeBatch(
+              db
+            );
+
+
+          batch.update(
+            privateReference,
+            {
+              status:
+                "published",
+
+              updatedAt:
+                serverTimestamp()
+            }
+          );
+
+
+          batch.set(
+            publicReference,
+            {
+              title:
+                chronicle.title,
+
+              body:
+                chronicle.body,
+
+              category:
+                chronicle.category,
+
+              scope:
+                chronicle.scope,
+
+              authorName:
+                chronicle.authorName,
+
+              publishedAt:
+                serverTimestamp()
+            }
+          );
+
+
+          await batch.commit();
+
+
+          console.info(
+            "Crónica publicada en El Profeta:",
+            activeChronicleId
+          );
+
+
+          activeChronicleId =
+            null;
+
+
+          chronicleForm.reset();
+
+
+          chronicleTitle.dispatchEvent(
+            new Event(
+              "input",
+              {
+                bubbles: true
+              }
+            )
+          );
+
+
+          chronicleCategory.dispatchEvent(
+            new Event(
+              "change",
+              {
+                bubbles: true
+              }
+            )
+          );
+
+
+          chronicleBody.dispatchEvent(
+            new Event(
+              "input",
+              {
+                bubbles: true
+              }
+            )
+          );
+
+
+          chronicleDraftButton.textContent =
+            "Guardar borrador";
+
+
+          chroniclePublishButton.textContent =
+            "Publicado ✓";
+
+
+          restorePublishButton();
+
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido publicar la crónica:",
+            error
+          );
+
+
+          chroniclePublishButton.textContent =
+            error.code ===
+              "permission-denied"
+              ? "Permiso rechazado"
+              : "Error al publicar";
+
+
+          restorePublishButton();
+
+
+        } finally {
+
+          chroniclePublishButton.disabled =
+            false;
+        }
+      };
+
+
+    chroniclePublishButton.addEventListener(
+      "click",
+      publishChronicle
     );
 
   }
