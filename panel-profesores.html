@@ -1833,22 +1833,217 @@
         hidden
       ></div>
 
+<footer class="administration-readonly-note">
 
-      <footer class="administration-readonly-note">
+  <strong>
+    Cuentas protegidas
+  </strong>
 
-        <strong>
-          Modo de consulta
-        </strong>
+  <span>
+    Las cuentas autorizadas no pueden editarse ni eliminarse
+    desde esta interfaz. Las nuevas altas se realizan
+    mediante invitaciones seguras.
+  </span>
 
-        <span>
-          La edición de cuentas permanece protegida
-          hasta completar la auditoría del registro docente.
-        </span>
-
-      </footer>
+</footer>
 
     </article>
+    <article class="administration-card">
 
+      <header class="administration-card-heading">
+
+        <div>
+
+          <p class="private-eyebrow">
+            Incorporación docente
+          </p>
+
+          <h3>
+            Invitaciones de acceso
+          </h3>
+
+          <p>
+            Autoriza previamente una cuenta corporativa.
+            El acceso se activará cuando la persona invitada
+            se identifique por primera vez con Google.
+          </p>
+
+        </div>
+
+        <span
+          id="adminInvitationsCount"
+          class="administration-record-counter"
+        >
+          0 invitaciones
+        </span>
+
+      </header>
+
+
+      <div class="administration-invitation-content">
+
+        <form
+          id="adminInvitationForm"
+          class="administration-invitation-form"
+        >
+
+          <label class="administration-field">
+
+            <span>
+              Nombre visible
+            </span>
+
+            <input
+              id="adminInvitationName"
+              type="text"
+              minlength="2"
+              maxlength="80"
+              autocomplete="off"
+              placeholder="Nombre de la docente"
+              required
+            >
+
+          </label>
+
+
+          <label class="administration-field">
+
+            <span>
+              Correo corporativo
+            </span>
+
+            <input
+              id="adminInvitationEmail"
+              type="email"
+              maxlength="120"
+              autocomplete="off"
+              placeholder="nombre@colegiosocorro.es"
+              required
+            >
+
+          </label>
+
+
+          <label class="administration-field">
+
+            <span>
+              Cargo
+            </span>
+
+            <input
+              id="adminInvitationJob"
+              type="text"
+              minlength="2"
+              maxlength="80"
+              autocomplete="off"
+              placeholder="Ej. Tutora de 5.º A"
+              required
+            >
+
+          </label>
+
+
+          <div class="administration-fixed-role">
+
+            <span>
+              Rol asignado
+            </span>
+
+            <strong>
+              Tutoría
+            </strong>
+
+          </div>
+
+
+          <button
+            id="adminInvitationSubmit"
+            class="administration-invitation-submit"
+            type="submit"
+            disabled
+          >
+            Crear invitación
+          </button>
+
+
+          <p
+            id="adminInvitationMessage"
+            class="administration-invitation-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+        </form>
+
+
+        <div class="administration-invitations-registry">
+
+          <div
+            id="adminInvitationsLoading"
+            class="administration-status"
+            role="status"
+            aria-live="polite"
+          >
+
+            <strong>
+              Consultando invitaciones
+            </strong>
+
+            <p>
+              Recuperando el registro privado de accesos pendientes.
+            </p>
+
+          </div>
+
+
+          <div
+            id="adminInvitationsError"
+            class="administration-status administration-error"
+            role="alert"
+            hidden
+          >
+
+            <strong>
+              No se han podido consultar las invitaciones
+            </strong>
+
+            <p>
+              Comprueba la sesión y los permisos del administrador.
+            </p>
+
+          </div>
+
+
+          <div
+            id="adminInvitationsEmpty"
+            class="administration-status"
+            hidden
+          >
+
+            <strong>
+              No existen invitaciones
+            </strong>
+
+            <p>
+              Las nuevas autorizaciones aparecerán aquí.
+            </p>
+
+          </div>
+
+
+          <div
+            id="adminInvitationsList"
+            class="administration-invitations-list"
+            aria-live="polite"
+            hidden
+          ></div>
+
+        </div>
+
+      </div>
+
+    </article>
+  
   </div>
 
 </section>
