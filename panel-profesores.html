@@ -62,6 +62,10 @@
   rel="stylesheet"
   href="chronicles-panel.css"
 >
+  <link
+  rel="stylesheet"
+  href="administration-panel.css"
+>
 </head>
 
 
@@ -1643,52 +1647,211 @@
 
 </section>
 
+     <!-- ADMINISTRACIÓN -->
 
-      <!-- ADMINISTRACIÓN -->
+<section
+  id="sectionConfiguracion"
+  class="private-panel-section"
+  data-section-content="configuracion"
+  data-admin-only
+  hidden
+>
 
-      <section
-        id="sectionConfiguracion"
-        class="private-panel-section"
-        data-section-content="configuracion"
-        data-admin-only
-        hidden
-      >
+  <div class="administration-panel-shell">
 
-        <div class="private-empty-state">
+    <header class="administration-hero">
 
-          <span aria-hidden="true">⚙️</span>
+      <div>
+
+        <p class="private-eyebrow">
+          Gobierno del proyecto
+        </p>
+
+        <h2>
+          Administración
+        </h2>
+
+        <p>
+          Supervisa el equipo docente autorizado,
+          sus funciones y el estado de acceso
+          a Hogwarts NSS.
+        </p>
+
+      </div>
+
+      <span class="administration-access-badge">
+        Acceso administrador
+      </span>
+
+    </header>
+
+
+    <div class="administration-summary-grid">
+
+      <article class="administration-summary-card">
+        <small>Registro docente</small>
+
+        <strong id="adminTeacherTotal">
+          —
+        </strong>
+
+        <span>
+          cuentas registradas
+        </span>
+      </article>
+
+
+      <article class="administration-summary-card">
+        <small>Acceso permitido</small>
+
+        <strong id="adminTeacherActive">
+          —
+        </strong>
+
+        <span>
+          cuentas activas
+        </span>
+      </article>
+
+
+      <article class="administration-summary-card">
+        <small>Gobierno</small>
+
+        <strong id="adminTeacherAdmins">
+          —
+        </strong>
+
+        <span>
+          administradores
+        </span>
+      </article>
+
+
+      <article class="administration-summary-card">
+        <small>Acceso suspendido</small>
+
+        <strong id="adminTeacherInactive">
+          —
+        </strong>
+
+        <span>
+          cuentas inactivas
+        </span>
+      </article>
+
+    </div>
+
+
+    <article class="administration-card">
+
+      <header class="administration-card-heading">
+
+        <div>
 
           <p class="private-eyebrow">
-            Solo administradores
+            Equipo docente
           </p>
 
-          <h2>Administración del proyecto</h2>
+          <h3>
+            Guardianes autorizados
+          </h3>
 
           <p>
-            Aquí gestionaremos cuentas docentes, permisos,
-            configuración general y auditoría del sistema.
+            Registro privado de las cuentas con acceso
+            al panel del profesorado.
           </p>
 
         </div>
 
-      </section>
+        <span
+          id="adminTeachersCount"
+          class="administration-record-counter"
+        >
+          0 registros
+        </span>
+
+      </header>
 
 
-      <footer class="private-panel-footer">
+      <div
+        id="adminTeachersLoading"
+        class="administration-status"
+        role="status"
+        aria-live="polite"
+      >
+
+        <strong>
+          Consultando el registro docente
+        </strong>
 
         <p>
-          Colegio Diocesano Nuestra Señora del Socorro · Benetússer
+          Recuperando las autorizaciones desde Firestore.
         </p>
 
-        <blockquote>
-          La magia nace cuando nadie se queda atrás.
-        </blockquote>
+      </div>
+
+
+      <div
+        id="adminTeachersError"
+        class="administration-status administration-error"
+        role="alert"
+        hidden
+      >
+
+        <strong>
+          No se ha podido consultar Administración
+        </strong>
+
+        <p>
+          Comprueba la sesión y los permisos del administrador.
+        </p>
+
+      </div>
+
+
+      <div
+        id="adminTeachersEmpty"
+        class="administration-status"
+        hidden
+      >
+
+        <strong>
+          No existen cuentas docentes
+        </strong>
+
+        <p>
+          El registro de autorizaciones está vacío.
+        </p>
+
+      </div>
+
+
+      <div
+        id="adminTeachersList"
+        class="administration-teachers-list"
+        aria-live="polite"
+        hidden
+      ></div>
+
+
+      <footer class="administration-readonly-note">
+
+        <strong>
+          Modo de consulta
+        </strong>
+
+        <span>
+          La edición de cuentas permanece protegida
+          hasta completar la auditoría del registro docente.
+        </span>
 
       </footer>
 
-    </main>
+    </article>
 
   </div>
+
+</section>
 
 
 <script
@@ -1714,6 +1877,10 @@
 <script
   type="module"
   src="overview-dashboard.js"
+></script>
+<script
+  type="module"
+  src="administration.js"
 ></script>
 </body>
 
