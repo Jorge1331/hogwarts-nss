@@ -9,6 +9,7 @@ import {
 } from "./firebase-config.js";
 
 import {
+  collection,
   doc,
   onSnapshot
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
@@ -51,13 +52,13 @@ let publicRankingHasRendered =
 
 document.addEventListener("DOMContentLoaded", () => {
   initializePublicRanking();
+  initializePublicChronicles();
   initializeNavigation();
   initializeCountdown();
   initializeButtons();
   initializeMapLocations();
   initializeInventory();
 });
-
 
 /* ---------------------------------------------------------
    CLASIFICACIÓN DE LAS CASAS
@@ -506,7 +507,407 @@ function animatePublicRanking(
 function formatPoints(points) {
   return new Intl.NumberFormat("es-ES").format(points);
 }
+/* ---------------------------------------------------------
+   EL PROFETA · CRÓNICAS PÚBLICAS
+--------------------------------------------------------- */
 
+function initializePublicChronicles() {
+
+  const chroniclesList =
+    document.getElementById(
+      "publicChroniclesList"
+    );
+
+
+  if (!chroniclesList) {
+
+    console.error(
+      "No se ha encontrado El Profeta en la portada."
+    );
+
+    return;
+  }
+
+
+  onSnapshot(
+    collection(
+      db,
+      "publicChronicles"
+    ),
+
+    (snapshot) => {
+
+      const chronicles =
+        snapshot.docs
+          .map(
+            documentSnapshot => ({
+              id:
+                documentSnapshot.id,
+
+              ...documentSnapshot.data()
+            })
+          )
+          .sort(
+            (chronicleA, chronicleB) => {
+
+              const timeA =
+                chronicleA
+                  .publishedAt
+                  ?.toMillis?.() || 0;
+
+              const timeB =
+                chronicleB
+                  .publishedAt
+                  ?.toMillis?.() || 0;
+
+
+              return timeB - timeA;
+            }
+          )
+          .slice(
+            0,
+            3
+          );
+
+
+      renderPublicChronicles(
+        chroniclesList,
+        chronicles
+      );
+    },
+
+    (error) => {
+
+      console.error(
+        "No se han podido cargar las crónicas públicas:",
+        error
+      );
+
+
+      renderPublicChroniclesStatus(
+        chroniclesList,
+        "El Profeta no está disponible",
+        "Las crónicas volverán a mostrarse cuando se restablezca la conexión."
+      );
+    }
+  );
+}
+
+
+function renderPublicChronicles(
+  chroniclesList,
+  chronicles
+) {
+
+  chroniclesList.replaceChildren();
+
+
+  if (
+    chronicles.length === 0
+  ) {
+
+    renderPublicChroniclesStatus(
+      chroniclesList,
+      "El Profeta espera nuevas crónicas",
+      "Las noticias del castillo aparecerán aquí cuando sean publicadas."
+    );
+
+    return;
+  }
+
+
+  chronicles.forEach(
+    chronicle => {
+
+      const article =
+        document.createElement(
+          "article"
+        );
+
+
+      article.className =
+        "news-item";
+
+
+      const icon =
+        document.createElement(
+          "span"
+        );
+
+
+      icon.className =
+        "news-icon";
+
+      icon.setAttribute(
+        "aria-hidden",
+        "true"
+      );
+
+      icon.textContent =
+        getPublicChronicleIcon(
+          chronicle.category
+        );
+
+
+      const content =
+        document.createElement(
+          "div"
+        );
+
+
+      const title =
+        document.createElement(
+          "strong"
+        );
+
+
+      title.textContent =
+        String(
+          chronicle.title ||
+          "Crónica de Hogwarts NSS"
+        ).trim();
+
+
+      const text =
+        document.createElement(
+          "p"
+        );
+
+
+      text.textContent =
+        getPublicChronicleExcerpt(
+          chronicle.body
+        );
+
+
+      const meta =
+        document.createElement(
+          "small"
+        );
+
+
+      const authorName =
+        String(
+          chronicle.authorName ||
+          "Profesorado"
+        ).trim();
+
+
+      meta.textContent =
+        `${authorName} · ${formatPublicChronicleDate(
+          chronicle.publishedAt
+        )}`;
+
+
+      content.append(
+        title,
+        text,
+        meta
+      );
+
+
+      article.append(
+        icon,
+        content
+      );
+
+
+      chroniclesList.appendChild(
+        article
+      );
+    }
+  );
+}
+
+
+function renderPublicChroniclesStatus(
+  chroniclesList,
+  titleText,
+  bodyText
+) {
+
+  chroniclesList.replaceChildren();
+
+
+  const article =
+    document.createElement(
+      "article"
+    );
+
+
+  article.className =
+    "news-item";
+
+
+  const icon =
+    document.createElement(
+      "span"
+    );
+
+
+  icon.className =
+    "news-icon";
+
+  icon.setAttribute(
+    "aria-hidden",
+    "true"
+  );
+
+  icon.textContent =
+    "📰";
+
+
+  const content =
+    document.createElement(
+      "div"
+    );
+
+
+  const title =
+    document.createElement(
+      "strong"
+    );
+
+
+  title.textContent =
+    titleText;
+
+
+  const text =
+    document.createElement(
+      "p"
+    );
+
+
+  text.textContent =
+    bodyText;
+
+
+  const meta =
+    document.createElement(
+      "small"
+    );
+
+
+  meta.textContent =
+    "Hogwarts NSS";
+
+
+  content.append(
+    title,
+    text,
+    meta
+  );
+
+
+  article.append(
+    icon,
+    content
+  );
+
+
+  chroniclesList.appendChild(
+    article
+  );
+}
+
+
+function getPublicChronicleIcon(
+  category
+) {
+
+  const icons = {
+    legado:
+      "🔥",
+
+    torneo:
+      "🪶",
+
+    casas:
+      "🏆",
+
+    comunidad:
+      "🤝",
+
+    aprendizaje:
+      "📚",
+
+    acontecimiento:
+      "✨"
+  };
+
+
+  return (
+    icons[category] ||
+    "📰"
+  );
+}
+
+
+function getPublicChronicleExcerpt(
+  body
+) {
+
+  const text =
+    String(
+      body || ""
+    )
+      .trim()
+      .replace(
+        /\s+/g,
+        " "
+      );
+
+
+  if (
+    text.length <= 170
+  ) {
+
+    return text;
+  }
+
+
+  return (
+    `${text
+      .slice(
+        0,
+        167
+      )
+      .trimEnd()}…`
+  );
+}
+
+
+function formatPublicChronicleDate(
+  timestamp
+) {
+
+  if (
+    !timestamp ||
+    typeof timestamp.toDate !==
+      "function"
+  ) {
+
+    return "Fecha pendiente";
+  }
+
+
+  return new Intl.DateTimeFormat(
+    "es-ES",
+    {
+      day:
+        "numeric",
+
+      month:
+        "short",
+
+      year:
+        "numeric"
+    }
+  ).format(
+    timestamp.toDate()
+  );
+}
 
 /* ---------------------------------------------------------
    NAVEGACIÓN LATERAL
