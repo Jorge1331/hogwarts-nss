@@ -22,7 +22,9 @@ import {
 
 import {
   doc,
-  getDoc
+  getDoc,
+  serverTimestamp,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
@@ -285,7 +287,135 @@ teacherPanelButton.hidden = true;
 
     return roleLabels[role] || "docente";
   };
+  /* ------------------------------
+     INVITACIONES DOCENTES
+  ------------------------------ */
 
+  const getTeacherInvitation =
+    async (user) => {
+
+      const email =
+        normaliseEmail(
+          user?.email
+        );
+
+      const invitationReference =
+        doc(
+          db,
+          "teacherInvitations",
+          email
+        );
+
+      const invitationSnapshot =
+        await getDoc(
+          invitationReference
+        );
+
+
+      if (!invitationSnapshot.exists()) {
+
+        return null;
+      }
+
+
+      return {
+        reference:
+          invitationReference,
+
+        data:
+          invitationSnapshot.data()
+      };
+    };
+
+
+  const claimTeacherInvitation =
+    async (
+      user,
+      invitationRecord
+    ) => {
+
+      if (!invitationRecord) {
+
+        return null;
+      }
+
+
+      const email =
+        normaliseEmail(
+          user?.email
+        );
+
+      const invitation =
+        invitationRecord.data;
+
+
+      if (
+        invitation.status !== "pending" ||
+        normaliseEmail(
+          invitation.email
+        ) !== email ||
+        invitation.role !== "tutor"
+      ) {
+
+        return null;
+      }
+
+
+      const teacherProfile = {
+        displayName:
+          invitation.displayName,
+
+        email,
+
+        jobTitle:
+          invitation.jobTitle,
+
+        role:
+          invitation.role,
+
+        active:
+          true
+      };
+
+
+      const teacherReference =
+        doc(
+          db,
+          "authorizedTeachers",
+          user.uid
+        );
+
+
+      const batch =
+        writeBatch(db);
+
+
+      batch.set(
+        teacherReference,
+        teacherProfile
+      );
+
+
+      batch.update(
+        invitationRecord.reference,
+        {
+          status:
+            "claimed",
+
+          claimedAt:
+            serverTimestamp(),
+
+          claimedUid:
+            user.uid
+        }
+      );
+
+
+      await batch.commit();
+
+
+      return teacherProfile;
+    };
 
   /* ------------------------------
      CONSULTAR AUTORIZACIÓN
@@ -473,10 +603,59 @@ teacherPanelButton.hidden = true;
         }
 
 
-        const teacherProfile =
-          await getAuthorizedTeacherProfile(
+                let teacherProfile =
+          null;
+
+
+        const invitationRecord =
+          await getTeacherInvitation(
             user
           );
+
+
+        if (
+          invitationRecord?.data
+            ?.status === "pending"
+        ) {
+
+          setLoadingState(
+            "Activando tu invitación..."
+          );
+
+
+          try {
+
+            teacherProfile =
+              await claimTeacherInvitation(
+                user,
+                invitationRecord
+              );
+
+          } catch (
+            invitationError
+          ) {
+
+            console.warn(
+              "No se ha podido reclamar la invitación:",
+              invitationError
+            );
+
+            /*
+             Si la cuenta ya estuviera
+             autorizada, continuamos con
+             la comprobación habitual.
+            */
+          }
+        }
+
+
+        if (!teacherProfile) {
+
+          teacherProfile =
+            await getAuthorizedTeacherProfile(
+              user
+            );
+        }
 
 
         showAuthorizedState(
