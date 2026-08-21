@@ -1,0 +1,461 @@
+/* =========================================================
+   HOGWARTS NSS · ADMINISTRACIÓN
+   Panel privado de gobierno del proyecto
+   ========================================================= */
+
+.administration-panel-shell {
+  display: grid;
+  gap: 18px;
+}
+
+
+.administration-hero {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 25px 26px;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.16);
+  border-radius: 14px;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(169, 119, 41, 0.12),
+      transparent 35%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(17, 29, 49, 0.96),
+      rgba(7, 13, 24, 0.98)
+    );
+
+  box-shadow:
+    0 18px 40px rgba(0, 0, 0, 0.24);
+}
+
+
+.administration-hero h2 {
+  margin: 3px 0 8px;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 1.55rem;
+  font-weight: 600;
+}
+
+
+.administration-hero p:last-child {
+  max-width: 680px;
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 0.72rem;
+  line-height: 1.65;
+}
+
+
+.administration-access-badge {
+  flex-shrink: 0;
+
+  padding: 8px 11px;
+
+  color: var(--gold-300);
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.25);
+  border-radius: 30px;
+
+  background:
+    rgba(230, 196, 123, 0.055);
+}
+
+
+.administration-summary-grid {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+
+.administration-summary-card {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 125px;
+  padding: 18px;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.12);
+  border-radius: 12px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(18, 30, 50, 0.9),
+      rgba(8, 14, 25, 0.96)
+    );
+
+  box-shadow:
+    0 14px 30px rgba(0, 0, 0, 0.18);
+}
+
+
+.administration-summary-card small {
+  color: var(--gold-400);
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+
+.administration-summary-card strong {
+  margin-top: 14px;
+
+  color: var(--gold-200);
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 600;
+}
+
+
+.administration-summary-card span {
+  margin-top: 4px;
+
+  color: var(--muted);
+  font-size: 0.62rem;
+}
+
+
+.administration-card {
+  overflow: hidden;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.14);
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(17, 29, 49, 0.9),
+      rgba(7, 13, 24, 0.97)
+    );
+
+  box-shadow:
+    0 18px 42px rgba(0, 0, 0, 0.24);
+}
+
+
+.administration-card-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+
+  padding: 22px 24px;
+
+  border-bottom:
+    1px solid rgba(230, 196, 123, 0.1);
+}
+
+
+.administration-card-heading h3 {
+  margin: 2px 0 6px;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+
+.administration-card-heading p:last-child {
+  margin: 0;
+
+  color: var(--muted);
+  font-size: 0.67rem;
+  line-height: 1.55;
+}
+
+
+.administration-record-counter {
+  flex-shrink: 0;
+
+  padding: 7px 10px;
+
+  color: var(--gold-300);
+  font-size: 0.55rem;
+  font-weight: 700;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.2);
+  border-radius: 30px;
+
+  background:
+    rgba(230, 196, 123, 0.05);
+}
+
+
+.administration-status {
+  margin: 18px 24px;
+  padding: 18px;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+.administration-status strong {
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+}
+
+
+.administration-status p {
+  margin: 6px 0 0;
+
+  color: var(--muted);
+  font-size: 0.64rem;
+}
+
+
+.administration-error {
+  border-color:
+    rgba(217, 137, 137, 0.23);
+
+  background:
+    rgba(217, 137, 137, 0.045);
+}
+
+
+.administration-teachers-list {
+  display: grid;
+}
+
+
+.administration-teacher-row {
+  display: grid;
+  grid-template-columns:
+    minmax(230px, 1.5fr)
+    minmax(150px, 1fr)
+    auto
+    auto;
+  gap: 18px;
+  align-items: center;
+
+  min-height: 82px;
+  padding: 15px 24px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.055);
+}
+
+
+.administration-teacher-row:last-child {
+  border-bottom: 0;
+}
+
+
+.administration-teacher-identity {
+  display: grid;
+  grid-template-columns:
+    42px
+    minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+}
+
+
+.administration-teacher-avatar {
+  display: grid;
+  place-items: center;
+
+  width: 42px;
+  height: 42px;
+
+  color: var(--gold-200);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 700;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.3);
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      #3d4e6b,
+      #182338 68%
+    );
+}
+
+
+.administration-teacher-copy {
+  min-width: 0;
+}
+
+
+.administration-teacher-copy strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: var(--white);
+  font-family: var(--font-display);
+  font-size: 0.73rem;
+  font-weight: 600;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.administration-teacher-copy small {
+  display: block;
+
+  overflow: hidden;
+
+  margin-top: 4px;
+
+  color: var(--muted);
+  font-size: 0.58rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.administration-job {
+  color: #b9c3d2;
+  font-size: 0.63rem;
+}
+
+
+.administration-role-badge,
+.administration-status-badge {
+  justify-self: start;
+
+  padding: 6px 9px;
+
+  font-size: 0.5rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+
+  border-radius: 30px;
+}
+
+
+.administration-role-badge {
+  color: var(--gold-300);
+
+  border:
+    1px solid rgba(230, 196, 123, 0.22);
+
+  background:
+    rgba(230, 196, 123, 0.055);
+}
+
+
+.administration-status-badge {
+  color: #bce5c9;
+
+  border:
+    1px solid rgba(127, 201, 154, 0.22);
+
+  background:
+    rgba(127, 201, 154, 0.055);
+}
+
+
+.administration-status-badge[data-active="false"] {
+  color: #efc5c5;
+
+  border-color:
+    rgba(217, 137, 137, 0.25);
+
+  background:
+    rgba(217, 137, 137, 0.055);
+}
+
+
+.administration-readonly-note {
+  display: flex;
+  gap: 10px;
+  align-items: baseline;
+
+  padding: 14px 24px;
+
+  color: var(--muted);
+  font-size: 0.57rem;
+
+  border-top:
+    1px solid rgba(230, 196, 123, 0.09);
+
+  background:
+    rgba(230, 196, 123, 0.025);
+}
+
+
+.administration-readonly-note strong {
+  color: var(--gold-400);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+
+@media (max-width: 1050px) {
+
+  .administration-summary-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+  .administration-teacher-row {
+    grid-template-columns:
+      minmax(220px, 1fr)
+      minmax(140px, 1fr);
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .administration-hero,
+  .administration-card-heading {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .administration-summary-grid {
+    grid-template-columns:
+      1fr;
+  }
+
+  .administration-teacher-row {
+    grid-template-columns:
+      1fr;
+    gap: 10px;
+  }
+
+  .administration-readonly-note {
+    flex-direction: column;
+  }
+}
