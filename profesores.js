@@ -277,7 +277,7 @@ teacherPanelButton.hidden = true;
   ) => {
 
     const roleLabels = {
-      admin: "administrador",
+      admin: "tutor",
       coordinator: "coordinador",
       tutor: "tutor",
       teacher: "docente"
