@@ -350,7 +350,7 @@ document.addEventListener(
 
       const roleLabels = {
         admin:
-          "Administrador",
+         "Tutoría",
 
         coordinator:
           "Coordinación",
