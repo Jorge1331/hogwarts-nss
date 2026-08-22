@@ -129,21 +129,28 @@ document.addEventListener(
         "adminInvitationsList"
       );
 
-    const requiredElements = [
-      teachersEmpty,
-      teachersList,
-      invitationsCount,
-      invitationForm,
-      invitationName,
-      invitationEmail,
-      invitationJob,
-      invitationSubmit,
-      invitationMessage,
-      invitationsLoading,
-      invitationsError,
-      invitationsEmpty,
-      invitationsList
-    ];
+   const requiredElements = [
+  teacherTotal,
+  teacherActive,
+  teacherAdmins,
+  teacherInactive,
+  teachersCount,
+  teachersLoading,
+  teachersError,
+  teachersEmpty,
+  teachersList,
+  invitationsCount,
+  invitationForm,
+  invitationName,
+  invitationEmail,
+  invitationJob,
+  invitationSubmit,
+  invitationMessage,
+  invitationsLoading,
+  invitationsError,
+  invitationsEmpty,
+  invitationsList
+];
 
     if (
       requiredElements.some(
@@ -1151,8 +1158,6 @@ document.addEventListener(
 
     resetInterface();
     resetInvitationInterface();
-    resetInterface();
-
 
     onAuthStateChanged(
       auth,
