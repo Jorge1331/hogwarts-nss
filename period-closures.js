@@ -636,15 +636,23 @@ onAuthStateChanged(
         );
 
 
-      if (!teacherProfile) {
-        return;
-      }
+     if (!teacherProfile) {
+  return;
+}
 
 
-      await checkPendingClosures(
-        user,
-        teacherProfile
-      );
+if (
+  teacherProfile.role !==
+  "admin"
+) {
+  return;
+}
+
+
+await checkPendingClosures(
+  user,
+  teacherProfile
+);
 
 
     } catch (error) {
