@@ -298,7 +298,7 @@ document.addEventListener(
        FIRMA DEL PROFESORADO
        ===================================================== */
 
-       onAuthStateChanged(
+          onAuthStateChanged(
       auth,
       async user => {
 
