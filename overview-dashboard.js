@@ -21,6 +21,7 @@ import {
   collection,
   doc,
   getCountFromServer,
+  getDocFromServer,
   limit,
   onSnapshot,
   orderBy,
@@ -38,7 +39,79 @@ const PUBLIC_HOUSE_IDS = [
   "ravenclaw",
   "hufflepuff"
 ];
+const ALLOWED_ROLES =
+  new Set([
+    "admin",
+    "coordinator",
+    "tutor",
+    "teacher"
+  ]);
 
+
+const normaliseEmail = value =>
+  String(
+    value || ""
+  )
+    .trim()
+    .toLowerCase();
+
+
+const isAuthorizedTeacher =
+  async user => {
+
+    if (
+      !user ||
+      !user.uid ||
+      !user.email
+    ) {
+      return false;
+    }
+
+
+    const teacherReference =
+      doc(
+        db,
+        "authorizedTeachers",
+        user.uid
+      );
+
+
+    const teacherSnapshot =
+      await getDocFromServer(
+        teacherReference
+      );
+
+
+    if (
+      !teacherSnapshot.exists()
+    ) {
+      return false;
+    }
+
+
+    const teacherData =
+      teacherSnapshot.data();
+
+
+    const role =
+      String(
+        teacherData.role || ""
+      )
+        .trim()
+        .toLowerCase();
+
+
+    return (
+      teacherData.active === true &&
+      normaliseEmail(
+        teacherData.email
+      ) ===
+        normaliseEmail(
+          user.email
+        ) &&
+      ALLOWED_ROLES.has(role)
+    );
+  };
 
 /* ---------------------------------------------------------
    ELEMENTOS DE LA VISTA GENERAL
@@ -733,21 +806,70 @@ if (
   )
 ) {
 
-  onAuthStateChanged(
-    auth,
-    user => {
+onAuthStateChanged(
+  auth,
+  async user => {
 
-      if (!user) {
+    /*
+     Ante cualquier cambio de sesión,
+     detenemos primero los observadores
+     asociados a la identidad anterior.
+    */
 
-        stopListeners();
+    stopListeners();
+
+
+    if (!user) {
+      return;
+    }
+
+
+    try {
+
+      const authorized =
+        await isAuthorizedTeacher(
+          user
+        );
+
+
+      /*
+       Evita arrancar listeners si la
+       sesión cambió mientras Firestore
+       estaba comprobando el perfil.
+      */
+
+      if (
+        auth.currentUser?.uid !==
+        user.uid
+      ) {
+        return;
+      }
+
+
+      if (!authorized) {
+
+        console.warn(
+          "Vista general: sesión sin autorización docente activa."
+        );
 
         return;
       }
 
 
       startListeners();
+
+
+    } catch (error) {
+
+      console.error(
+        "Vista general: no se ha podido comprobar la autorización docente.",
+        error
+      );
+
+      stopListeners();
     }
-  );
+  }
+);
 
 } else {
 
