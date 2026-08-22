@@ -298,15 +298,27 @@ document.addEventListener(
        FIRMA DEL PROFESORADO
        ===================================================== */
 
-    onAuthStateChanged(
+   onAuthStateChanged(
   auth,
   async user => {
 
+    if (
+      unsubscribeChronicles
+    ) {
+
+      unsubscribeChronicles();
+
+      unsubscribeChronicles =
+        null;
+    }
+
+
+    chronicles = [];
+
+    renderChronicles();
+
+
     if (!user) {
-
-      chroniclePreviewAuthor.textContent =
-        "Firma del profesor/a";
-
       return;
     }
 
@@ -320,9 +332,10 @@ document.addEventListener(
 
 
       /*
-       Si la sesión cambia mientras
-       Firestore valida el perfil,
-       ignoramos la respuesta antigua.
+       Si cambia la sesión mientras
+       validamos el perfil, no arrancamos
+       un listener asociado al usuario
+       anterior.
       */
 
       if (
@@ -335,32 +348,75 @@ document.addEventListener(
 
       if (!teacherProfile) {
 
-        chroniclePreviewAuthor.textContent =
-          "Firma del profesor/a";
+        console.warn(
+          "Memoria de Crónicas: sesión sin autorización docente activa."
+        );
 
         return;
       }
 
 
-      chroniclePreviewAuthor.textContent =
-        `Por ${teacherProfile.displayName}`;
+      unsubscribeChronicles =
+        onSnapshot(
+          collection(
+            db,
+            "chronicles"
+          ),
+          snapshot => {
+
+            chronicles =
+              snapshot.docs
+                .map(
+                  documentSnapshot => ({
+                    id:
+                      documentSnapshot.id,
+                    ...documentSnapshot.data()
+                  })
+                )
+                .sort(
+                  (a, b) => {
+
+                    const aTime =
+                      a.updatedAt?.toMillis?.() ||
+                      a.createdAt?.toMillis?.() ||
+                      0;
+
+                    const bTime =
+                      b.updatedAt?.toMillis?.() ||
+                      b.createdAt?.toMillis?.() ||
+                      0;
+
+
+                    return bTime - aTime;
+                  }
+                );
+
+
+            renderChronicles();
+          },
+          error => {
+
+            console.error(
+              "No se ha podido cargar la Memoria de Crónicas:",
+              error
+            );
+          }
+        );
 
 
     } catch (error) {
 
       console.error(
-        "No se ha podido recuperar la firma de la crónica:",
+        "No se ha podido validar el acceso a la Memoria de Crónicas:",
         error
       );
 
+      chronicles = [];
 
-      chroniclePreviewAuthor.textContent =
-        "Firma del profesor/a";
-          }
-        }
-      );
-     }
-   );
+      renderChronicles();
+    }
+  }
+);
 /* =========================================================
    GUARDADO DE BORRADORES
    ========================================================= */
