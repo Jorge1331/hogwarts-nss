@@ -299,85 +299,68 @@ document.addEventListener(
        ===================================================== */
 
     onAuthStateChanged(
-      auth,
-      async user => {
+  auth,
+  async user => {
 
-        if (!user) {
+    if (!user) {
 
-          chroniclePreviewAuthor.textContent =
-            "Firma del profesor/a";
+      chroniclePreviewAuthor.textContent =
+        "Firma del profesor/a";
 
-          return;
-        }
-
-
-        try {
-
-          const teacherReference =
-            doc(
-              db,
-              "authorizedTeachers",
-              user.uid
-            );
+      return;
+    }
 
 
-          const teacherSnapshot =
-            await getDocFromServer(
-              teacherReference
-            );
+    try {
+
+      const teacherProfile =
+        await getAuthorizedTeacherProfile(
+          user
+        );
 
 
-          if (
-            teacherSnapshot.exists() &&
-            teacherSnapshot.data().active === true
-          ) {
+      /*
+       Si la sesión cambia mientras
+       Firestore valida el perfil,
+       ignoramos la respuesta antigua.
+      */
 
-            const teacherData =
-              teacherSnapshot.data();
-
-            const authorName =
-              cleanText(
-                teacherData.displayName
-              ) ||
-              cleanText(
-                user.displayName
-              ) ||
-              "Profesorado";
-
-
-            chroniclePreviewAuthor.textContent =
-              `Por ${authorName}`;
-
-            return;
-          }
-
-
-          chroniclePreviewAuthor.textContent =
-            cleanText(
-              user.displayName
-            ) ||
-            "Profesorado";
-
-
-        } catch (error) {
-
-          console.error(
-            "No se ha podido recuperar la firma de la crónica:",
-            error
-          );
-
-
-          chroniclePreviewAuthor.textContent =
-            cleanText(
-              user.displayName
-            ) ||
-            "Profesorado";
-        }
+      if (
+        auth.currentUser?.uid !==
+        user.uid
+      ) {
+        return;
       }
-    );
 
-  }
-);
+
+      if (!teacherProfile) {
+
+        chroniclePreviewAuthor.textContent =
+          "Firma del profesor/a";
+
+        return;
+      }
+
+
+      chroniclePreviewAuthor.textContent =
+        `Por ${teacherProfile.displayName}`;
+
+
+    } catch (error) {
+
+      console.error(
+        "No se ha podido recuperar la firma de la crónica:",
+        error
+      );
+
+
+      chroniclePreviewAuthor.textContent =
+        "Firma del profesor/a";
+          }
+        }
+      );
+     }
+   );
 /* =========================================================
    GUARDADO DE BORRADORES
    ========================================================= */
