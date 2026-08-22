@@ -1196,9 +1196,9 @@ if (canEditDraft) {
     );
 
 
-    onAuthStateChanged(
+        onAuthStateChanged(
       auth,
-      user => {
+      async user => {
 
         if (
           unsubscribeChronicles
@@ -1211,65 +1211,112 @@ if (canEditDraft) {
         }
 
 
+        chronicles = [];
+
+        renderChronicles();
+
+
         if (!user) {
-
-          chronicles = [];
-
-          renderChronicles();
-
           return;
         }
 
 
-        unsubscribeChronicles =
-          onSnapshot(
-            collection(
-              db,
-              "chronicles"
-            ),
-            snapshot => {
+        try {
 
-              chronicles =
-                snapshot.docs
-                  .map(
-                    documentSnapshot => ({
-                      id:
-                        documentSnapshot.id,
-                      ...documentSnapshot.data()
-                    })
-                  )
-                  .sort(
-                    (a, b) => {
-
-                      const aTime =
-                        a.updatedAt?.toMillis?.() ||
-                        a.createdAt?.toMillis?.() ||
-                        0;
-
-                      const bTime =
-                        b.updatedAt?.toMillis?.() ||
-                        b.createdAt?.toMillis?.() ||
-                        0;
+          const teacherProfile =
+            await getAuthorizedTeacherProfile(
+              user
+            );
 
 
-                      return bTime - aTime;
-                    }
-                  );
+          if (
+            auth.currentUser?.uid !==
+            user.uid
+          ) {
+            return;
+          }
 
 
-              renderChronicles();
-            },
-            error => {
+          if (!teacherProfile) {
 
-              console.error(
-                "No se ha podido cargar la Memoria de Crónicas:",
-                error
-              );
-            }
+            console.warn(
+              "Memoria de Crónicas: sesión sin autorización docente activa."
+            );
+
+            return;
+          }
+
+
+          unsubscribeChronicles =
+            onSnapshot(
+              collection(
+                db,
+                "chronicles"
+              ),
+              snapshot => {
+
+                chronicles =
+                  snapshot.docs
+                    .map(
+                      documentSnapshot => ({
+                        id:
+                          documentSnapshot.id,
+                        ...documentSnapshot.data()
+                      })
+                    )
+                    .sort(
+                      (a, b) => {
+
+                        const aTime =
+                          a.updatedAt?.toMillis?.() ||
+                          a.createdAt?.toMillis?.() ||
+                          0;
+
+                        const bTime =
+                          b.updatedAt?.toMillis?.() ||
+                          b.createdAt?.toMillis?.() ||
+                          0;
+
+
+                        return bTime - aTime;
+                      }
+                    );
+
+
+                renderChronicles();
+              },
+              error => {
+
+                console.error(
+                  "No se ha podido cargar la Memoria de Crónicas:",
+                  error
+                );
+              }
+            );
+
+
+        } catch (error) {
+
+          if (
+            auth.currentUser?.uid !==
+            user.uid
+          ) {
+            return;
+          }
+
+
+          console.error(
+            "No se ha podido validar el acceso a la Memoria de Crónicas:",
+            error
           );
+
+
+          chronicles = [];
+
+          renderChronicles();
+        }
       }
     );
-
   }
 );
 /* =========================================================
