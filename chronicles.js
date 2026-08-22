@@ -1391,7 +1391,35 @@ document.addEventListener(
 
 
         try {
+          const teacherProfile =
+            await getAuthorizedTeacherProfile(
+              user
+            );
 
+
+          /*
+           La publicación solo continúa
+           si la sesión sigue perteneciendo
+           al mismo docente autorizado.
+          */
+
+          if (
+            auth.currentUser?.uid !==
+            user.uid
+          ) {
+
+            throw new Error(
+              "La sesión docente ha cambiado."
+            );
+          }
+
+
+          if (!teacherProfile) {
+
+            throw new Error(
+              "La autorización docente no está disponible."
+            );
+          }
           const privateReference =
             doc(
               db,
