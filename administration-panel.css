@@ -767,3 +767,57 @@
       20px 18px;
   }
 }
+/* =========================================================
+   INVITACIONES · FILAS COMPACTAS
+   ========================================================= */
+
+.administration-invitations-list
+.administration-teacher-row {
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  grid-template-areas:
+    "identity status"
+    "job role";
+
+  gap:
+    9px
+    14px;
+
+  min-height: 94px;
+  padding:
+    15px
+    16px;
+}
+
+
+.administration-invitations-list
+.administration-teacher-identity {
+  grid-area: identity;
+  min-width: 0;
+}
+
+
+.administration-invitations-list
+.administration-job {
+  grid-area: job;
+
+  min-width: 0;
+}
+
+
+.administration-invitations-list
+.administration-role-badge {
+  grid-area: role;
+
+  justify-self: end;
+}
+
+
+.administration-invitations-list
+.administration-status-badge {
+  grid-area: status;
+
+  justify-self: end;
+}
