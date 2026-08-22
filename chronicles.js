@@ -298,123 +298,68 @@ document.addEventListener(
        FIRMA DEL PROFESORADO
        ===================================================== */
 
-   onAuthStateChanged(
-  auth,
-  async user => {
+       onAuthStateChanged(
+      auth,
+      async user => {
 
-    if (
-      unsubscribeChronicles
-    ) {
+        if (!user) {
 
-      unsubscribeChronicles();
+          chroniclePreviewAuthor.textContent =
+            "Firma del profesor/a";
 
-      unsubscribeChronicles =
-        null;
-    }
+          return;
+        }
 
 
-    chronicles = [];
+        try {
 
-    renderChronicles();
-
-
-    if (!user) {
-      return;
-    }
-
-
-    try {
-
-      const teacherProfile =
-        await getAuthorizedTeacherProfile(
-          user
-        );
-
-
-      /*
-       Si cambia la sesión mientras
-       validamos el perfil, no arrancamos
-       un listener asociado al usuario
-       anterior.
-      */
-
-      if (
-        auth.currentUser?.uid !==
-        user.uid
-      ) {
-        return;
-      }
-
-
-      if (!teacherProfile) {
-
-        console.warn(
-          "Memoria de Crónicas: sesión sin autorización docente activa."
-        );
-
-        return;
-      }
-
-
-      unsubscribeChronicles =
-        onSnapshot(
-          collection(
-            db,
-            "chronicles"
-          ),
-          snapshot => {
-
-            chronicles =
-              snapshot.docs
-                .map(
-                  documentSnapshot => ({
-                    id:
-                      documentSnapshot.id,
-                    ...documentSnapshot.data()
-                  })
-                )
-                .sort(
-                  (a, b) => {
-
-                    const aTime =
-                      a.updatedAt?.toMillis?.() ||
-                      a.createdAt?.toMillis?.() ||
-                      0;
-
-                    const bTime =
-                      b.updatedAt?.toMillis?.() ||
-                      b.createdAt?.toMillis?.() ||
-                      0;
-
-
-                    return bTime - aTime;
-                  }
-                );
-
-
-            renderChronicles();
-          },
-          error => {
-
-            console.error(
-              "No se ha podido cargar la Memoria de Crónicas:",
-              error
+          const teacherProfile =
+            await getAuthorizedTeacherProfile(
+              user
             );
+
+
+          /*
+           Si la sesión cambia mientras
+           Firestore valida el perfil,
+           ignoramos la respuesta antigua.
+          */
+
+          if (
+            auth.currentUser?.uid !==
+            user.uid
+          ) {
+            return;
           }
-        );
 
 
-    } catch (error) {
+          if (!teacherProfile) {
 
-      console.error(
-        "No se ha podido validar el acceso a la Memoria de Crónicas:",
-        error
-      );
+            chroniclePreviewAuthor.textContent =
+              "Firma del profesor/a";
 
-      chronicles = [];
+            return;
+          }
 
-      renderChronicles();
-    }
+
+          chroniclePreviewAuthor.textContent =
+            `Por ${teacherProfile.displayName}`;
+
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido recuperar la firma de la crónica:",
+            error
+          );
+
+
+          chroniclePreviewAuthor.textContent =
+            "Firma del profesor/a";
+        }
+      }
+    );
+
   }
 );
 /* =========================================================
