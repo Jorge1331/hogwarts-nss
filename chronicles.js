@@ -27,6 +27,105 @@ import {
   updateDoc,
   writeBatch
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
+/* =========================================================
+   AUTORIZACIÓN DOCENTE COMÚN
+   ========================================================= */
+
+const ALLOWED_ROLES =
+  new Set([
+    "admin",
+    "coordinator",
+    "tutor",
+    "teacher"
+  ]);
+
+
+const normaliseEmail = value =>
+  String(
+    value || ""
+  )
+    .trim()
+    .toLowerCase();
+
+
+const getAuthorizedTeacherProfile =
+  async user => {
+
+    if (
+      !user ||
+      !user.uid ||
+      !user.email
+    ) {
+      return null;
+    }
+
+
+    const teacherReference =
+      doc(
+        db,
+        "authorizedTeachers",
+        user.uid
+      );
+
+
+    const teacherSnapshot =
+      await getDocFromServer(
+        teacherReference
+      );
+
+
+    if (
+      !teacherSnapshot.exists()
+    ) {
+      return null;
+    }
+
+
+    const teacherData =
+      teacherSnapshot.data();
+
+
+    const role =
+      String(
+        teacherData.role || ""
+      )
+        .trim()
+        .toLowerCase();
+
+
+    if (
+      teacherData.active !== true ||
+      normaliseEmail(
+        teacherData.email
+      ) !==
+        normaliseEmail(
+          user.email
+        ) ||
+      !ALLOWED_ROLES.has(role)
+    ) {
+      return null;
+    }
+
+
+    return {
+      displayName:
+        String(
+          teacherData.displayName ||
+          user.displayName ||
+          "Profesorado"
+        ).trim(),
+
+      email:
+        normaliseEmail(
+          teacherData.email
+        ),
+
+      role,
+
+      active:
+        true
+    };
+  };
 
 let activeChronicleId = null;
 
