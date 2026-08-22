@@ -563,43 +563,33 @@ document.addEventListener(
 
       try {
 
-        const teacherReference =
-          doc(
-            db,
-            "authorizedTeachers",
-            user.uid
-          );
+        const teacherProfile =
+  await getAuthorizedTeacherProfile(
+    user
+  );
 
 
-        const teacherSnapshot =
-          await getDocFromServer(
-            teacherReference
-          );
+if (
+  auth.currentUser?.uid !==
+  user.uid
+) {
+
+  throw new Error(
+    "La sesión docente ha cambiado."
+  );
+}
 
 
-        if (
-          !teacherSnapshot.exists() ||
-          teacherSnapshot.data().active !== true
-        ) {
+if (!teacherProfile) {
 
-          throw new Error(
-            "La autorización docente no está disponible."
-          );
-        }
+  throw new Error(
+    "La autorización docente no está disponible."
+  );
+}
 
 
-        const teacherData =
-          teacherSnapshot.data();
-
-
-        const authorName =
-          cleanText(
-            teacherData.displayName
-          ) ||
-          cleanText(
-            user.displayName
-          ) ||
-          "Profesorado";
+const authorName =
+  teacherProfile.displayName;
 
 
       const wasEditing =
