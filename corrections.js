@@ -40,7 +40,6 @@ const ALLOWED_ROLES =
 const PRIVILEGED_CORRECTION_ROLES =
   new Set([
     "admin",
-    "coordinator"
   ]);
 
 
