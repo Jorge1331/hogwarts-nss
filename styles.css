@@ -3618,3 +3618,533 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · CLASIFICACIÓN DE LAS CASAS
+   ========================================================= */
+
+.ranking-card {
+  order: -10;
+
+  grid-column:
+    1 / -1;
+
+  grid-row:
+    auto;
+
+  min-height: 0;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.34);
+
+  background:
+    radial-gradient(
+      circle at 50% 0%,
+      rgba(216, 168, 78, 0.08),
+      transparent 33%
+    ),
+    linear-gradient(
+      145deg,
+      #0b1526,
+      #060c17
+    );
+}
+
+
+/* =========================================================
+   CABECERA DEL RANKING
+   ========================================================= */
+
+.ranking-heading {
+  align-items: center;
+
+  padding:
+    17px
+    22px
+    10px;
+
+  text-align: center;
+}
+
+
+.ranking-heading > div {
+  width: 100%;
+}
+
+
+.ranking-heading .card-kicker {
+  margin-bottom: 4px;
+
+  color:
+    var(--gold-400);
+}
+
+
+.ranking-heading h3 {
+  color:
+    #f2dfb1;
+
+  font-size:
+    clamp(
+      1.1rem,
+      1.6vw,
+      1.42rem
+    );
+
+  letter-spacing:
+    0.04em;
+}
+
+
+.ranking-motto {
+  margin:
+    4px
+    0
+    0;
+
+  color:
+    rgba(231, 224, 210, 0.62);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    0.78rem;
+
+  font-style:
+    italic;
+}
+
+
+.ranking-heading .card-symbol {
+  position: absolute;
+
+  top: 18px;
+  right: 22px;
+
+  color:
+    var(--gold-400);
+
+  font-size: 0.95rem;
+
+  opacity: 0.7;
+}
+
+
+/* =========================================================
+   CUATRO CASAS
+   ========================================================= */
+
+.ranking-card .house-ranking {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      4,
+      minmax(0, 1fr)
+    );
+
+  gap: 10px;
+
+  margin: 0;
+
+  padding:
+    8px
+    18px
+    20px;
+
+  list-style: none;
+}
+
+
+.ranking-card .ranking-row {
+  position: relative;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr;
+
+  grid-template-areas:
+    "position"
+    "emblem"
+    "name"
+    "score"
+    "trend";
+
+  justify-items: center;
+  align-content: center;
+
+  gap: 6px;
+
+  min-height: 178px;
+
+  padding:
+    13px
+    10px
+    12px;
+
+  overflow: hidden;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.09);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.ranking-card .ranking-row:hover {
+  transform:
+    translateY(-2px);
+}
+
+
+.ranking-card .ranking-row::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  right: 0;
+  bottom: auto;
+  left: 0;
+
+  width: 100%;
+  height: 3px;
+
+  background:
+    currentColor;
+
+  opacity: 0.72;
+}
+
+
+/* =========================================================
+   IDENTIDAD DE CADA CASA
+   ========================================================= */
+
+.ranking-card .ranking-row.gryffindor {
+  color:
+    #d8888f;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(112, 24, 35, 0.28),
+      rgba(13, 20, 34, 0.84)
+    );
+}
+
+
+.ranking-card .ranking-row.slytherin {
+  color:
+    #70c99a;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(19, 85, 59, 0.27),
+      rgba(13, 20, 34, 0.84)
+    );
+}
+
+
+.ranking-card .ranking-row.ravenclaw {
+  color:
+    #7ea9de;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(24, 64, 112, 0.3),
+      rgba(13, 20, 34, 0.84)
+    );
+}
+
+
+.ranking-card .ranking-row.hufflepuff {
+  color:
+    #e0be63;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(115, 83, 18, 0.27),
+      rgba(13, 20, 34, 0.84)
+    );
+}
+
+
+/* =========================================================
+   POSICIÓN
+   ========================================================= */
+
+.ranking-card .ranking-position {
+  grid-area:
+    position;
+
+  color:
+    rgba(235, 239, 246, 0.68);
+
+  font-size:
+    0.75rem;
+
+  letter-spacing:
+    0.08em;
+}
+
+
+/* =========================================================
+   ESCUDO
+   ========================================================= */
+
+.ranking-card .house-emblem {
+  grid-area:
+    emblem;
+
+  display: grid;
+  place-items: center;
+
+  width: 62px;
+  height: 70px;
+
+  margin:
+    2px
+    0;
+
+  color:
+    #f5e3b8;
+
+  font-size:
+    1.75rem;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(216, 168, 78, 0.34),
+      rgba(5, 11, 20, 0.92)
+    );
+
+  clip-path:
+    polygon(
+      50% 0%,
+      88% 12%,
+      82% 65%,
+      50% 100%,
+      18% 65%,
+      12% 12%
+    );
+
+  filter:
+    drop-shadow(
+      0 5px 8px
+      rgba(0, 0, 0, 0.35)
+    );
+}
+
+
+/* =========================================================
+   NOMBRE Y PUNTOS
+   ========================================================= */
+
+.ranking-card .ranking-row strong {
+  grid-area:
+    name;
+
+  color:
+    currentColor;
+
+  font-size:
+    0.78rem;
+
+  letter-spacing:
+    0.04em;
+}
+
+
+.ranking-card .house-score {
+  grid-area:
+    score;
+
+  color:
+    #f6ead0;
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(
+      1.25rem,
+      1.8vw,
+      1.65rem
+    );
+
+  font-weight:
+    600;
+
+  line-height:
+    1;
+}
+
+
+/* =========================================================
+   TENDENCIA
+   ========================================================= */
+
+.ranking-card .ranking-trend {
+  grid-area:
+    trend;
+
+  min-width: 0;
+  min-height: 20px;
+
+  margin-top:
+    2px;
+
+  padding:
+    3px
+    8px;
+
+  font-size:
+    0.58rem;
+}
+
+
+/* =========================================================
+   CASA LÍDER
+   ========================================================= */
+
+.ranking-card
+.ranking-row[data-rank-position="1"] {
+  border-color:
+    rgba(239, 200, 115, 0.54);
+
+  box-shadow:
+    0 0 26px
+    rgba(216, 168, 78, 0.11);
+}
+
+
+.ranking-card
+.ranking-row[data-rank-position="1"]::after {
+  content:
+    "LÍDER";
+
+  position:
+    absolute;
+
+  top: 10px;
+  right: 10px;
+
+  padding:
+    3px
+    6px;
+
+  color:
+    #f5dda2;
+
+  font-size:
+    0.48rem;
+
+  font-weight:
+    800;
+
+  letter-spacing:
+    0.09em;
+
+  border:
+    1px solid
+    rgba(239, 200, 115, 0.32);
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(216, 168, 78, 0.08);
+}
+
+
+/* YA MOSTRAMOS LAS CUATRO CASAS */
+
+.ranking-card .secondary-button {
+  display:
+    none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 850px) {
+
+  .ranking-card .house-ranking {
+    grid-template-columns:
+      repeat(
+        2,
+        minmax(0, 1fr)
+      );
+  }
+
+}
+
+
+@media (max-width: 520px) {
+
+  .ranking-card .house-ranking {
+    gap: 8px;
+
+    padding:
+      7px
+      10px
+      14px;
+  }
+
+
+  .ranking-card .ranking-row {
+    min-height:
+      160px;
+
+    padding:
+      11px
+      7px;
+  }
+
+
+  .ranking-card .house-emblem {
+    width:
+      52px;
+
+    height:
+      59px;
+
+    font-size:
+      1.45rem;
+  }
+
+
+  .ranking-heading {
+    padding:
+      15px
+      15px
+      8px;
+  }
+
+
+  .ranking-heading .card-symbol {
+    display:
+      none;
+  }
+
+}
