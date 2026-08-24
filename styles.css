@@ -5857,3 +5857,43 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · CARGA LIMPIA DEL RANKING
+   ========================================================= */
+
+.ranking-card
+#houseRanking {
+  opacity: 0;
+
+  visibility: hidden;
+
+  transition:
+    opacity
+    0.38s
+    ease;
+}
+
+
+.ranking-card
+#houseRanking[aria-busy="false"] {
+  opacity: 1;
+
+  visibility: visible;
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .ranking-card
+  #houseRanking {
+    transition: none;
+  }
+
+}
