@@ -696,7 +696,15 @@ function renderHouseRanking() {
     }
   );
 
+  /*
+   Los cuatro datos reales ya están renderizados.
+   Revelamos ahora la clasificación pública.
+  */
 
+  rankingElement.setAttribute(
+    "aria-busy",
+    "false"
+  );
   animatePublicRanking(
     rankingElement,
     previousPositions
