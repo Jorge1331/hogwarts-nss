@@ -5212,3 +5212,322 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · ACTUALIZACIÓN MÁGICA EN TIEMPO REAL
+   ========================================================= */
+
+
+/* =========================================================
+   CAPAS
+   ========================================================= */
+
+.ranking-card
+.ranking-row
+.house-update-wave {
+  position: absolute;
+
+  top: 50%;
+  left: 50%;
+
+  z-index: 0;
+
+  width: 48%;
+
+  aspect-ratio: 1;
+
+  pointer-events: none;
+
+  opacity: 0;
+
+  border:
+    1px solid
+    color-mix(
+      in srgb,
+      var(
+        --update-magic,
+        var(--house-magic)
+      ) 58%,
+      transparent
+    );
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      color-mix(
+        in srgb,
+        var(
+          --update-magic,
+          var(--house-magic)
+        ) 32%,
+        transparent
+      ) 0%,
+      color-mix(
+        in srgb,
+        var(
+          --update-magic,
+          var(--house-magic)
+        ) 12%,
+        transparent
+      ) 38%,
+      transparent 68%
+    );
+
+  box-shadow:
+    0 0 20px
+      color-mix(
+        in srgb,
+        var(
+          --update-magic,
+          var(--house-magic)
+        ) 25%,
+        transparent
+      ),
+    inset 0 0 18px
+      color-mix(
+        in srgb,
+        var(
+          --update-magic,
+          var(--house-magic)
+        ) 18%,
+        transparent
+      );
+
+  transform:
+    translate(-50%, -50%)
+    scale(0.18);
+}
+
+
+/* CONTENIDO POR ENCIMA DE LA OLEADA */
+
+.ranking-card
+.ranking-position,
+
+.ranking-card
+.house-emblem,
+
+.ranking-card
+.ranking-row > strong,
+
+.ranking-card
+.house-score {
+  position: relative;
+
+  z-index: 2;
+}
+
+
+/* =========================================================
+   COLOR DE LA ACTUALIZACIÓN
+   ========================================================= */
+
+.ranking-card
+.ranking-row.points-gained {
+  --update-magic:
+    var(--house-magic);
+}
+
+
+.ranking-card
+.ranking-row.points-lost {
+  --update-magic:
+    #d46c76;
+}
+
+
+/* =========================================================
+   OLEADA
+   ========================================================= */
+
+.ranking-card
+.ranking-row.points-updated
+.house-update-wave {
+  animation:
+    house-update-wave
+    1.35s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+@keyframes house-update-wave {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.18);
+  }
+
+  18% {
+    opacity: 0.9;
+  }
+
+  60% {
+    opacity: 0.4;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(2.45);
+  }
+
+}
+
+
+/* =========================================================
+   ESCUDO · IMPULSO MÁGICO
+   ========================================================= */
+
+.ranking-card
+.ranking-row.points-updated
+.house-emblem {
+  animation:
+    house-update-emblem
+    1.05s
+    cubic-bezier(
+      0.16,
+      1,
+      0.3,
+      1
+    )
+    both;
+}
+
+
+@keyframes house-update-emblem {
+
+  0% {
+    scale: 1;
+  }
+
+  32% {
+    scale: 1.16;
+  }
+
+  58% {
+    scale: 1.08;
+  }
+
+  100% {
+    scale: 1;
+  }
+
+}
+
+
+/* =========================================================
+   PUNTOS VIVOS
+   ========================================================= */
+
+.ranking-card
+.house-score.is-counting {
+  color:
+    #fff1bc;
+
+  animation:
+    house-score-counting
+    0.38s
+    ease-in-out
+    infinite
+    alternate;
+}
+
+
+@keyframes house-score-counting {
+
+  from {
+    scale: 1;
+
+    text-shadow:
+      0 0 9px
+        color-mix(
+          in srgb,
+          var(--house-magic) 35%,
+          transparent
+        );
+  }
+
+  to {
+    scale: 1.07;
+
+    text-shadow:
+      0 0 13px
+        var(--house-magic),
+      0 0 26px
+        color-mix(
+          in srgb,
+          var(--house-magic) 42%,
+          transparent
+        );
+  }
+
+}
+
+
+/* =========================================================
+   ACTUALIZACIÓN DE LA TARJETA
+   ========================================================= */
+
+.ranking-card
+.ranking-row.points-updated {
+  border-color:
+    color-mix(
+      in srgb,
+      var(
+        --update-magic,
+        var(--house-magic)
+      ) 82%,
+      #ffe6aa
+    );
+
+  filter:
+    brightness(1.1)
+    drop-shadow(
+      0 0 17px
+      color-mix(
+        in srgb,
+        var(
+          --update-magic,
+          var(--house-magic)
+        ) 25%,
+        transparent
+      )
+    );
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .ranking-card
+  .ranking-row.points-updated
+  .house-update-wave,
+
+  .ranking-card
+  .ranking-row.points-updated
+  .house-emblem,
+
+  .ranking-card
+  .house-score.is-counting {
+    animation: none;
+  }
+
+}
