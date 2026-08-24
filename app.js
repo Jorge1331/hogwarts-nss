@@ -41,7 +41,11 @@ const publicRankingDocuments =
   new Map();
 
 let houses = [];
+
 let previousPublicRanks =
+  new Map();
+
+let previousPublicPoints =
   new Map();
 
 let publicRankingHasRendered =
@@ -261,7 +265,7 @@ function renderHouseRanking() {
         };
       }
     );
-  const rankedHousesWithTrend =
+    const rankedHousesWithTrend =
     rankedHouses.map(
       (house) => {
 
@@ -269,6 +273,12 @@ function renderHouseRanking() {
           previousPublicRanks.get(
             house.id
           );
+
+        const previousPointsValue =
+          previousPublicPoints.get(
+            house.id
+          );
+
 
         const rankChange =
           publicRankingHasRendered &&
@@ -280,20 +290,37 @@ function renderHouseRanking() {
             : 0;
 
 
+        const pointChange =
+          publicRankingHasRendered &&
+          Number.isInteger(
+            previousPointsValue
+          )
+            ? house.points -
+              previousPointsValue
+            : 0;
+
+
         return {
           ...house,
-          rankChange
+          rankChange,
+          pointChange,
+          previousPointsValue
         };
       }
     );
 
 
-  rankedHousesWithTrend.forEach(
+   rankedHousesWithTrend.forEach(
     (house) => {
 
       previousPublicRanks.set(
         house.id,
         house.rankPosition
+      );
+
+      previousPublicPoints.set(
+        house.id,
+        house.points
       );
     }
   );
@@ -327,7 +354,36 @@ function renderHouseRanking() {
 
       const rankChange =
         house.rankChange;
+      const pointChange =
+        Number.isInteger(
+          house.pointChange
+        )
+          ? house.pointChange
+          : 0;
 
+
+      const hasPointChange =
+        pointChange !== 0 &&
+        Number.isInteger(
+          house.previousPointsValue
+        );
+
+
+      if (hasPointChange) {
+
+        rankingRow.classList.add(
+          "points-updated",
+          pointChange > 0
+            ? "points-gained"
+            : "points-lost"
+        );
+      }
+
+
+      const initialPoints =
+        hasPointChange
+          ? house.previousPointsValue
+          : house.points;
 
       const trendClass =
         rankChange > 0
@@ -350,6 +406,10 @@ function renderHouseRanking() {
             ? `↓ Baja ${changedPositions}`
             : "— Se mantiene";
       rankingRow.innerHTML = `
+              <span
+          class="house-update-wave"
+          aria-hidden="true"
+        ></span>
         <span class="ranking-position">
           ${house.rankPosition}.º
         </span>
@@ -372,9 +432,10 @@ function renderHouseRanking() {
         </span>
 
         <span
+                <span
           class="house-score"
         >
-          ${formatPoints(house.points)} pts
+          ${formatPoints(initialPoints)} pts
         </span>
       `;
 
@@ -382,6 +443,37 @@ function renderHouseRanking() {
       rankingElement.appendChild(
         rankingRow
       );
+             if (hasPointChange) {
+
+        const scoreElement =
+          rankingRow.querySelector(
+            ".house-score"
+          );
+
+
+        animateHouseScore(
+          scoreElement,
+          house.previousPointsValue,
+          house.points
+        );
+
+
+        window.setTimeout(
+          () => {
+
+            if (!rankingRow.isConnected) {
+              return;
+            }
+
+            rankingRow.classList.remove(
+              "points-updated",
+              "points-gained",
+              "points-lost"
+            );
+          },
+          1450
+        );
+      }
     }
   );
 
@@ -389,6 +481,204 @@ function renderHouseRanking() {
   animatePublicRanking(
     rankingElement,
     previousPositions
+  );
+}
+/* ---------------------------------------------------------
+   PUNTUACIÓN VIVA
+--------------------------------------------------------- */
+
+function animateHouseScore(
+  scoreElement,
+  fromPoints,
+  toPoints
+) {
+
+  if (!scoreElement) {
+    return;
+  }
+
+
+  const reducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
+
+
+  if (
+    reducedMotion ||
+    !Number.isInteger(fromPoints) ||
+    !Number.isInteger(toPoints) ||
+    fromPoints === toPoints
+  ) {
+
+    scoreElement.textContent =
+      `${formatPoints(toPoints)} pts`;
+
+    return;
+  }
+
+
+  const difference =
+    toPoints - fromPoints;
+
+  const direction =
+    Math.sign(difference);
+
+  const distance =
+    Math.abs(difference);
+
+
+  scoreElement.classList.add(
+    "is-counting"
+  );
+
+
+  /*
+   Para movimientos normales de Hogwarts NSS
+   (+1, +3, +5, etc.) mostramos cada punto.
+  */
+
+  if (distance <= 15) {
+
+    let currentPoints =
+      fromPoints;
+
+    const stepDuration =
+      Math.max(
+        70,
+        Math.min(
+          130,
+          Math.round(
+            650 / distance
+          )
+        )
+      );
+
+
+    const advancePoint = () => {
+
+      if (!scoreElement.isConnected) {
+        return;
+      }
+
+
+      currentPoints +=
+        direction;
+
+
+      scoreElement.textContent =
+        `${formatPoints(currentPoints)} pts`;
+
+
+      if (
+        currentPoints === toPoints
+      ) {
+
+        window.setTimeout(
+          () => {
+
+            if (
+              scoreElement.isConnected
+            ) {
+
+              scoreElement.classList.remove(
+                "is-counting"
+              );
+            }
+          },
+          240
+        );
+
+        return;
+      }
+
+
+      window.setTimeout(
+        advancePoint,
+        stepDuration
+      );
+    };
+
+
+    window.setTimeout(
+      advancePoint,
+      stepDuration
+    );
+
+    return;
+  }
+
+
+  /*
+   Para cambios excepcionales grandes
+   hacemos una transición rápida,
+   evitando animaciones interminables.
+  */
+
+  const startedAt =
+    performance.now();
+
+  const duration =
+    850;
+
+
+  const animateFrame =
+    (currentTime) => {
+
+      if (!scoreElement.isConnected) {
+        return;
+      }
+
+
+      const progress =
+        Math.min(
+          (currentTime - startedAt) /
+            duration,
+          1
+        );
+
+
+      const easedProgress =
+        1 -
+        Math.pow(
+          1 - progress,
+          3
+        );
+
+
+      const visiblePoints =
+        Math.round(
+          fromPoints +
+          difference *
+            easedProgress
+        );
+
+
+      scoreElement.textContent =
+        `${formatPoints(visiblePoints)} pts`;
+
+
+      if (progress < 1) {
+
+        window.requestAnimationFrame(
+          animateFrame
+        );
+
+        return;
+      }
+
+
+      scoreElement.textContent =
+        `${formatPoints(toPoints)} pts`;
+
+      scoreElement.classList.remove(
+        "is-counting"
+      );
+    };
+
+
+  window.requestAnimationFrame(
+    animateFrame
   );
 }
 function animatePublicRanking(
