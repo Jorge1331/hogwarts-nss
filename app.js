@@ -470,7 +470,7 @@ function renderHouseRanking() {
               "points-lost"
             );
           },
-          1450
+        3200
         );
       }
     }
@@ -542,17 +542,17 @@ function animateHouseScore(
     let currentPoints =
       fromPoints;
 
-    const stepDuration =
+        const stepDuration =
       Math.max(
-        70,
+        150,
         Math.min(
-          130,
+          1200,
           Math.round(
-            650 / distance
+            2400 /
+            (distance + 1)
           )
         )
       );
-
 
     const advancePoint = () => {
 
@@ -617,8 +617,8 @@ function animateHouseScore(
   const startedAt =
     performance.now();
 
-  const duration =
-    850;
+    const duration =
+    2400;
 
 
   const animateFrame =
