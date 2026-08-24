@@ -3192,8 +3192,8 @@ a:focus-visible {
   background-repeat:
     no-repeat;
 
-  background-position:
-    center center;
+   background-position:
+    center 20%;
 
   background-size:
     cover;
@@ -3229,6 +3229,10 @@ a:focus-visible {
 
   position: absolute;
   inset: 0;
+   
+  width: auto;
+  height: auto;
+   
   z-index: 0;
 
   pointer-events: none;
