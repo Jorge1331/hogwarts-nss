@@ -29,199 +29,92 @@
 
 <body>
 
-  <div class="app-shell">
+    <div class="app-shell">
 
-    <!-- MENÚ LATERAL -->
-    <aside class="sidebar">
+    <!-- =====================================================
+         CABECERA PÚBLICA
+         ===================================================== -->
 
-      <div class="brand">
-        <div class="brand-shield">NSS</div>
+    <header class="public-header">
 
-        <div class="brand-text">
-          <span>Torneo de los</span>
-          <strong>Cuatro Magos</strong>
-          <small>Hogwarts NSS</small>
+      <div class="public-brand">
+
+        <div class="public-school-logo">
+          <img
+            src="logo_cole.png"
+            alt="Colegio Diocesano Nuestra Señora del Socorro"
+          >
         </div>
+
+        <div class="public-project-brand">
+          <strong>Hogwarts NSS</strong>
+          <span>El legado del Fénix</span>
+        </div>
+
       </div>
 
-      <nav class="sidebar-nav" aria-label="Navegación principal">
 
-        <button class="nav-item active" data-section="inicio">
-          <span class="nav-icon">🏰</span>
+      <nav
+        class="public-navigation"
+        aria-label="Navegación principal"
+      >
 
-          <span>
-            <strong>Torre Principal</strong>
-            <small>Inicio</small>
-          </span>
+        <button
+          class="public-nav-link nav-item active"
+          data-section="inicio"
+          type="button"
+        >
+          Inicio
         </button>
 
-        <button class="nav-item" data-section="gran-comedor">
-          <span class="nav-icon">🏆</span>
-
-          <span>
-            <strong>El Gran Comedor</strong>
-            <small>Clasificación</small>
-          </span>
+        <button
+          class="public-nav-link nav-item"
+          data-section="gran-comedor"
+          type="button"
+        >
+          Casas
         </button>
 
-        <button class="nav-item" data-section="caliz">
-          <span class="nav-icon">🔥</span>
-
-          <span>
-            <strong>El Santo Cáliz</strong>
-            <small>Misión semanal</small>
-          </span>
+        <button
+          class="public-nav-link nav-item"
+          data-section="callejon"
+          type="button"
+        >
+          Recompensas
         </button>
 
-        <button class="nav-item" data-section="callejon">
-          <span class="nav-icon">🪙</span>
+        <a
+          class="public-nav-link"
+          href="#publicChroniclesList"
+        >
+          El Profeta
+        </a>
 
-          <span>
-            <strong>El Callejón Diagon</strong>
-            <small>Recompensas</small>
-          </span>
+        <button
+          class="public-nav-link nav-item"
+          data-section="torneo"
+          type="button"
+        >
+          Torneo
         </button>
 
-        <button class="nav-item" data-section="mapa">
-          <span class="nav-icon">🗺️</span>
-
-          <span>
-            <strong>Mapa del Merodeador</strong>
-            <small>Progreso del curso</small>
-          </span>
-        </button>
-
-        <button class="nav-item" data-section="gringotts">
-          <span class="nav-icon">🏦</span>
-
-          <span>
-            <strong>Gringotts</strong>
-            <small>Banco de puntos</small>
-          </span>
-        </button>
-
-        <button class="nav-item" data-section="pociones">
-          <span class="nav-icon">🧪</span>
-
-          <span>
-            <strong>Aula de Pociones</strong>
-            <small>Retos especiales</small>
-          </span>
-        </button>
-
-        <button class="nav-item" data-section="torneo">
-          <span class="nav-icon">🐉</span>
-
-          <span>
-            <strong>Torneo de los Magos</strong>
-            <small>Las tres pruebas</small>
-          </span>
-        </button>
-
-        <button class="nav-item" data-section="copa">
-          <span class="nav-icon">🏅</span>
-
-          <span>
-            <strong>Copa de las Casas</strong>
-            <small>Ranking anual</small>
-          </span>
-        </button>
-
-        <button class="nav-item" data-section="biblioteca">
-          <span class="nav-icon">📖</span>
-
-          <span>
-            <strong>Biblioteca</strong>
-            <small>Normas y ayuda</small>
-          </span>
-        </button>
-<!-- ACCESO A LA SALA DE PROFESORES -->
-<a
-  class="nav-item teacher-access-link"
-  href="profesores.html"
->
-  <span class="nav-icon">🔐</span>
-
-  <span>
-    <strong>Sala de Profesores</strong>
-    <small>Acceso restringido</small>
-  </span>
-</a>
       </nav>
 
-      <div class="sidebar-profile">
 
-        <div class="profile-house-badge">🦅</div>
+      <a
+        class="public-teacher-access"
+        href="profesores.html"
+      >
+        <span aria-hidden="true">⌑</span>
+        Acceso profesorado
+      </a>
 
-        <div class="profile-copy">
-          <small>Tu perfil</small>
-          <strong>Profesor de Hogwarts</strong>
-
-          <div class="mini-progress">
-            <span style="width: 62%"></span>
-          </div>
-
-          <small>El legado continúa</small>
-        </div>
-
-      </div>
-
-    </aside>
+    </header>
 
 
     <!-- CONTENIDO PRINCIPAL -->
+
     <main class="main-content">
-
-      <!-- CABECERA -->
-      <header class="topbar">
-
-       <div class="topbar-brand">
-
-  <div class="topbar-title">
-    <p class="eyebrow">Curso 2026-2027</p>
-    <h1>Hogwarts NSS</h1>
-  </div>
-
-  <div class="school-logo-badge">
-    <img
-      src="logo_cole.png"
-      alt="Colegio Diocesano Nuestra Señora del Socorro"
-    >
-  </div>
-
-</div>
-
-        <div class="topbar-actions">
-
-          <button
-            class="icon-button"
-            type="button"
-            aria-label="Mensajes"
-          >
-            ✉️
-            <span class="notification-dot"></span>
-          </button>
-
-          <button
-            class="icon-button"
-            type="button"
-            aria-label="Notificaciones"
-          >
-            🔔
-          </button>
-
-          <div class="teacher-profile">
-            <div>
-              <small>Hola, profesor</small>
-              <strong>Guardián del Cáliz</strong>
-            </div>
-
-            <div class="teacher-avatar">J</div>
-          </div>
-
-        </div>
-
-      </header>
 
 
       <!-- PORTADA DEL CASTILLO -->
