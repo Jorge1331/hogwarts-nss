@@ -3158,3 +3158,460 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · HERO PRINCIPAL
+   ========================================================= */
+
+.hero-banner {
+  position: relative;
+  isolation: isolate;
+
+  display: flex;
+  align-items: center;
+
+  min-height:
+    clamp(
+      390px,
+      32vw,
+      500px
+    );
+
+  overflow: hidden;
+
+  border:
+    1px solid rgba(216, 168, 78, 0.34);
+
+  border-radius: 18px;
+
+  background-color:
+    #07101d;
+
+  background-image:
+    url("./hero-publico-hogwarts-nss.png");
+
+  background-repeat:
+    no-repeat;
+
+  background-position:
+    center center;
+
+  background-size:
+    cover;
+
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.38),
+    inset 0 0 70px rgba(27, 75, 126, 0.12);
+}
+
+
+/* ANULAMOS EL CASTILLO CSS ANTIGUO */
+
+.hero-banner::before {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      circle at 82% 32%,
+      rgba(160, 207, 255, 0.08),
+      transparent 26%
+    );
+}
+
+
+.hero-banner::after {
+  content: "";
+
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      180deg,
+      transparent 52%,
+      rgba(3, 8, 17, 0.42)
+    );
+}
+
+
+/* =========================================================
+   CAPA DE LECTURA
+   ========================================================= */
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(4, 9, 18, 0.97) 0%,
+      rgba(4, 9, 18, 0.91) 24%,
+      rgba(4, 9, 18, 0.68) 43%,
+      rgba(4, 9, 18, 0.18) 68%,
+      rgba(4, 9, 18, 0.04) 100%
+    ),
+    linear-gradient(
+      180deg,
+      rgba(5, 11, 22, 0.08),
+      rgba(5, 11, 22, 0.18)
+    );
+
+  pointer-events: none;
+}
+
+
+/* =========================================================
+   TEXTO
+   ========================================================= */
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+
+  width:
+    min(
+      650px,
+      58%
+    );
+
+  max-width: 650px;
+
+  padding:
+    54px
+    clamp(32px, 4.2vw, 68px);
+}
+
+
+.hero-content .hero-kicker {
+  margin: 0 0 12px;
+
+  color:
+    var(--gold-400);
+
+  font-family:
+    var(--font-display);
+
+  font-size: 0.72rem;
+  font-weight: 600;
+
+  letter-spacing: 0.18em;
+
+  text-transform: uppercase;
+}
+
+
+.hero-content h2 {
+  margin: 0;
+
+  color:
+    #f8f4e9;
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(
+      2.65rem,
+      5vw,
+      4.75rem
+    );
+
+  font-weight: 600;
+
+  letter-spacing:
+    0.025em;
+
+  line-height:
+    0.98;
+
+  text-shadow:
+    0 5px 26px
+    rgba(0, 0, 0, 0.72);
+}
+
+
+.hero-content .hero-subtitle {
+  margin:
+    13px
+    0
+    0;
+
+  color:
+    var(--gold-400);
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    clamp(
+      1.25rem,
+      2.1vw,
+      2rem
+    );
+
+  font-weight: 500;
+
+  letter-spacing:
+    0.045em;
+
+  line-height:
+    1.2;
+
+  text-transform:
+    none;
+}
+
+
+/* =========================================================
+   SEPARADOR
+   ========================================================= */
+
+.hero-divider {
+  width: 190px;
+  height: 1px;
+
+  margin:
+    23px
+    0
+    20px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold-400),
+      rgba(239, 200, 115, 0.35),
+      transparent
+    );
+
+  box-shadow:
+    0 0 12px
+    rgba(239, 200, 115, 0.12);
+}
+
+
+/* =========================================================
+   LEMA
+   ========================================================= */
+
+.hero-content blockquote {
+  max-width: 560px;
+
+  margin:
+    0
+    0
+    14px;
+
+  color:
+    #f0ece3;
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size:
+    clamp(
+      1.08rem,
+      1.55vw,
+      1.38rem
+    );
+
+  font-style:
+    italic;
+
+  line-height:
+    1.5;
+
+  text-shadow:
+    0 3px 18px
+    rgba(0, 0, 0, 0.72);
+}
+
+
+/* =========================================================
+   PROPÓSITO EDUCATIVO
+   ========================================================= */
+
+.hero-content .hero-purpose {
+  max-width: 555px;
+
+  margin: 0;
+
+  color:
+    rgba(235, 239, 246, 0.76);
+
+  font-family:
+    var(--font-body);
+
+  font-size:
+    clamp(
+      0.78rem,
+      1vw,
+      0.94rem
+    );
+
+  font-weight: 400;
+
+  letter-spacing: 0;
+
+  line-height: 1.7;
+
+  text-transform: none;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .hero-banner {
+    min-height: 430px;
+
+    background-position:
+      62% center;
+  }
+
+
+  .hero-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(4, 9, 18, 0.96) 0%,
+        rgba(4, 9, 18, 0.85) 45%,
+        rgba(4, 9, 18, 0.28) 100%
+      );
+  }
+
+
+  .hero-content {
+    width: 70%;
+
+    padding:
+      42px
+      32px;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  .hero-banner {
+    min-height: 430px;
+
+    border-radius: 14px;
+
+    background-position:
+      68% center;
+  }
+
+
+  .hero-overlay {
+    background:
+      linear-gradient(
+        90deg,
+        rgba(3, 8, 17, 0.94),
+        rgba(3, 8, 17, 0.72)
+      ),
+      linear-gradient(
+        180deg,
+        rgba(3, 8, 17, 0.15),
+        rgba(3, 8, 17, 0.58)
+      );
+  }
+
+
+  .hero-content {
+    width: 100%;
+    max-width: 100%;
+
+    padding:
+      36px
+      24px;
+  }
+
+
+  .hero-content h2 {
+    font-size:
+      clamp(
+        2.2rem,
+        11vw,
+        3rem
+      );
+  }
+
+
+  .hero-content .hero-subtitle {
+    font-size: 1.25rem;
+  }
+
+
+  .hero-divider {
+    width: 135px;
+
+    margin:
+      19px
+      0
+      17px;
+  }
+
+
+  .hero-content blockquote {
+    max-width: 390px;
+
+    font-size: 1.06rem;
+  }
+
+
+  .hero-content .hero-purpose {
+    max-width: 390px;
+
+    font-size: 0.8rem;
+
+    line-height: 1.6;
+  }
+
+}
+
+
+@media (max-width: 410px) {
+
+  .hero-banner {
+    min-height: 410px;
+  }
+
+
+  .hero-content {
+    padding:
+      30px
+      20px;
+  }
+
+
+  .hero-content .hero-kicker {
+    font-size: 0.64rem;
+  }
+
+
+  .hero-content h2 {
+    font-size: 2.15rem;
+  }
+
+
+  .hero-content .hero-subtitle {
+    font-size: 1.12rem;
+  }
+
+}
