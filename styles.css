@@ -4148,3 +4148,121 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · ESCUDOS OFICIALES DE LAS CASAS
+   ========================================================= */
+
+.ranking-card .house-emblem {
+  width: 82px;
+  height: 92px;
+
+  margin:
+    0
+    0
+    2px;
+
+  color:
+    transparent;
+
+  font-size:
+    0;
+
+  background-color:
+    transparent;
+
+  background-repeat:
+    no-repeat;
+
+  background-position:
+    center;
+
+  background-size:
+    contain;
+
+  clip-path:
+    none;
+
+  filter:
+    drop-shadow(
+      0 7px 10px
+      rgba(0, 0, 0, 0.42)
+    )
+    drop-shadow(
+      0 0 8px
+      rgba(216, 168, 78, 0.08)
+    );
+}
+
+
+/* GRYFFINDOR */
+
+.ranking-card
+.ranking-row.gryffindor
+.house-emblem {
+  background-image:
+    url("./escudo-gryffindor-hogwarts-nss.png");
+}
+
+
+/* SLYTHERIN */
+
+.ranking-card
+.ranking-row.slytherin
+.house-emblem {
+  background-image:
+    url("./escudo-slytherin-hogwarts-nss.png");
+}
+
+
+/* RAVENCLAW */
+
+.ranking-card
+.ranking-row.ravenclaw
+.house-emblem {
+  background-image:
+    url("./escudo-ravenclaw-hogwarts-nss.png");
+}
+
+
+/* HUFFLEPUFF */
+
+.ranking-card
+.ranking-row.hufflepuff
+.house-emblem {
+  background-image:
+    url("./escudo-hufflepuff-hogwarts-nss.png");
+}
+
+
+/* LÍDER */
+
+.ranking-card
+.ranking-row[data-rank-position="1"]
+.house-emblem {
+  filter:
+    drop-shadow(
+      0 8px 12px
+      rgba(0, 0, 0, 0.46)
+    )
+    drop-shadow(
+      0 0 13px
+      rgba(239, 200, 115, 0.18)
+    );
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 520px) {
+
+  .ranking-card .house-emblem {
+    width:
+      68px;
+
+    height:
+      77px;
+  }
+
+}
