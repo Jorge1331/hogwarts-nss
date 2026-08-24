@@ -56,6 +56,7 @@ let publicRankingHasRendered =
 
 document.addEventListener("DOMContentLoaded", () => {
   initializePublicRanking();
+  initializeHousePointerDepth(); 
   initializePublicChronicles();
   initializeNavigation();
   initializeCountdown();
@@ -65,8 +66,227 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 /* ---------------------------------------------------------
-   CLASIFICACIÓN DE LAS CASAS
+   CLASIFICACIÓN DE LAS CASAS y  PROFUNDIDAD MÁGICA DE LAS CASAS
 --------------------------------------------------------- */
+
+function initializeHousePointerDepth() {
+
+  const rankingElement =
+    document.querySelector(
+      "#houseRanking"
+    );
+
+
+  if (!rankingElement) {
+    return;
+  }
+
+
+  const finePointer =
+    window.matchMedia(
+      "(hover: hover) and (pointer: fine)"
+    );
+
+  const reducedMotion =
+    window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+
+  if (
+    !finePointer.matches ||
+    reducedMotion.matches
+  ) {
+
+    return;
+  }
+
+
+  let activeRow =
+    null;
+
+
+  const resetRow =
+    (row) => {
+
+      if (!row) {
+        return;
+      }
+
+
+      row.classList.remove(
+        "pointer-depth-active"
+      );
+
+
+      row.style.removeProperty(
+        "--pointer-x"
+      );
+
+      row.style.removeProperty(
+        "--pointer-y"
+      );
+
+      row.style.removeProperty(
+        "--tilt-x"
+      );
+
+      row.style.removeProperty(
+        "--tilt-y"
+      );
+    };
+
+
+  rankingElement.addEventListener(
+    "pointermove",
+    (event) => {
+
+      if (reducedMotion.matches) {
+
+        resetRow(
+          activeRow
+        );
+
+        activeRow =
+          null;
+
+        return;
+      }
+
+
+      const row =
+        event.target.closest(
+          ".ranking-row[data-house-id]"
+        );
+
+
+      if (
+        !row ||
+        !rankingElement.contains(row)
+      ) {
+
+        resetRow(
+          activeRow
+        );
+
+        activeRow =
+          null;
+
+        return;
+      }
+
+
+      if (
+        activeRow &&
+        activeRow !== row
+      ) {
+
+        resetRow(
+          activeRow
+        );
+      }
+
+
+      activeRow =
+        row;
+
+
+      const rectangle =
+        row.getBoundingClientRect();
+
+
+      const relativeX =
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (
+              event.clientX -
+              rectangle.left
+            ) /
+            rectangle.width
+          )
+        );
+
+
+      const relativeY =
+        Math.min(
+          1,
+          Math.max(
+            0,
+            (
+              event.clientY -
+              rectangle.top
+            ) /
+            rectangle.height
+          )
+        );
+
+
+      const tiltX =
+        (
+          (0.5 - relativeY) *
+          5
+        ).toFixed(2);
+
+
+      const tiltY =
+        (
+          (relativeX - 0.5) *
+          6
+        ).toFixed(2);
+
+
+      row.style.setProperty(
+        "--pointer-x",
+        `${(
+          relativeX *
+          100
+        ).toFixed(1)}%`
+      );
+
+
+      row.style.setProperty(
+        "--pointer-y",
+        `${(
+          relativeY *
+          100
+        ).toFixed(1)}%`
+      );
+
+
+      row.style.setProperty(
+        "--tilt-x",
+        `${tiltX}deg`
+      );
+
+
+      row.style.setProperty(
+        "--tilt-y",
+        `${tiltY}deg`
+      );
+
+
+      row.classList.add(
+        "pointer-depth-active"
+      );
+    }
+  );
+
+
+  rankingElement.addEventListener(
+    "pointerleave",
+    () => {
+
+      resetRow(
+        activeRow
+      );
+
+      activeRow =
+        null;
+    }
+  );
+}
 function initializePublicRanking() {
 
   PUBLIC_HOUSE_IDS.forEach(
