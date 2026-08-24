@@ -3480,13 +3480,12 @@ a:focus-visible {
 
 @media (max-width: 900px) {
 
-  .hero-banner {
+   .hero-banner {
     min-height: 430px;
 
     background-position:
-      62% center;
+      62% 22%;
   }
-
 
   .hero-overlay {
     background:
