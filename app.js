@@ -432,7 +432,6 @@ function renderHouseRanking() {
         </span>
 
         <span
-                <span
           class="house-score"
         >
           ${formatPoints(initialPoints)} pts
