@@ -173,7 +173,7 @@
           class="dashboard-card dark-card mission-card caliz-card"
         >
 
-          <div class="caliz-copy">
+                    <div class="caliz-copy">
 
             <p class="card-kicker">
               El Santo Cáliz
@@ -184,8 +184,9 @@
             </h3>
 
             <p class="caliz-intro">
-              Cada semana, una acción clave del proyecto
-              puede hacer avanzar el doble a tu Casa.
+              Cada semana, el Santo Cáliz distinguirá
+              una acción capaz de hacer avanzar el doble
+              a tu Casa.
             </p>
 
           </div>
@@ -196,9 +197,21 @@
             aria-live="polite"
           >
 
-            <span class="caliz-bonus-label">
-              Esta semana
-            </span>
+            <div class="caliz-bonus-heading">
+
+              <span class="caliz-bonus-label">
+                Esta semana
+              </span>
+
+              <span
+                class="caliz-bonus-factor"
+                aria-label="Bonificación por dos"
+              >
+                ×2
+              </span>
+
+            </div>
+
 
             <strong
               id="weeklyMissionTitle"
@@ -218,18 +231,20 @@
           </div>
 
 
-          <div
-            class="caliz-multiplier"
-            aria-label="Puntos por dos esta semana"
+          <figure
+            class="caliz-relic"
+            aria-hidden="true"
           >
 
-            <span aria-hidden="true">
-              ×2
-            </span>
+            <span class="caliz-relic-halo"></span>
 
-            <small>
-              PUNTOS
-            </small>
+            <img
+              src="./santo-caliz-hogwarts-nss.png"
+              alt=""
+              class="caliz-relic-image"
+            >
+
+          </figure>
 
           </div>
 
