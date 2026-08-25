@@ -6620,3 +6620,575 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · SANTO CÁLIZ
+   INTEGRACIÓN CINEMATOGRÁFICA DE LA RELIQUIA
+   ========================================================= */
+
+
+/* =========================================================
+   NUEVA COMPOSICIÓN
+   ========================================================= */
+
+.caliz-card {
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(320px, 0.9fr)
+    minmax(240px, 0.7fr);
+
+  gap:
+    22px;
+
+  min-height:
+    238px;
+
+  padding:
+    24px
+    26px
+    24px
+    30px;
+}
+
+
+/* =========================================================
+   TEXTO INSTITUCIONAL
+   ========================================================= */
+
+.caliz-intro {
+  max-width:
+    470px;
+
+  color:
+    rgba(
+      234,
+      230,
+      218,
+      0.72
+    );
+}
+
+
+/* =========================================================
+   CABECERA DE LA BONIFICACIÓN
+   ========================================================= */
+
+.caliz-bonus-heading {
+  display:
+    flex;
+
+  align-items:
+    center;
+
+  justify-content:
+    space-between;
+
+  gap:
+    12px;
+
+  margin-bottom:
+    5px;
+}
+
+
+.caliz-bonus-label {
+  margin-bottom:
+    0;
+}
+
+
+/* =========================================================
+   ×2 FUNCIONAL
+   ========================================================= */
+
+.caliz-bonus-factor {
+  display:
+    inline-grid;
+
+  place-items:
+    center;
+
+  min-width:
+    42px;
+
+  height:
+    26px;
+
+  padding:
+    0
+    9px;
+
+  color:
+    #f6dda0;
+
+  font-family:
+    var(--font-display);
+
+  font-size:
+    0.95rem;
+
+  font-weight:
+    700;
+
+  line-height:
+    1;
+
+  border:
+    1px solid
+    rgba(
+      238,
+      203,
+      119,
+      0.46
+    );
+
+  border-radius:
+    999px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(
+        222,
+        180,
+        79,
+        0.14
+      ),
+      rgba(
+        101,
+        68,
+        21,
+        0.08
+      )
+    );
+
+  box-shadow:
+    inset 0 1px 0
+      rgba(
+        255,
+        244,
+        210,
+        0.08
+      ),
+
+    0 0 13px
+      rgba(
+        224,
+        181,
+        82,
+        0.1
+      );
+
+  text-shadow:
+    0 0 11px
+      rgba(
+        236,
+        197,
+        103,
+        0.2
+      );
+}
+
+
+/* =========================================================
+   RELIQUIA
+   ========================================================= */
+
+.caliz-relic {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  display:
+    grid;
+
+  place-items:
+    center;
+
+  align-self:
+    stretch;
+
+  min-width:
+    0;
+
+  min-height:
+    190px;
+
+  margin:
+    -20px
+    -12px
+    -20px
+    0;
+
+  pointer-events:
+    none;
+
+  isolation:
+    isolate;
+}
+
+
+/* =========================================================
+   HALO DE FONDO
+   ========================================================= */
+
+.caliz-relic-halo {
+  position:
+    absolute;
+
+  top:
+    50%;
+  left:
+    50%;
+
+  z-index:
+    -1;
+
+  width:
+    190px;
+
+  height:
+    190px;
+
+  border-radius:
+    50%;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(
+        235,
+        190,
+        85,
+        0.2
+      ) 0%,
+
+      rgba(
+        206,
+        154,
+        48,
+        0.09
+      ) 32%,
+
+      transparent
+      69%
+    );
+
+  transform:
+    translate(
+      -50%,
+      -50%
+    );
+
+  filter:
+    blur(4px);
+
+  animation:
+    caliz-relic-glow
+    6.8s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   IMAGEN DEL SANTO CÁLIZ
+   ========================================================= */
+
+.caliz-relic-image {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  display:
+    block;
+
+  width:
+    min(
+      100%,
+      290px
+    );
+
+  max-height:
+    265px;
+
+  object-fit:
+    contain;
+
+  transform:
+    translateY(2px);
+
+  filter:
+    drop-shadow(
+      0 18px 20px
+      rgba(
+        0,
+        0,
+        0,
+        0.42
+      )
+    )
+
+    drop-shadow(
+      0 0 19px
+      rgba(
+        225,
+        177,
+        67,
+        0.16
+      )
+    );
+
+  animation:
+    caliz-relic-presence
+    7.2s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================================
+   LUZ AMBIENTAL DE LA ZONA DEL CÁLIZ
+   ========================================================= */
+
+.caliz-card::after {
+  width:
+    32%;
+
+  background:
+    radial-gradient(
+      circle at 63% 50%,
+      rgba(
+        232,
+        188,
+        89,
+        0.12
+      ),
+      transparent
+      36%
+    ),
+
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(
+        222,
+        180,
+        83,
+        0.035
+      )
+    );
+}
+
+
+/* =========================================================
+   RESPIRACIÓN DE LA RELIQUIA
+   ========================================================= */
+
+@keyframes caliz-relic-glow {
+
+  0%,
+  100% {
+    opacity:
+      0.72;
+
+    scale:
+      0.96;
+  }
+
+
+  50% {
+    opacity:
+      1;
+
+    scale:
+      1.04;
+  }
+
+}
+
+
+@keyframes caliz-relic-presence {
+
+  0%,
+  100% {
+    translate:
+      0
+      0;
+
+    filter:
+      drop-shadow(
+        0 18px 20px
+        rgba(
+          0,
+          0,
+          0,
+          0.42
+        )
+      )
+
+      drop-shadow(
+        0 0 17px
+        rgba(
+          225,
+          177,
+          67,
+          0.13
+        )
+      );
+  }
+
+
+  50% {
+    translate:
+      0
+      -3px;
+
+    filter:
+      drop-shadow(
+        0 20px 22px
+        rgba(
+          0,
+          0,
+          0,
+          0.46
+        )
+      )
+
+      drop-shadow(
+        0 0 23px
+        rgba(
+          225,
+          177,
+          67,
+          0.2
+        )
+      );
+  }
+
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+
+  .caliz-card {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(260px, 0.9fr)
+      190px;
+
+    gap:
+      16px;
+  }
+
+
+  .caliz-relic-image {
+    width:
+      min(
+        100%,
+        220px
+      );
+  }
+
+
+  .caliz-relic-halo {
+    width:
+      155px;
+
+    height:
+      155px;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 620px) {
+
+  .caliz-card {
+    grid-template-columns:
+      1fr;
+
+    min-height:
+      0;
+
+    padding:
+      22px
+      16px
+      12px;
+  }
+
+
+  .caliz-copy {
+    text-align:
+      center;
+  }
+
+
+  .caliz-bonus {
+    text-align:
+      left;
+  }
+
+
+  .caliz-relic {
+    min-height:
+      178px;
+
+    margin:
+      -4px
+      0
+      -6px;
+  }
+
+
+  .caliz-relic-image {
+    width:
+      min(
+        78vw,
+        230px
+      );
+
+    max-height:
+      220px;
+  }
+
+
+  .caliz-relic-halo {
+    width:
+      160px;
+
+    height:
+      160px;
+  }
+
+}
+
+
+/* =========================================================
+   ACCESIBILIDAD
+   ========================================================= */
+
+@media (
+  prefers-reduced-motion:
+  reduce
+) {
+
+  .caliz-relic-image,
+
+  .caliz-relic-halo {
+    animation:
+      none;
+  }
+
+}
