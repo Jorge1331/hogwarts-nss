@@ -7,6 +7,10 @@
 import {
   db
 } from "./firebase-config.js";
+import {
+  getActiveCalizBonus,
+  getNextCalizBonus
+} from "./caliz-schedule.js";
 
 import {
   collection,
@@ -55,6 +59,7 @@ let publicRankingHasRendered =
 --------------------------------------------------------- */
 
 document.addEventListener("DOMContentLoaded", () => {
+  initializeCalizBonus();
   initializePublicRanking();
   initializeHousePointerDepth(); 
   initializePublicChronicles();
@@ -64,7 +69,146 @@ document.addEventListener("DOMContentLoaded", () => {
   initializeMapLocations();
   initializeInventory();
 });
+/* ---------------------------------------------------------
+   SANTO CÁLIZ · BONIFICACIÓN SEMANAL
+--------------------------------------------------------- */
 
+function initializeCalizBonus() {
+
+  const bonusLabel =
+    document.querySelector(
+      ".caliz-bonus-label"
+    );
+
+  const bonusFactor =
+    document.querySelector(
+      ".caliz-bonus-factor"
+    );
+
+  const bonusTitle =
+    document.getElementById(
+      "weeklyMissionTitle"
+    );
+
+  const bonusDescription =
+    document.getElementById(
+      "weeklyMissionDescription"
+    );
+
+
+  if (
+    !bonusLabel ||
+    !bonusFactor ||
+    !bonusTitle ||
+    !bonusDescription
+  ) {
+
+    console.warn(
+      "No se ha encontrado el bloque público del Santo Cáliz."
+    );
+
+    return;
+  }
+
+
+  const activeBonus =
+    getActiveCalizBonus();
+
+
+  if (activeBonus) {
+
+    bonusLabel.textContent =
+      "Esta semana";
+
+    bonusFactor.hidden =
+      false;
+
+    bonusFactor.textContent =
+      `×${activeBonus.multiplier}`;
+
+    bonusFactor.setAttribute(
+      "aria-label",
+      `Bonificación por ${activeBonus.multiplier}`
+    );
+
+    bonusTitle.textContent =
+      activeBonus.publicLabel;
+
+    bonusDescription.textContent =
+      activeBonus.description;
+
+    return;
+  }
+
+
+  const nextBonus =
+    getNextCalizBonus();
+
+
+  if (nextBonus) {
+
+    const startDate =
+      new Date(
+        `${nextBonus.start}T12:00:00`
+      );
+
+
+    const formattedStartDate =
+      new Intl.DateTimeFormat(
+        "es-ES",
+        {
+          day:
+            "numeric",
+
+          month:
+            "long"
+        }
+      ).format(
+        startDate
+      );
+
+
+    bonusLabel.textContent =
+      "Próxima distinción";
+
+    bonusFactor.hidden =
+      false;
+
+    bonusFactor.textContent =
+      `×${nextBonus.multiplier}`;
+
+    bonusFactor.setAttribute(
+      "aria-label",
+      `Bonificación por ${nextBonus.multiplier}`
+    );
+
+    bonusTitle.textContent =
+      nextBonus.publicLabel;
+
+    bonusDescription.textContent =
+      `Se activará el ${formattedStartDate}.`;
+
+    return;
+  }
+
+
+  /*
+   Todavía no existe una Carta configurada
+   para las próximas semanas.
+  */
+
+  bonusLabel.textContent =
+    "Carta del Santo Cáliz";
+
+  bonusFactor.hidden =
+    true;
+
+  bonusTitle.textContent =
+    "Próxima carta en preparación";
+
+  bonusDescription.textContent =
+    "Muy pronto se anunciarán nuevas distinciones del Santo Cáliz.";
+}
 /* ---------------------------------------------------------
    CLASIFICACIÓN DE LAS CASAS y  PROFUNDIDAD MÁGICA DE LAS CASAS
 --------------------------------------------------------- */
