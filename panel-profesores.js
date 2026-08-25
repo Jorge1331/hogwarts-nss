@@ -10,7 +10,11 @@ import {
   auth,
   db
 } from "./firebase-config.js";
-
+import {
+  getActiveCalizBonus,
+  getCalizMonthlyCard,
+  getNextCalizBonus
+} from "./caliz-schedule.js";
 
 import {
   onAuthStateChanged,
@@ -123,6 +127,35 @@ document.addEventListener(
       document.getElementById(
         "housesGrid"
       );
+     const teacherCalizMultiplier =
+  document.getElementById(
+    "teacherCalizMultiplier"
+  );
+
+const teacherCalizState =
+  document.getElementById(
+    "teacherCalizState"
+  );
+
+const teacherCalizTitle =
+  document.getElementById(
+    "teacherCalizTitle"
+  );
+
+const teacherCalizDates =
+  document.getElementById(
+    "teacherCalizDates"
+  );
+
+const teacherCalizMonth =
+  document.getElementById(
+    "teacherCalizMonth"
+  );
+
+const teacherCalizWeeks =
+  document.getElementById(
+    "teacherCalizWeeks"
+  );
     const houseMovementForm =
       document.getElementById(
         "houseMovementForm"
@@ -243,6 +276,12 @@ document.addEventListener(
       housesLoading,
       housesError,
       housesGrid,
+      teacherCalizMultiplier,
+      teacherCalizState,
+      teacherCalizTitle,
+      teacherCalizDates,
+      teacherCalizMonth,
+      teacherCalizWeeks,
       houseMovementForm,
       movementHouse,
       movementAmount,
@@ -412,6 +451,278 @@ document.addEventListener(
       panelDenied.hidden = true;
       privatePanelApp.hidden = false;
     };
+     /* =====================================================
+   CARTA DEL SANTO CÁLIZ
+   ===================================================== */
+
+const formatCalizDate =
+  (dateKey) => {
+
+    const date =
+      new Date(
+        `${dateKey}T12:00:00`
+      );
+
+
+    return new Intl.DateTimeFormat(
+      "es-ES",
+      {
+        day:
+          "numeric",
+
+        month:
+          "short"
+      }
+    )
+      .format(date)
+      .replace(".", "");
+  };
+
+
+const formatCalizRange =
+  (
+    startKey,
+    endKey
+  ) => {
+
+    const startDate =
+      new Date(
+        `${startKey}T12:00:00`
+      );
+
+    const endDate =
+      new Date(
+        `${endKey}T12:00:00`
+      );
+
+
+    if (
+      startDate.getFullYear() ===
+        endDate.getFullYear() &&
+      startDate.getMonth() ===
+        endDate.getMonth()
+    ) {
+
+      const month =
+        new Intl.DateTimeFormat(
+          "es-ES",
+          {
+            month:
+              "short"
+          }
+        )
+          .format(endDate)
+          .replace(".", "");
+
+
+      return (
+        `${startDate.getDate()}–` +
+        `${endDate.getDate()} ${month}`
+      );
+    }
+
+
+    return (
+      `${formatCalizDate(startKey)} – ` +
+      `${formatCalizDate(endKey)}`
+    );
+  };
+
+
+const createTeacherCalizWeek =
+  (
+    week,
+    activeBonus
+  ) => {
+
+    const weekElement =
+      document.createElement(
+        "div"
+      );
+
+
+    weekElement.className =
+      "teacher-caliz-week";
+
+
+    const isActive =
+      Boolean(
+        activeBonus &&
+        week.start ===
+          activeBonus.start &&
+        week.end ===
+          activeBonus.end
+      );
+
+
+    if (isActive) {
+
+      weekElement.classList.add(
+        "is-active"
+      );
+    }
+
+
+    const dates =
+      document.createElement(
+        "span"
+      );
+
+
+    dates.textContent =
+      `Semana ${week.weekNumber} · ${formatCalizRange(
+        week.start,
+        week.end
+      )}`;
+
+
+    const title =
+      document.createElement(
+        "strong"
+      );
+
+
+    title.textContent =
+      `${week.publicLabel} ×${week.multiplier}`;
+
+
+    weekElement.append(
+      dates,
+      title
+    );
+
+
+    return weekElement;
+  };
+
+
+const renderTeacherCalizCard =
+  () => {
+
+    const activeBonus =
+      getActiveCalizBonus();
+
+
+    const nextBonus =
+      activeBonus
+        ? null
+        : getNextCalizBonus();
+
+
+    const visibleBonus =
+      activeBonus ||
+      nextBonus;
+
+
+    if (!visibleBonus) {
+
+      teacherCalizMultiplier.hidden =
+        true;
+
+      teacherCalizState.textContent =
+        "Carta en preparación";
+
+      teacherCalizTitle.textContent =
+        "No hay una distinción programada";
+
+      teacherCalizDates.textContent =
+        "Próximamente se anunciarán nuevas bonificaciones.";
+
+      teacherCalizMonth.textContent =
+        "—";
+
+
+      const emptyMessage =
+        document.createElement(
+          "p"
+        );
+
+
+      emptyMessage.className =
+        "teacher-caliz-loading";
+
+      emptyMessage.textContent =
+        "No existe una Carta mensual disponible para estas fechas.";
+
+
+      teacherCalizWeeks.replaceChildren(
+        emptyMessage
+      );
+
+
+      return;
+    }
+
+
+    teacherCalizMultiplier.hidden =
+      false;
+
+    teacherCalizMultiplier.textContent =
+      `×${visibleBonus.multiplier}`;
+
+    teacherCalizMultiplier.setAttribute(
+      "aria-label",
+      `Bonificación por ${visibleBonus.multiplier}`
+    );
+
+
+    teacherCalizState.textContent =
+      activeBonus
+        ? "Distinción activa"
+        : "Próxima distinción";
+
+
+    teacherCalizTitle.textContent =
+      visibleBonus.publicLabel;
+
+
+    teacherCalizDates.textContent =
+      activeBonus
+        ? `${formatCalizRange(
+            visibleBonus.start,
+            visibleBonus.end
+          )} · Puntuación doble activa`
+        : `${formatCalizRange(
+            visibleBonus.start,
+            visibleBonus.end
+          )} · Próxima bonificación`;
+
+
+    const monthlyCard =
+      getCalizMonthlyCard(
+        visibleBonus.monthId
+      );
+
+
+    if (!monthlyCard) {
+
+      teacherCalizMonth.textContent =
+        "—";
+
+      teacherCalizWeeks.replaceChildren();
+
+      return;
+    }
+
+
+    teacherCalizMonth.textContent =
+      monthlyCard.label;
+
+
+    const weekElements =
+      monthlyCard.weeks.map(
+        week =>
+          createTeacherCalizWeek(
+            week,
+            activeBonus
+          )
+      );
+
+
+    teacherCalizWeeks.replaceChildren(
+      ...weekElements
+    );
+  };
     /* =====================================================
        CASAS DE FIRESTORE
        ===================================================== */
@@ -1923,8 +2234,9 @@ document.addEventListener(
       );
 
 
-                showPrivatePanel();
+       showPrivatePanel();
 
+      renderTeacherCalizCard();
       loadHouses();
       loadMovementHistory();
     };
