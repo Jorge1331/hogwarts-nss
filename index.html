@@ -168,44 +168,72 @@
       <!-- CUADRÍCULA PRINCIPAL -->
       <section class="dashboard-grid">
 
-        <!-- MISIÓN SEMANAL -->
-        <article class="dashboard-card parchment-card mission-card">
+                <!-- SANTO CÁLIZ · BONIFICACIÓN SEMANAL -->
+        <article
+          class="dashboard-card dark-card mission-card caliz-card"
+        >
 
-          <div class="card-heading">
-            <div>
-              <p class="card-kicker">El Santo Cáliz</p>
-              <h3>Misión semanal</h3>
-            </div>
+          <div class="caliz-copy">
 
-            <span class="card-symbol">🔥</span>
+            <p class="card-kicker">
+              El Santo Cáliz
+            </p>
+
+            <h3>
+              Bonificación semanal
+            </h3>
+
+            <p class="caliz-intro">
+              Cada semana, una acción clave del proyecto
+              puede hacer avanzar el doble a tu Casa.
+            </p>
+
           </div>
 
-          <div class="mission-content">
 
-            <div class="magic-cup" aria-hidden="true">
-              <div class="cup-flame">✦</div>
-              <div class="cup-body">♛</div>
-            </div>
+          <div
+            class="caliz-bonus"
+            aria-live="polite"
+          >
 
-            <div>
-              <h4 id="weeklyMissionTitle">
-                El Cáliz busca acciones que ayuden a los demás
-              </h4>
+            <span class="caliz-bonus-label">
+              Esta semana
+            </span>
 
-              <p id="weeklyMissionDescription">
-                Esta semana, cada acto de generosidad y ayuda
-                desinteresada otorgará puntos adicionales a la casa.
-              </p>
+            <strong
+              id="weeklyMissionTitle"
+              class="caliz-bonus-title"
+            >
+              Lectura
+            </strong>
 
-              <button class="primary-button" type="button">
-                Ver detalles de la misión
-              </button>
-            </div>
+            <p
+              id="weeklyMissionDescription"
+              class="caliz-bonus-description"
+            >
+              Cada punto conseguido por lectura
+              cuenta doble para tu Casa.
+            </p>
+
+          </div>
+
+
+          <div
+            class="caliz-multiplier"
+            aria-label="Puntos por dos esta semana"
+          >
+
+            <span aria-hidden="true">
+              ×2
+            </span>
+
+            <small>
+              PUNTOS
+            </small>
 
           </div>
 
         </article>
-
 
         <!-- NOTICIAS -->
         <article class="dashboard-card parchment-card news-card">
