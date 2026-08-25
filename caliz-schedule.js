@@ -398,3 +398,151 @@ export const getCalizMonthlyCard =
         )
     };
   };
+/* =========================================================
+   PRÓXIMA BONIFICACIÓN
+
+   Se utiliza cuando todavía no existe una distinción
+   activa para la fecha consultada.
+   ========================================================= */
+
+export const getNextCalizBonus =
+  (date = new Date()) => {
+
+    const currentDate =
+      normaliseLocalDate(
+        date
+      );
+
+
+    const futureWeeks = [];
+
+
+    for (
+      const monthlyCard
+      of CALIZ_MONTHLY_CARDS
+    ) {
+
+      monthlyCard.weeks.forEach(
+        (
+          week,
+          index
+        ) => {
+
+          const startDate =
+            parseLocalDate(
+              week.start
+            );
+
+
+          if (
+            startDate <=
+            currentDate
+          ) {
+
+            return;
+          }
+
+
+          const category =
+            CALIZ_CATEGORIES[
+              week.categoryKey
+            ];
+
+
+          if (!category) {
+            return;
+          }
+
+
+          futureWeeks.push({
+            monthId:
+              monthlyCard.id,
+
+            monthLabel:
+              monthlyCard.label,
+
+            weekNumber:
+              index + 1,
+
+            start:
+              week.start,
+
+            end:
+              week.end,
+
+            startDate,
+
+            categoryKey:
+              week.categoryKey,
+
+            categoryValue:
+              category.categoryValue,
+
+            publicLabel:
+              category.publicLabel,
+
+            description:
+              category.description,
+
+            multiplier:
+              2
+          });
+        }
+      );
+    }
+
+
+    if (
+      futureWeeks.length === 0
+    ) {
+
+      return null;
+    }
+
+
+    futureWeeks.sort(
+      (
+        firstWeek,
+        secondWeek
+      ) =>
+        firstWeek.startDate -
+        secondWeek.startDate
+    );
+
+
+    const nextBonus =
+      futureWeeks[0];
+
+
+    return {
+      monthId:
+        nextBonus.monthId,
+
+      monthLabel:
+        nextBonus.monthLabel,
+
+      weekNumber:
+        nextBonus.weekNumber,
+
+      start:
+        nextBonus.start,
+
+      end:
+        nextBonus.end,
+
+      categoryKey:
+        nextBonus.categoryKey,
+
+      categoryValue:
+        nextBonus.categoryValue,
+
+      publicLabel:
+        nextBonus.publicLabel,
+
+      description:
+        nextBonus.description,
+
+      multiplier:
+        nextBonus.multiplier
+    };
+  };
