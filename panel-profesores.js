@@ -1137,70 +1137,213 @@ const renderTeacherCalizCard =
     /* =====================================================
        PUNTUACIÓN AUTOMÁTICA POR CATEGORÍA
        ===================================================== */
+const getMovementScoring =
+  () => {
 
-    const updateMovementAmount = () => {
-
-      const selectedOption =
-        movementCategory.options[
-          movementCategory.selectedIndex
-        ];
-
-      const configuredPoints =
-        selectedOption?.dataset.points ||
-        "";
+    const selectedOption =
+      movementCategory.options[
+        movementCategory.selectedIndex
+      ];
 
 
-      movementMessage.textContent = "";
+    const configuredPoints =
+      selectedOption?.dataset.points ||
+      "";
 
-      movementMessage.classList.remove(
-        "success",
-        "error"
+
+    const categoryValue =
+      String(
+        selectedOption?.value || ""
+      ).trim();
+
+
+    /*
+     La puntuación libre nunca recibe
+     bonificación automática del Cáliz.
+    */
+
+    if (
+      configuredPoints === "free"
+    ) {
+
+      return {
+        mode:
+          "free",
+
+        baseAmount:
+          null,
+
+        amount:
+          null,
+
+        bonus:
+          null
+      };
+    }
+
+
+    if (
+      configuredPoints === ""
+    ) {
+
+      return {
+        mode:
+          "empty",
+
+        baseAmount:
+          null,
+
+        amount:
+          null,
+
+        bonus:
+          null
+      };
+    }
+
+
+    const baseAmount =
+      Number(
+        configuredPoints
       );
 
 
-      if (
-        configuredPoints === "free"
-      ) {
+    if (
+      !Number.isInteger(
+        baseAmount
+      )
+    ) {
 
-        movementAmount.readOnly =
-          false;
+      return {
+        mode:
+          "invalid",
 
-        movementAmount.value =
-          "";
+        baseAmount:
+          null,
 
-        movementAmount.placeholder =
-          "Escribe entre -100 y +100";
+        amount:
+          null,
 
-        movementAmount.focus();
+        bonus:
+          null
+      };
+    }
 
-        return;
-      }
 
+    const activeBonus =
+      getActiveCalizBonus();
+
+
+    const bonusApplies =
+      Boolean(
+        activeBonus &&
+        baseAmount > 0 &&
+        categoryValue ===
+          activeBonus.categoryValue
+      );
+
+
+    return {
+      mode:
+        "automatic",
+
+      baseAmount,
+
+      amount:
+        bonusApplies
+          ? baseAmount *
+            activeBonus.multiplier
+          : baseAmount,
+
+      bonus:
+        bonusApplies
+          ? activeBonus
+          : null
+    };
+  };
+    const updateMovementAmount =
+  () => {
+
+    const scoring =
+      getMovementScoring();
+
+
+    movementMessage.textContent =
+      "";
+
+    movementMessage.classList.remove(
+      "success",
+      "error"
+    );
+
+
+    if (
+      scoring.mode === "free"
+    ) {
 
       movementAmount.readOnly =
-        true;
-
-
-      if (
-        configuredPoints !== ""
-      ) {
-
-        movementAmount.value =
-          configuredPoints;
-
-        movementAmount.placeholder =
-          "Puntuación automática";
-
-        return;
-      }
-
+        false;
 
       movementAmount.value =
         "";
 
       movementAmount.placeholder =
-        "Selecciona una categoría";
-    };
+        "Escribe entre -100 y +100";
+
+      movementAmount.focus();
+
+      return;
+    }
+
+
+    movementAmount.readOnly =
+      true;
+
+
+    if (
+      scoring.mode ===
+        "automatic"
+    ) {
+
+      movementAmount.value =
+        String(
+          scoring.amount
+        );
+
+      movementAmount.placeholder =
+        "Puntuación automática";
+
+
+      if (scoring.bonus) {
+
+        const baseSign =
+          scoring.baseAmount > 0
+            ? "+"
+            : "";
+
+        const amountSign =
+          scoring.amount > 0
+            ? "+"
+            : "";
+
+
+        movementMessage.textContent =
+          `Santo Cáliz ×${scoring.bonus.multiplier}: ` +
+          `${baseSign}${scoring.baseAmount} → ` +
+          `${amountSign}${scoring.amount} puntos.`;
+      }
+
+
+      return;
+    }
+
+
+    movementAmount.value =
+      "";
+
+    movementAmount.placeholder =
+      "Selecciona una categoría";
+  };
 
 
     movementCategory.addEventListener(
@@ -2297,10 +2440,20 @@ const renderTeacherCalizCard =
         const category =
           movementCategory.value.trim();
 
-        const amount =
-          Number(
-            movementAmount.value
-          );
+        const scoring =
+  getMovementScoring();
+
+
+const amount =
+  scoring.mode === "free"
+    ? Number(
+        movementAmount.value
+      )
+    : scoring.amount;
+
+
+const appliedCalizBonus =
+  scoring.bonus;
 
         const optionalComment =
           movementReason.value.trim();
@@ -2577,10 +2730,16 @@ const renderTeacherCalizCard =
           updateMovementAmount();
 
 
-          setMovementMessage(
-            `${selectedHouse.name}: ${formatSignedPoints(amount)} puntos registrados. Nuevo total: ${result.newTotal}.`,
-            "success"
-          );
+         const calizNotice =
+  appliedCalizBonus
+    ? ` · Santo Cáliz ×${appliedCalizBonus.multiplier}`
+    : "";
+
+
+setMovementMessage(
+  `${selectedHouse.name}: ${formatSignedPoints(amount)} puntos registrados${calizNotice}. Nuevo total: ${result.newTotal}.`,
+  "success"
+);
 
 
           await loadHouses();
