@@ -120,68 +120,394 @@ export const CALIZ_CATEGORIES =
 export const CALIZ_MONTHLY_CARDS =
   Object.freeze([
 
-    {
-      id:
-        "2026-09",
+    /* =====================================================
+       SEPTIEMBRE 2026
+       Inicio · hábitos, convivencia y esfuerzo
+       ===================================================== */
 
-      label:
-        "Septiembre 2026",
+    {
+      id: "2026-09",
+
+      label: "Septiembre 2026",
 
       weeks: [
 
         {
-          start:
-            "2026-09-09",
-
-          end:
-            "2026-09-13",
-
-          categoryKey:
-            "responsabilidad"
+          start: "2026-09-09",
+          end: "2026-09-13",
+          categoryKey: "responsabilidad"
         },
 
-
         {
-          start:
-            "2026-09-14",
-
-          end:
-            "2026-09-20",
-
-          categoryKey:
-            "convivencia"
+          start: "2026-09-14",
+          end: "2026-09-20",
+          categoryKey: "convivencia"
         },
 
-
         {
-          start:
-            "2026-09-21",
-
-          end:
-            "2026-09-27",
-
-          categoryKey:
-            "superacion"
+          start: "2026-09-21",
+          end: "2026-09-27",
+          categoryKey: "superacion"
         },
 
+        {
+          start: "2026-09-28",
+          end: "2026-10-04",
+          categoryKey: "lectura"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       OCTUBRE 2026
+       Participación · servicio · iniciativa
+       ===================================================== */
+
+    {
+      id: "2026-10",
+
+      label: "Octubre 2026",
+
+      weeks: [
 
         {
-          start:
-            "2026-09-28",
+          start: "2026-10-05",
+          end: "2026-10-11",
+          categoryKey: "participacion"
+        },
 
-          end:
-            "2026-10-04",
+        {
+          start: "2026-10-12",
+          end: "2026-10-18",
+          categoryKey: "ayudaServicio"
+        },
 
-          categoryKey:
-            "lectura"
+        {
+          start: "2026-10-19",
+          end: "2026-10-25",
+          categoryKey: "trabajoVoluntario"
+        },
+
+        {
+          start: "2026-10-26",
+          end: "2026-11-01",
+          categoryKey: "responsabilidad"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       NOVIEMBRE 2026
+       Convivencia · lectura · superación
+       ===================================================== */
+
+    {
+      id: "2026-11",
+
+      label: "Noviembre 2026",
+
+      weeks: [
+
+        {
+          start: "2026-11-02",
+          end: "2026-11-08",
+          categoryKey: "convivencia"
+        },
+
+        {
+          start: "2026-11-09",
+          end: "2026-11-15",
+          categoryKey: "lectura"
+        },
+
+        {
+          start: "2026-11-16",
+          end: "2026-11-22",
+          categoryKey: "superacion"
+        },
+
+        {
+          start: "2026-11-23",
+          end: "2026-11-29",
+          categoryKey: "trabajoVoluntario"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       DICIEMBRE 2026
+       Adviento · responsabilidad y servicio
+       ===================================================== */
+
+    {
+      id: "2026-12",
+
+      label: "Diciembre 2026",
+
+      weeks: [
+
+        {
+          start: "2026-11-30",
+          end: "2026-12-06",
+          categoryKey: "trabajoVoluntario"
+        },
+
+        {
+          start: "2026-12-07",
+          end: "2026-12-13",
+          categoryKey: "responsabilidad"
+        },
+
+        {
+          start: "2026-12-14",
+          end: "2026-12-20",
+          categoryKey: "ayudaServicio"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       ENERO 2027
+       Regreso · reactivación de hábitos
+       ===================================================== */
+
+    {
+      id: "2027-01",
+
+      label: "Enero 2027",
+
+      weeks: [
+
+        {
+          start: "2027-01-07",
+          end: "2027-01-10",
+          categoryKey: "responsabilidad"
+        },
+
+        {
+          start: "2027-01-11",
+          end: "2027-01-17",
+          categoryKey: "participacion"
+        },
+
+        {
+          start: "2027-01-18",
+          end: "2027-01-24",
+          categoryKey: "superacion"
+        },
+
+        {
+          start: "2027-01-25",
+          end: "2027-01-31",
+          categoryKey: "lectura"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       FEBRERO 2027
+       Iniciativa · convivencia · servicio
+       ===================================================== */
+
+    {
+      id: "2027-02",
+
+      label: "Febrero 2027",
+
+      weeks: [
+
+        {
+          start: "2027-02-01",
+          end: "2027-02-07",
+          categoryKey: "trabajoVoluntario"
+        },
+
+        {
+          start: "2027-02-08",
+          end: "2027-02-14",
+          categoryKey: "convivencia"
+        },
+
+        {
+          start: "2027-02-15",
+          end: "2027-02-21",
+          categoryKey: "ayudaServicio"
+        },
+
+        {
+          start: "2027-02-22",
+          end: "2027-02-28",
+          categoryKey: "responsabilidad"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       MARZO 2027
+       Participación · esfuerzo · convivencia
+       ===================================================== */
+
+    {
+      id: "2027-03",
+
+      label: "Marzo 2027",
+
+      weeks: [
+
+        {
+          start: "2027-03-01",
+          end: "2027-03-07",
+          categoryKey: "participacion"
+        },
+
+        {
+          start: "2027-03-08",
+          end: "2027-03-14",
+          categoryKey: "superacion"
+        },
+
+        {
+          start: "2027-03-15",
+          end: "2027-03-21",
+          categoryKey: "convivencia"
+        },
+
+        {
+          start: "2027-03-22",
+          end: "2027-03-24",
+          categoryKey: "trabajoVoluntario"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       ABRIL 2027
+       Regreso de Pascua · Día del Libro
+       ===================================================== */
+
+    {
+      id: "2027-04",
+
+      label: "Abril 2027",
+
+      weeks: [
+
+        {
+          start: "2027-04-06",
+          end: "2027-04-11",
+          categoryKey: "responsabilidad"
+        },
+
+        {
+          start: "2027-04-12",
+          end: "2027-04-18",
+          categoryKey: "trabajoVoluntario"
+        },
+
+        {
+          start: "2027-04-19",
+          end: "2027-04-25",
+          categoryKey: "lectura"
+        },
+
+        {
+          start: "2027-04-26",
+          end: "2027-05-02",
+          categoryKey: "participacion"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       MAYO 2027
+       Recta final · esfuerzo y comunidad
+       ===================================================== */
+
+    {
+      id: "2027-05",
+
+      label: "Mayo 2027",
+
+      weeks: [
+
+        {
+          start: "2027-05-03",
+          end: "2027-05-09",
+          categoryKey: "superacion"
+        },
+
+        {
+          start: "2027-05-10",
+          end: "2027-05-16",
+          categoryKey: "convivencia"
+        },
+
+        {
+          start: "2027-05-17",
+          end: "2027-05-23",
+          categoryKey: "ayudaServicio"
+        },
+
+        {
+          start: "2027-05-24",
+          end: "2027-05-30",
+          categoryKey: "lectura"
+        }
+
+      ]
+    },
+
+
+    /* =====================================================
+       JUNIO 2027
+       Cierre del curso · último impulso
+       ===================================================== */
+
+    {
+      id: "2027-06",
+
+      label: "Junio 2027",
+
+      weeks: [
+
+        {
+          start: "2027-05-31",
+          end: "2027-06-06",
+          categoryKey: "responsabilidad"
+        },
+
+        {
+          start: "2027-06-07",
+          end: "2027-06-13",
+          categoryKey: "superacion"
+        },
+
+        {
+          start: "2027-06-14",
+          end: "2027-06-18",
+          categoryKey: "convivencia"
         }
 
       ]
     }
 
   ]);
-
-
 /* =========================================================
    FECHAS
 
