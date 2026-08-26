@@ -263,7 +263,8 @@ document.addEventListener(
     let unsubscribeStudentManagement =
       null;
 
-    let currentAdminUser =
+        let currentAdminUser =
+      null;
 
     let invitationSubmitting =
       false;
@@ -2700,13 +2701,13 @@ document.addEventListener(
 
     onAuthStateChanged(
       auth,
-      async user => {
+           async user => {
 
-      s        stopTeacherListener();
+        stopTeacherListener();
         stopInvitationListener();
         stopStudentManagementListener();
 
-                resetInterface();
+        resetInterface();
         resetInvitationInterface();
         resetStudentImportInterface();
         resetStudentManagementInterface();
