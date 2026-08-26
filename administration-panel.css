@@ -1281,3 +1281,460 @@
     min-height: 240px;
   }
 }
+/* =========================================================
+   ALUMNADO · GESTIÓN
+   ========================================================= */
+
+.administration-student-management-card {
+  overflow: hidden;
+}
+
+
+.administration-student-management {
+  display: grid;
+  gap: 18px;
+
+  padding: 24px;
+}
+
+
+.administration-student-class-tabs {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 8px;
+
+  padding: 6px;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.1);
+
+  border-radius: 11px;
+
+  background:
+    rgba(255, 255, 255, 0.014);
+}
+
+
+.administration-student-class-tab {
+  min-height: 42px;
+  padding:
+    0
+    12px;
+
+  color: var(--muted);
+
+  font: inherit;
+  font-size: 0.56rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+
+  border:
+    1px solid transparent;
+
+  border-radius: 8px;
+
+  background:
+    transparent;
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+
+.administration-student-class-tab:hover {
+  color: var(--gold-200);
+
+  border-color:
+    rgba(230, 196, 123, 0.16);
+
+  background:
+    rgba(230, 196, 123, 0.035);
+}
+
+
+.administration-student-class-tab[aria-selected="true"] {
+  color: #101722;
+
+  border-color:
+    rgba(230, 196, 123, 0.48);
+
+  background:
+    linear-gradient(
+      135deg,
+      var(--gold-200),
+      var(--gold-400)
+    );
+
+  box-shadow:
+    0 7px 18px
+    rgba(169, 119, 41, 0.14);
+}
+
+
+.administration-student-management
+.administration-status {
+  margin: 0;
+
+  min-height: 220px;
+}
+
+
+.administration-student-management-list {
+  display: grid;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.055);
+
+  border-radius: 11px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255, 255, 255, 0.012);
+}
+
+
+.administration-student-management-row {
+  display: grid;
+  grid-template-columns:
+    minmax(240px, 1fr)
+    auto
+    minmax(150px, 0.55fr)
+    auto;
+
+  gap:
+    14px
+    18px;
+
+  align-items: center;
+
+  min-height: 68px;
+
+  padding:
+    11px
+    14px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.045);
+}
+
+
+.administration-student-management-row:last-child {
+  border-bottom: 0;
+}
+
+
+.administration-student-management-row[data-active="false"] {
+  opacity: 0.58;
+}
+
+
+.administration-student-management-identity {
+  display: grid;
+  grid-template-columns:
+    30px
+    minmax(0, 1fr);
+
+  gap: 10px;
+
+  align-items: center;
+
+  min-width: 0;
+}
+
+
+.administration-student-management-order {
+  display: grid;
+  place-items: center;
+
+  width: 30px;
+  height: 30px;
+
+  color: var(--gold-300);
+
+  font-family: var(--font-display);
+  font-size: 0.58rem;
+  font-weight: 700;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.13);
+
+  border-radius: 50%;
+
+  background:
+    rgba(230, 196, 123, 0.025);
+}
+
+
+.administration-student-management-copy {
+  display: grid;
+  gap: 3px;
+
+  min-width: 0;
+}
+
+
+.administration-student-management-name {
+  overflow: hidden;
+
+  color: var(--white);
+
+  font-size: 0.63rem;
+  font-weight: 700;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.administration-student-management-meta {
+  color: var(--muted);
+
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.035em;
+}
+
+
+.administration-student-management-points {
+  display: grid;
+  gap: 2px;
+
+  min-width: 68px;
+
+  text-align: center;
+}
+
+
+.administration-student-management-points strong {
+  color: var(--gold-200);
+
+  font-family: var(--font-display);
+  font-size: 0.72rem;
+}
+
+
+.administration-student-management-points span {
+  color: var(--muted);
+
+  font-size: 0.44rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+
+.administration-student-management-house {
+  display: grid;
+  gap: 5px;
+}
+
+
+.administration-student-management-house span {
+  color: var(--gold-400);
+
+  font-size: 0.46rem;
+  font-weight: 800;
+  letter-spacing: 0.055em;
+  text-transform: uppercase;
+}
+
+
+.administration-student-management-house select {
+  width: 100%;
+  min-height: 38px;
+
+  padding:
+    0
+    30px
+    0
+    10px;
+
+  color: var(--white);
+
+  font: inherit;
+  font-size: 0.55rem;
+  font-weight: 700;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.14);
+
+  border-radius: 8px;
+  outline: none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  cursor: pointer;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.administration-student-management-house select:hover {
+  border-color:
+    rgba(230, 196, 123, 0.24);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+
+.administration-student-management-house select:focus {
+  border-color:
+    rgba(230, 196, 123, 0.42);
+
+  background:
+    rgba(230, 196, 123, 0.035);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(230, 196, 123, 0.055);
+}
+
+
+.administration-student-management-status {
+  min-width: 82px;
+  min-height: 36px;
+
+  padding:
+    0
+    11px;
+
+  color: #bce5c9;
+
+  font: inherit;
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+
+  border:
+    1px solid rgba(115, 190, 139, 0.22);
+
+  border-radius: 20px;
+
+  background:
+    rgba(115, 190, 139, 0.055);
+
+  cursor: pointer;
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+
+.administration-student-management-status[data-active="false"] {
+  color: #efc5c5;
+
+  border-color:
+    rgba(220, 120, 120, 0.2);
+
+  background:
+    rgba(220, 120, 120, 0.045);
+}
+
+
+.administration-student-management-status:disabled,
+.administration-student-management-house select:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+@media (max-width: 1050px) {
+
+  .administration-student-management-row {
+    grid-template-columns:
+      minmax(220px, 1fr)
+      auto
+      minmax(145px, 0.6fr);
+
+    grid-template-areas:
+      "identity points house"
+      "identity status house";
+  }
+
+
+  .administration-student-management-identity {
+    grid-area: identity;
+  }
+
+
+  .administration-student-management-points {
+    grid-area: points;
+  }
+
+
+  .administration-student-management-house {
+    grid-area: house;
+  }
+
+
+  .administration-student-management-status {
+    grid-area: status;
+
+    justify-self: center;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .administration-student-management {
+    padding:
+      20px
+      18px;
+  }
+
+
+  .administration-student-class-tabs {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+
+
+  .administration-student-management-row {
+    grid-template-columns:
+      1fr;
+
+    grid-template-areas:
+      "identity"
+      "points"
+      "house"
+      "status";
+
+    gap: 12px;
+
+    padding:
+      14px;
+  }
+
+
+  .administration-student-management-points {
+    justify-self: start;
+
+    text-align: left;
+  }
+
+
+  .administration-student-management-status {
+    justify-self: stretch;
+
+    width: 100%;
+  }
+}
