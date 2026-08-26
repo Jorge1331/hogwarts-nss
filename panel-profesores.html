@@ -2375,7 +2375,125 @@
       </div>
 
     </article>
-  
+      <article class="administration-card administration-students-card">
+
+      <header class="administration-card-heading">
+
+        <div>
+
+          <p class="private-eyebrow">
+            Registro del alumnado
+          </p>
+
+          <h3>
+            Alumnado del tercer ciclo
+          </h3>
+
+          <p>
+            Importa de forma privada los grupos de 5.º y 6.º.
+            Los nombres se enviarán directamente a Firestore
+            y no quedarán almacenados en el repositorio.
+          </p>
+
+        </div>
+
+        <span
+          id="adminStudentsCount"
+          class="administration-record-counter"
+        >
+          0 alumnos
+        </span>
+
+      </header>
+
+
+      <div class="administration-student-import">
+
+        <form
+          id="adminStudentImportForm"
+          class="administration-student-import-form"
+        >
+
+          <label class="administration-field">
+
+            <span>
+              Listado de alumnado
+            </span>
+
+            <textarea
+              id="adminStudentImportData"
+              rows="12"
+              autocomplete="off"
+              spellcheck="false"
+              placeholder="Pega aquí el listado preparado para la importación"
+            ></textarea>
+
+          </label>
+
+
+          <div class="administration-student-import-actions">
+
+            <button
+              id="adminStudentPreviewButton"
+              class="administration-invitation-submit"
+              type="button"
+            >
+              Preparar alumnado
+            </button>
+
+            <button
+              id="adminStudentImportButton"
+              class="administration-invitation-submit"
+              type="button"
+              disabled
+            >
+              Guardar en Firestore
+            </button>
+
+          </div>
+
+
+          <p
+            id="adminStudentImportMessage"
+            class="administration-invitation-message"
+            role="status"
+            aria-live="polite"
+          ></p>
+
+        </form>
+
+
+        <div class="administration-student-preview">
+
+          <div
+            id="adminStudentsPreviewEmpty"
+            class="administration-status"
+          >
+
+            <strong>
+              Importación pendiente
+            </strong>
+
+            <p>
+              Primero se validarán los cuatro grupos,
+              el orden de lista y el reparto de Casas.
+            </p>
+
+          </div>
+
+
+          <div
+            id="adminStudentsPreview"
+            class="administration-students-preview-list"
+            aria-live="polite"
+            hidden
+          ></div>
+
+        </div>
+
+      </div>
+
+    </article>
   </div>
 
 </section>
