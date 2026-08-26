@@ -232,10 +232,16 @@ const teacherCalizWeeks =
         "movementHistoryTypeFilter"
       );
 
-    const movementHistoryClearFilters =
+        const movementHistoryClearFilters =
       document.getElementById(
         "movementHistoryClearFilters"
       );
+
+    const studentClassTabs =
+      document.getElementById(
+        "studentClassTabs"
+      );
+
     const navigationButtons =
       Array.from(
         document.querySelectorAll(
@@ -304,7 +310,8 @@ const teacherCalizWeeks =
       movementHistoryList,
       movementHistoryHouseFilter,
       movementHistoryTypeFilter,
-      movementHistoryClearFilters
+      movementHistoryClearFilters,
+      studentClassTabs
     ];
 
 
@@ -326,7 +333,10 @@ const teacherCalizWeeks =
        ESTADO INTERNO
        ===================================================== */
 
-    let currentTeacherProfile = null;
+        let currentTeacherProfile = null;
+
+    let selectedStudentClassId =
+      null;
 
     let authorizationInProgress =
       false;
@@ -453,12 +463,139 @@ const teacherCalizWeeks =
     };
 
 
-    const showPrivatePanel = () => {
+       const showPrivatePanel = () => {
 
       panelLoading.hidden = true;
       panelDenied.hidden = true;
       privatePanelApp.hidden = false;
     };
+
+
+    const renderStudentClassTabs = (
+      profile
+    ) => {
+
+      const assignedClasses =
+        CLASS_IDS.filter(
+          classId =>
+            Array.isArray(
+              profile?.assignedClasses
+            ) &&
+            profile.assignedClasses.includes(
+              classId
+            )
+        );
+
+
+      if (
+        assignedClasses.length === 0
+      ) {
+
+        selectedStudentClassId =
+          null;
+
+
+        const emptyMessage =
+          document.createElement(
+            "span"
+          );
+
+        emptyMessage.className =
+          "student-class-loading";
+
+        emptyMessage.textContent =
+          "Sin grupos asignados";
+
+
+        studentClassTabs.replaceChildren(
+          emptyMessage
+        );
+
+        return;
+      }
+
+
+      if (
+        !assignedClasses.includes(
+          selectedStudentClassId
+        )
+      ) {
+
+        selectedStudentClassId =
+          assignedClasses[0];
+      }
+
+
+      const buttons =
+        assignedClasses.map(
+          classId => {
+
+            const button =
+              document.createElement(
+                "button"
+              );
+
+            button.type =
+              "button";
+
+            button.className =
+              "student-class-tab";
+
+            button.dataset.studentClass =
+              classId;
+
+
+            const isActive =
+              classId ===
+              selectedStudentClassId;
+
+
+            if (
+              isActive
+            ) {
+
+              button.classList.add(
+                "is-active"
+              );
+            }
+
+
+            button.setAttribute(
+              "aria-pressed",
+              isActive
+                ? "true"
+                : "false"
+            );
+
+
+            button.textContent =
+              `${classId.charAt(0)}.º ${classId.charAt(1)}`;
+
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                selectedStudentClassId =
+                  classId;
+
+                renderStudentClassTabs(
+                  profile
+                );
+              }
+            );
+
+
+            return button;
+          }
+        );
+
+
+      studentClassTabs.replaceChildren(
+        ...buttons
+      );
+    };
+
      /* =====================================================
    CARTA DEL SANTO CÁLIZ
    ===================================================== */
@@ -3065,6 +3202,10 @@ setMovementMessage(
 
 
           renderTeacherProfile(
+            teacherProfile
+          );
+
+          renderStudentClassTabs(
             teacherProfile
           );
 
