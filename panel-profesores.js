@@ -49,6 +49,14 @@ const ALLOWED_ROLES =
   ]);
 
 
+const CLASS_IDS = [
+  "5A",
+  "5B",
+  "6A",
+  "6B"
+];
+
+
 document.addEventListener(
   "DOMContentLoaded",
   () => {
@@ -2929,7 +2937,23 @@ setMovementMessage(
               "Profesorado"
             ),
 
-          role,
+                    role,
+
+          assignedClasses:
+            role === "admin"
+              ? [...CLASS_IDS]
+              : (
+                  Array.isArray(
+                    teacherData.assignedClasses
+                  )
+                    ? teacherData.assignedClasses.filter(
+                        classId =>
+                          CLASS_IDS.includes(
+                            classId
+                          )
+                      )
+                    : []
+                ),
 
           active: true
         };
