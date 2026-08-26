@@ -1643,7 +1643,17 @@ div > span {
    ========================================================= */
 
 #sectionCasas .student-roster {
-  margin-top: 14px;
+  display: grid;
+
+  gap: 4px;
+
+  max-height: 470px;
+
+  margin-top: 11px;
+
+  padding-right: 3px;
+
+  overflow-y: auto;
 }
 
 
@@ -1651,38 +1661,104 @@ div > span {
   display: grid;
 
   grid-template-columns:
-    28px
+    22px
     minmax(0, 1fr)
     auto;
 
   align-items: center;
 
-  gap: 9px;
+  gap: 7px;
 
   width: 100%;
 
-  min-height: 48px;
+  min-height: 34px;
 
-  margin-top: 6px;
+  margin: 0;
 
   padding:
-    7px
-    9px;
+    5px
+    7px;
 
-  color: var(--white);
+  color:
+    rgba(237, 225, 196, 0.72);
+
+  font-family:
+    var(--font-body);
 
   text-align: left;
 
   border:
     1px solid
-    rgba(230, 196, 123, 0.09);
+    rgba(230, 196, 123, 0.075);
 
-  border-radius: 8px;
+  border-radius: 7px;
 
   cursor: pointer;
 
   background:
-    rgba(255, 255, 255, 0.018);
+    rgba(255, 255, 255, 0.012);
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+#sectionCasas
+.student-roster-item > span:first-child {
+  color:
+    rgba(230, 196, 123, 0.48);
+
+  font-size: 0.49rem;
+
+  font-weight: 700;
+
+  text-align: center;
+}
+
+
+#sectionCasas
+.student-roster-item > strong {
+  overflow: hidden;
+
+  color:
+    rgba(237, 225, 196, 0.76);
+
+  font-family:
+    var(--font-body);
+
+  font-size: 0.54rem;
+
+  font-weight: 600;
+
+  line-height: 1.25;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+#sectionCasas
+.student-roster-item > span:last-child {
+  color:
+    rgba(230, 196, 123, 0.58);
+
+  font-size: 0.49rem;
+
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+#sectionCasas
+.student-roster-item:hover {
+  border-color:
+    rgba(230, 196, 123, 0.2);
+
+  background:
+    rgba(214, 174, 82, 0.035);
 }
 
 
