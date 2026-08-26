@@ -2204,17 +2204,107 @@ document.addEventListener(
           "administration-student-management-status";
 
         status.dataset.active =
-          student.active === true
-            ? "true"
-            : "false";
-
-        status.textContent =
+                  status.textContent =
           student.active === true
             ? "Activo"
             : "Inactivo";
 
         status.disabled =
-          true;
+          false;
+
+
+        status.addEventListener(
+          "click",
+          async () => {
+
+            if (
+              !currentAdminUser
+            ) {
+
+              return;
+            }
+
+
+            const nextActive =
+              student.active !== true;
+
+
+            const confirmed =
+              window.confirm(
+                nextActive
+                  ? `¿Reactivar a ${student.displayName}?`
+                  : `¿Marcar a ${student.displayName} como inactivo? Sus puntos y su Casa se conservarán.`
+              );
+
+
+            if (
+              !confirmed
+            ) {
+
+              return;
+            }
+
+
+            status.disabled =
+              true;
+
+
+            setStudentManagementMessage(
+              nextActive
+                ? `Reactivando a ${student.displayName}...`
+                : `Marcando a ${student.displayName} como inactivo...`
+            );
+
+
+            try {
+
+              await updateDoc(
+                doc(
+                  db,
+                  "students",
+                  student.id
+                ),
+                {
+                  active:
+                    nextActive
+                }
+              );
+
+
+              setStudentManagementMessage(
+                nextActive
+                  ? `${student.displayName} vuelve a estar activo.`
+                  : `${student.displayName} ha quedado marcado como inactivo.`,
+                "success"
+              );
+
+
+            } catch (error) {
+
+              console.error(
+                "No se ha podido cambiar el estado del alumno:",
+                error
+              );
+
+
+              setStudentManagementMessage(
+                `No se ha podido cambiar el estado de ${student.displayName}.`,
+                "error"
+              );
+
+
+            } finally {
+
+              if (
+                status.isConnected
+              ) {
+
+                status.disabled =
+                  false;
+              }
+            }
+          }
+        );
 
 
         row.append(
