@@ -935,3 +935,349 @@
 
   justify-self: end;
 }
+/* =========================================================
+   ALUMNADO · CARGA MASIVA
+   ========================================================= */
+
+.administration-students-card {
+  overflow: hidden;
+}
+
+
+.administration-student-import {
+  display: grid;
+  grid-template-columns:
+    minmax(360px, 0.9fr)
+    minmax(0, 1.1fr);
+
+  min-height: 420px;
+}
+
+
+.administration-student-import-form {
+  display: grid;
+  align-content: start;
+  gap: 18px;
+
+  padding: 24px;
+
+  border-right:
+    1px solid rgba(230, 196, 123, 0.1);
+}
+
+
+.administration-student-import-form
+.administration-field {
+  grid-column: auto;
+}
+
+
+.administration-field textarea {
+  width: 100%;
+  min-height: 280px;
+
+  padding:
+    13px
+    14px;
+
+  resize: vertical;
+
+  color: var(--white);
+
+  font: inherit;
+  font-size: 0.64rem;
+  line-height: 1.6;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.14);
+
+  border-radius: 9px;
+  outline: none;
+
+  background:
+    rgba(255, 255, 255, 0.025);
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+
+.administration-field textarea::placeholder {
+  color:
+    rgba(184, 194, 208, 0.52);
+}
+
+
+.administration-field textarea:hover {
+  border-color:
+    rgba(230, 196, 123, 0.24);
+
+  background:
+    rgba(255, 255, 255, 0.035);
+}
+
+
+.administration-field textarea:focus {
+  border-color:
+    rgba(230, 196, 123, 0.42);
+
+  background:
+    rgba(230, 196, 123, 0.035);
+
+  box-shadow:
+    0 0 0 3px
+    rgba(230, 196, 123, 0.055);
+}
+
+
+.administration-student-import-actions {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+
+.administration-student-preview {
+  min-width: 0;
+
+  padding: 24px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(255, 255, 255, 0.012),
+      rgba(230, 196, 123, 0.018)
+    );
+}
+
+
+.administration-student-preview
+.administration-status {
+  display: grid;
+  place-content: center;
+
+  min-height: 370px;
+  margin: 0;
+}
+
+
+.administration-students-preview-list {
+  display: grid;
+
+  gap: 16px;
+}
+
+
+.administration-student-preview-summary {
+  display: grid;
+  grid-template-columns:
+    repeat(4, minmax(0, 1fr));
+
+  gap: 8px;
+}
+
+
+.administration-student-preview-summary-item {
+  display: grid;
+  gap: 4px;
+
+  padding:
+    12px
+    10px;
+
+  text-align: center;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.1);
+
+  border-radius: 9px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+.administration-student-preview-summary-item strong {
+  color: var(--gold-200);
+
+  font-family: var(--font-display);
+  font-size: 0.78rem;
+}
+
+
+.administration-student-preview-summary-item span {
+  color: var(--muted);
+
+  font-size: 0.51rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+
+  text-transform: uppercase;
+}
+
+
+.administration-student-preview-groups {
+  display: grid;
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 12px;
+}
+
+
+.administration-student-preview-group {
+  min-width: 0;
+
+  border:
+    1px solid rgba(255, 255, 255, 0.055);
+
+  border-radius: 10px;
+
+  overflow: hidden;
+
+  background:
+    rgba(255, 255, 255, 0.012);
+}
+
+
+.administration-student-preview-group-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 12px;
+
+  padding:
+    10px
+    12px;
+
+  border-bottom:
+    1px solid rgba(230, 196, 123, 0.09);
+
+  background:
+    rgba(230, 196, 123, 0.025);
+}
+
+
+.administration-student-preview-group-heading strong {
+  color: var(--gold-200);
+
+  font-family: var(--font-display);
+  font-size: 0.68rem;
+}
+
+
+.administration-student-preview-group-heading span {
+  color: var(--muted);
+
+  font-size: 0.5rem;
+  font-weight: 700;
+}
+
+
+.administration-student-preview-row {
+  display: grid;
+  grid-template-columns:
+    minmax(0, 1fr)
+    auto;
+
+  gap: 10px;
+  align-items: center;
+
+  min-height: 38px;
+
+  padding:
+    7px
+    11px;
+
+  border-bottom:
+    1px solid rgba(255, 255, 255, 0.04);
+}
+
+
+.administration-student-preview-row:last-child {
+  border-bottom: 0;
+}
+
+
+.administration-student-preview-name {
+  overflow: hidden;
+
+  color: #c7cfda;
+
+  font-size: 0.56rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+
+.administration-student-preview-house {
+  padding:
+    4px
+    7px;
+
+  color: var(--gold-300);
+
+  font-size: 0.46rem;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.16);
+
+  border-radius: 20px;
+
+  background:
+    rgba(230, 196, 123, 0.035);
+}
+
+
+@media (max-width: 1050px) {
+
+  .administration-student-import {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .administration-student-import-form {
+    border-right: 0;
+
+    border-bottom:
+      1px solid rgba(230, 196, 123, 0.1);
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .administration-student-import-form,
+  .administration-student-preview {
+    padding:
+      20px
+      18px;
+  }
+
+
+  .administration-student-import-actions {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .administration-student-preview-summary,
+  .administration-student-preview-groups {
+    grid-template-columns:
+      1fr;
+  }
+
+
+  .administration-field textarea {
+    min-height: 240px;
+  }
+}
