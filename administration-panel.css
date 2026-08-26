@@ -252,11 +252,12 @@
 .administration-teacher-row {
   display: grid;
   grid-template-columns:
-    minmax(230px, 1.5fr)
-    minmax(150px, 1fr)
+    minmax(220px, 1.45fr)
+    minmax(120px, 0.8fr)
     auto
+    minmax(190px, 0.9fr)
     auto;
-  gap: 18px;
+  gap: 14px;
   align-items: center;
 
   min-height: 82px;
@@ -395,7 +396,120 @@
     rgba(217, 137, 137, 0.055);
 }
 
+/* =========================================================
+   ASIGNACIÓN DE GRUPOS DOCENTES
+   ========================================================= */
 
+.administration-class-assignment {
+  display: grid;
+  gap: 6px;
+
+  min-width: 190px;
+}
+
+
+.administration-class-label {
+  color: var(--muted);
+
+  font-size: 0.48rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+.administration-class-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  gap: 5px;
+}
+
+
+.administration-class-button {
+  min-width: 36px;
+  min-height: 29px;
+
+  padding: 5px 8px;
+
+  color: var(--muted);
+
+  font: inherit;
+  font-size: 0.52rem;
+  font-weight: 800;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.14);
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  transition:
+    color 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    opacity 160ms ease;
+}
+
+
+.administration-class-button:hover {
+  color: var(--gold-300);
+
+  border-color:
+    rgba(230, 196, 123, 0.32);
+
+  background:
+    rgba(230, 196, 123, 0.045);
+}
+
+
+.administration-class-button[data-active="true"] {
+  color: #f1d99d;
+
+  border-color:
+    rgba(230, 196, 123, 0.46);
+
+  background:
+    rgba(214, 174, 82, 0.11);
+}
+
+
+.administration-class-button:disabled {
+  opacity: 0.45;
+
+  cursor: wait;
+}
+
+
+.administration-all-classes {
+  display: inline-flex;
+  align-items: center;
+
+  min-height: 29px;
+
+  padding:
+    5px
+    10px;
+
+  color: #f1d99d;
+
+  font-size: 0.52rem;
+  font-weight: 800;
+
+  border:
+    1px solid rgba(230, 196, 123, 0.32);
+
+  border-radius: 7px;
+
+  background:
+    rgba(214, 174, 82, 0.075);
+}
 .administration-readonly-note {
   display: flex;
   gap: 10px;
