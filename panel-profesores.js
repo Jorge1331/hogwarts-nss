@@ -708,7 +708,7 @@ const teacherCalizWeeks =
     };
 
 
-    const renderSelectedStudentWorkspace =
+        const renderSelectedStudentWorkspace =
       () => {
 
         const selectedStudent =
@@ -763,24 +763,423 @@ const teacherCalizWeeks =
           ] || "Sin Casa";
 
 
-        showStudentMeritState(
-          cleanText(
+        const workspace =
+          document.createElement(
+            "div"
+          );
+
+        workspace.className =
+          "house-movement-form";
+
+
+        const studentSummary =
+          document.createElement(
+            "p"
+          );
+
+        studentSummary.className =
+          "student-merit-intro";
+
+        studentSummary.textContent =
+          `${cleanText(
             selectedStudent.displayName,
             "Alumno"
-          ),
-          `${classLabel} · ${houseLabel} · ${personalPoints} ${
+          )} · ${classLabel} · ${houseLabel} · ${personalPoints} ${
             Math.abs(
               personalPoints
             ) === 1
               ? "punto personal"
               : "puntos personales"
-          }`
+          }`;
+
+
+        const categoryField =
+          document.createElement(
+            "label"
+          );
+
+        categoryField.className =
+          "movement-field";
+
+
+        const categoryLabel =
+          document.createElement(
+            "span"
+          );
+
+        categoryLabel.textContent =
+          "Categoría";
+
+
+        const categorySelect =
+          document.createElement(
+            "select"
+          );
+
+        categorySelect.name =
+          "studentMeritCategory";
+
+        categorySelect.required =
+          true;
+
+
+        Array.from(
+          movementCategory.options
+        ).forEach(
+          option => {
+
+            categorySelect.appendChild(
+              option.cloneNode(
+                true
+              )
+            );
+          }
+        );
+
+
+        categorySelect.value =
+          "";
+
+
+        categoryField.append(
+          categoryLabel,
+          categorySelect
+        );
+
+
+        const freeAmountField =
+          document.createElement(
+            "label"
+          );
+
+        freeAmountField.className =
+          "movement-field movement-reason-field";
+
+        freeAmountField.hidden =
+          true;
+
+
+        const freeAmountLabel =
+          document.createElement(
+            "span"
+          );
+
+        freeAmountLabel.textContent =
+          "Puntuación libre";
+
+
+        const freeAmountInput =
+          document.createElement(
+            "input"
+          );
+
+        freeAmountInput.type =
+          "number";
+
+        freeAmountInput.min =
+          "-100";
+
+        freeAmountInput.max =
+          "100";
+
+        freeAmountInput.step =
+          "1";
+
+        freeAmountInput.placeholder =
+          "Escribe entre -100 y +100";
+
+
+        freeAmountField.append(
+          freeAmountLabel,
+          freeAmountInput
+        );
+
+
+        const reasonField =
+          document.createElement(
+            "label"
+          );
+
+        reasonField.className =
+          "movement-field movement-reason-field";
+
+
+        const reasonLabel =
+          document.createElement(
+            "span"
+          );
+
+        reasonLabel.textContent =
+          "Comentario opcional";
+
+
+        const reasonInput =
+          document.createElement(
+            "textarea"
+          );
+
+        reasonInput.name =
+          "studentMeritReason";
+
+        reasonInput.maxLength =
+          160;
+
+        reasonInput.rows =
+          1;
+
+        reasonInput.placeholder =
+          "Puedes añadir una aclaración, pero no es obligatorio.";
+
+
+        const reasonHelp =
+          document.createElement(
+            "small"
+          );
+
+        reasonHelp.textContent =
+          "No hace falta repetir el nombre del alumno.";
+
+
+        reasonField.append(
+          reasonLabel,
+          reasonInput,
+          reasonHelp
+        );
+
+
+        const previewFooter =
+          document.createElement(
+            "div"
+          );
+
+        previewFooter.className =
+          "movement-form-footer";
+
+
+        const preview =
+          document.createElement(
+            "p"
+          );
+
+        preview.className =
+          "movement-message";
+
+        preview.setAttribute(
+          "role",
+          "status"
+        );
+
+        preview.setAttribute(
+          "aria-live",
+          "polite"
+        );
+
+        preview.textContent =
+          "Selecciona una categoría para previsualizar la puntuación.";
+
+
+        previewFooter.appendChild(
+          preview
+        );
+
+
+        const formatPreviewAmount =
+          amount => {
+
+            if (amount > 0) {
+
+              return `+${amount}`;
+            }
+
+
+            if (amount < 0) {
+
+              return `−${Math.abs(
+                amount
+              )}`;
+            }
+
+
+            return "0";
+          };
+
+
+        const updateStudentMeritPreview =
+          () => {
+
+            const selectedOption =
+              categorySelect.options[
+                categorySelect.selectedIndex
+              ];
+
+
+            const categoryValue =
+              String(
+                selectedOption?.value ||
+                ""
+              ).trim();
+
+
+            const configuredPoints =
+              selectedOption?.dataset.points ||
+              "";
+
+
+            if (
+              !categoryValue ||
+              configuredPoints === ""
+            ) {
+
+              freeAmountField.hidden =
+                true;
+
+              freeAmountInput.value =
+                "";
+
+              preview.textContent =
+                "Selecciona una categoría para previsualizar la puntuación.";
+
+              return;
+            }
+
+
+            let baseAmount =
+              null;
+
+
+            if (
+              configuredPoints ===
+              "free"
+            ) {
+
+              freeAmountField.hidden =
+                false;
+
+
+              const freeAmountText =
+                freeAmountInput.value.trim();
+
+
+              if (!freeAmountText) {
+
+                preview.textContent =
+                  "Escribe una puntuación libre para calcular su efecto.";
+
+                return;
+              }
+
+
+              baseAmount =
+                Number(
+                  freeAmountText
+                );
+
+
+              if (
+                !Number.isInteger(
+                  baseAmount
+                ) ||
+                baseAmount === 0 ||
+                baseAmount < -100 ||
+                baseAmount > 100
+              ) {
+
+                preview.textContent =
+                  "La puntuación libre debe ser un entero entre -100 y +100, distinto de cero.";
+
+                return;
+              }
+
+            } else {
+
+              freeAmountField.hidden =
+                true;
+
+              freeAmountInput.value =
+                "";
+
+
+              baseAmount =
+                Number(
+                  configuredPoints
+                );
+
+
+              if (
+                !Number.isInteger(
+                  baseAmount
+                ) ||
+                baseAmount === 0
+              ) {
+
+                preview.textContent =
+                  "La categoría seleccionada no contiene una puntuación válida.";
+
+                return;
+              }
+            }
+
+
+            const activeBonus =
+              getActiveCalizBonus();
+
+
+            const bonusApplies =
+              Boolean(
+                configuredPoints !==
+                  "free" &&
+                activeBonus &&
+                baseAmount > 0 &&
+                categoryValue ===
+                  activeBonus.categoryValue
+              );
+
+
+            const houseAmount =
+              bonusApplies
+                ? baseAmount *
+                  activeBonus.multiplier
+                : baseAmount;
+
+
+            preview.textContent =
+              `Alumno ${formatPreviewAmount(
+                baseAmount
+              )} · Casa ${formatPreviewAmount(
+                houseAmount
+              )}${
+                bonusApplies
+                  ? ` · Santo Cáliz ×${activeBonus.multiplier}`
+                  : ""
+              }`;
+          };
+
+
+        categorySelect.addEventListener(
+          "change",
+          updateStudentMeritPreview
+        );
+
+
+        freeAmountInput.addEventListener(
+          "input",
+          updateStudentMeritPreview
+        );
+
+
+        workspace.append(
+          studentSummary,
+          categoryField,
+          freeAmountField,
+          reasonField,
+          previewFooter
+        );
+
+
+        studentMeritWorkspace.replaceChildren(
+          workspace
         );
       };
-
-        const renderStudentRoster = (
-      students
-    ) => {
 
       const activeStudents =
         students
