@@ -21,10 +21,12 @@ import {
   collection,
   doc,
   getDocFromServer,
+  getDocsFromServer,
   onSnapshot,
   serverTimestamp,
   setDoc,
-  updateDoc
+  updateDoc,
+  writeBatch
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 document.addEventListener(
@@ -225,7 +227,8 @@ document.addEventListener(
       false;
     let preparedStudents =
       [];
-
+    let studentImportSubmitting =
+      false;
     const studentHouseIds = [
       "gryffindor",
       "hufflepuff",
@@ -1769,10 +1772,13 @@ document.addEventListener(
           );
 
 
-          setStudentImportMessage(
+                    setStudentImportMessage(
             `${preparedStudents.length} alumnos preparados. Revisa el reparto antes de guardar.`,
             "success"
           );
+
+          studentImportButton.disabled =
+            false;
 
 
         } catch (error) {
@@ -1791,6 +1797,178 @@ document.addEventListener(
               "No se ha podido preparar el alumnado.",
             "error"
           );
+        }
+      }
+    );
+         studentImportButton.addEventListener(
+      "click",
+      async () => {
+
+        if (
+          !currentAdminUser ||
+          studentImportSubmitting ||
+          preparedStudents.length === 0
+        ) {
+
+          return;
+        }
+
+
+        const confirmed =
+          window.confirm(
+            `Vas a crear ${preparedStudents.length} alumnos en Firestore. ¿Confirmas la importación?`
+          );
+
+
+        if (
+          !confirmed
+        ) {
+
+          return;
+        }
+
+
+        studentImportSubmitting =
+          true;
+
+        studentPreviewButton.disabled =
+          true;
+
+        studentImportButton.disabled =
+          true;
+
+
+        setStudentImportMessage(
+          "Comprobando el registro actual antes de guardar..."
+        );
+
+
+        try {
+
+          const existingStudentsSnapshot =
+            await getDocsFromServer(
+              collection(
+                db,
+                "students"
+              )
+            );
+
+
+          if (
+            !existingStudentsSnapshot.empty
+          ) {
+
+            resetStudentPreview();
+
+
+            setStudentImportMessage(
+              "La colección de alumnado ya contiene registros. Se ha cancelado la importación para evitar duplicados.",
+              "error"
+            );
+
+            return;
+          }
+
+
+          const batch =
+            writeBatch(
+              db
+            );
+
+
+          preparedStudents.forEach(
+            student => {
+
+              const studentReference =
+                doc(
+                  collection(
+                    db,
+                    "students"
+                  )
+                );
+
+
+              batch.set(
+                studentReference,
+                {
+                  displayName:
+                    student.displayName,
+                  classId:
+                    student.classId,
+                  houseId:
+                    student.houseId,
+                  personalPoints:
+                    0,
+                  active:
+                    true,
+                  schoolYear:
+                    "2026-2027",
+                  order:
+                    student.order
+                }
+              );
+            }
+          );
+
+
+          const importedCount =
+            preparedStudents.length;
+
+
+          setStudentImportMessage(
+            `Guardando ${importedCount} alumnos...`
+          );
+
+
+          await batch.commit();
+
+
+          studentImportForm.reset();
+
+          resetStudentPreview();
+
+
+          studentsCount.textContent =
+            importedCount === 1
+              ? "1 alumno"
+              : `${importedCount} alumnos`;
+
+
+          setStudentImportMessage(
+            `${importedCount} alumnos guardados correctamente en Firestore.`,
+            "success"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido guardar el alumnado:",
+            error
+          );
+
+
+          setStudentImportMessage(
+            "No se ha podido guardar el alumnado. No se ha completado la importación.",
+            "error"
+          );
+
+
+        } finally {
+
+          studentImportSubmitting =
+            false;
+
+
+          studentPreviewButton.disabled =
+            !currentAdminUser;
+
+
+          studentImportButton.disabled =
+            (
+              !currentAdminUser ||
+              preparedStudents.length === 0
+            );
         }
       }
     );
