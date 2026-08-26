@@ -129,29 +129,75 @@ document.addEventListener(
       document.getElementById(
         "adminInvitationsList"
       );
+    const studentsCount =
+      document.getElementById(
+        "adminStudentsCount"
+      );
 
-   const requiredElements = [
-  teacherTotal,
-  teacherActive,
-  teacherAdmins,
-  teacherInactive,
-  teachersCount,
-  teachersLoading,
-  teachersError,
-  teachersEmpty,
-  teachersList,
-  invitationsCount,
-  invitationForm,
-  invitationName,
-  invitationEmail,
-  invitationJob,
-  invitationSubmit,
-  invitationMessage,
-  invitationsLoading,
-  invitationsError,
-  invitationsEmpty,
-  invitationsList
-];
+    const studentImportForm =
+      document.getElementById(
+        "adminStudentImportForm"
+      );
+
+    const studentImportData =
+      document.getElementById(
+        "adminStudentImportData"
+      );
+
+    const studentPreviewButton =
+      document.getElementById(
+        "adminStudentPreviewButton"
+      );
+
+    const studentImportButton =
+      document.getElementById(
+        "adminStudentImportButton"
+      );
+
+    const studentImportMessage =
+      document.getElementById(
+        "adminStudentImportMessage"
+      );
+
+    const studentsPreviewEmpty =
+      document.getElementById(
+        "adminStudentsPreviewEmpty"
+      );
+
+    const studentsPreview =
+      document.getElementById(
+        "adminStudentsPreview"
+      );
+      const requiredElements = [
+      teacherTotal,
+      teacherActive,
+      teacherAdmins,
+      teacherInactive,
+      teachersCount,
+      teachersLoading,
+      teachersError,
+      teachersEmpty,
+      teachersList,
+      invitationsCount,
+      invitationForm,
+      invitationName,
+      invitationEmail,
+      invitationJob,
+      invitationSubmit,
+      invitationMessage,
+      invitationsLoading,
+      invitationsError,
+      invitationsEmpty,
+      invitationsList,
+      studentsCount,
+      studentImportForm,
+      studentImportData,
+      studentPreviewButton,
+      studentImportButton,
+      studentImportMessage,
+      studentsPreviewEmpty,
+      studentsPreview
+    ];
 
     if (
       requiredElements.some(
@@ -177,7 +223,29 @@ document.addEventListener(
 
     let invitationSubmitting =
       false;
+    let preparedStudents =
+      [];
 
+    const studentHouseIds = [
+      "gryffindor",
+      "hufflepuff",
+      "ravenclaw",
+      "slytherin"
+    ];
+
+    const studentHouseLabels = {
+      gryffindor:
+        "Gryffindor",
+
+      hufflepuff:
+        "Hufflepuff",
+
+      ravenclaw:
+        "Ravenclaw",
+
+      slytherin:
+        "Slytherin"
+    };
     const roleLabels = {
       admin:
         "Administrador",
@@ -214,6 +282,487 @@ document.addEventListener(
         fallback
       );
     };
+         const setStudentImportMessage = (
+      message = "",
+      state = ""
+    ) => {
+
+      studentImportMessage.textContent =
+        message;
+
+      if (state) {
+
+        studentImportMessage.dataset.state =
+          state;
+
+      } else {
+
+        delete studentImportMessage.dataset.state;
+      }
+    };
+
+
+    const resetStudentPreview = () => {
+
+      preparedStudents =
+        [];
+
+      studentsPreview.replaceChildren();
+
+      studentsPreview.hidden =
+        true;
+
+      studentsPreviewEmpty.hidden =
+        false;
+
+      studentImportButton.disabled =
+        true;
+
+      setStudentImportMessage();
+    };
+
+
+    const resetStudentImportInterface =
+      () => {
+
+        studentImportForm.reset();
+
+        studentsCount.textContent =
+          "0 alumnos";
+
+        studentPreviewButton.disabled =
+          true;
+
+        resetStudentPreview();
+      };
+
+
+    const parseStudentImportData =
+      () => {
+
+        const lines =
+          studentImportData.value
+            .split(
+              /\r?\n/
+            )
+            .map(
+              line =>
+                line.trim()
+            )
+            .filter(
+              line =>
+                line.length > 0
+            );
+
+
+        if (
+          lines.length === 0
+        ) {
+
+          throw new Error(
+            "Pega primero el listado de alumnado."
+          );
+        }
+
+
+        const classOrders =
+          new Map(
+            classIds.map(
+              classId => [
+                classId,
+                0
+              ]
+            )
+          );
+
+        const seenStudents =
+          new Set();
+
+        const students =
+          [];
+
+
+        lines.forEach(
+          (
+            line,
+            lineIndex
+          ) => {
+
+            const parts =
+              line
+                .split(
+                  "|"
+                )
+                .map(
+                  part =>
+                    part.trim()
+                );
+
+
+            if (
+              parts.length !== 3
+            ) {
+
+              throw new Error(
+                `Línea ${lineIndex + 1}: formato incorrecto.`
+              );
+            }
+
+
+            const classId =
+              parts[0];
+
+            const displayName =
+              parts[1];
+
+            const houseId =
+              parts[2]
+                .toLowerCase();
+
+
+            if (
+              !classIds.includes(
+                classId
+              )
+            ) {
+
+              throw new Error(
+                `Línea ${lineIndex + 1}: grupo no válido.`
+              );
+            }
+
+
+            if (
+              displayName.length < 2 ||
+              displayName.length > 80
+            ) {
+
+              throw new Error(
+                `Línea ${lineIndex + 1}: nombre no válido.`
+              );
+            }
+
+
+            if (
+              !studentHouseIds.includes(
+                houseId
+              )
+            ) {
+
+              throw new Error(
+                `Línea ${lineIndex + 1}: Casa no válida.`
+              );
+            }
+
+
+            const studentKey =
+              `${classId}:${displayName.toLocaleLowerCase(
+                "es"
+              )}`;
+
+
+            if (
+              seenStudents.has(
+                studentKey
+              )
+            ) {
+
+              throw new Error(
+                `Línea ${lineIndex + 1}: alumno duplicado en ${classId}.`
+              );
+            }
+
+
+            seenStudents.add(
+              studentKey
+            );
+
+
+            const order =
+              (
+                classOrders.get(
+                  classId
+                ) || 0
+              ) + 1;
+
+
+            if (
+              order > 40
+            ) {
+
+              throw new Error(
+                `${classId} supera el máximo de 40 alumnos.`
+              );
+            }
+
+
+            classOrders.set(
+              classId,
+              order
+            );
+
+
+            students.push({
+              displayName,
+              classId,
+              houseId,
+              personalPoints:
+                0,
+              active:
+                true,
+              schoolYear:
+                "2026-2027",
+              order
+            });
+          }
+        );
+
+
+        const missingClass =
+          classIds.find(
+            classId =>
+              (
+                classOrders.get(
+                  classId
+                ) || 0
+              ) === 0
+          );
+
+
+        if (
+          missingClass
+        ) {
+
+          throw new Error(
+            `Falta alumnado del grupo ${missingClass}.`
+          );
+        }
+
+
+        return students;
+      };
+
+
+    const createStudentPreviewSummary =
+      students => {
+
+        const summary =
+          document.createElement(
+            "div"
+          );
+
+        summary.className =
+          "administration-student-preview-summary";
+
+
+        studentHouseIds.forEach(
+          houseId => {
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "administration-student-preview-summary-item";
+
+
+            const total =
+              document.createElement(
+                "strong"
+              );
+
+            total.textContent =
+              String(
+                students.filter(
+                  student =>
+                    student.houseId ===
+                    houseId
+                ).length
+              );
+
+
+            const label =
+              document.createElement(
+                "span"
+              );
+
+            label.textContent =
+              studentHouseLabels[
+                houseId
+              ];
+
+
+            item.append(
+              total,
+              label
+            );
+
+            summary.appendChild(
+              item
+            );
+          }
+        );
+
+
+        return summary;
+      };
+
+
+    const createStudentPreviewGroup = (
+      classId,
+      students
+    ) => {
+
+      const group =
+        document.createElement(
+          "section"
+        );
+
+      group.className =
+        "administration-student-preview-group";
+
+
+      const heading =
+        document.createElement(
+          "header"
+        );
+
+      heading.className =
+        "administration-student-preview-group-heading";
+
+
+      const title =
+        document.createElement(
+          "strong"
+        );
+
+      title.textContent =
+        classId;
+
+
+      const count =
+        document.createElement(
+          "span"
+        );
+
+      count.textContent =
+        `${students.length} alumnos`;
+
+
+      heading.append(
+        title,
+        count
+      );
+
+      group.appendChild(
+        heading
+      );
+
+
+      students.forEach(
+        student => {
+
+          const row =
+            document.createElement(
+              "div"
+            );
+
+          row.className =
+            "administration-student-preview-row";
+
+
+          const name =
+            document.createElement(
+              "span"
+            );
+
+          name.className =
+            "administration-student-preview-name";
+
+          name.textContent =
+            `${student.order}. ${student.displayName}`;
+
+
+          const house =
+            document.createElement(
+              "span"
+            );
+
+          house.className =
+            "administration-student-preview-house";
+
+          house.textContent =
+            studentHouseLabels[
+              student.houseId
+            ];
+
+
+          row.append(
+            name,
+            house
+          );
+
+          group.appendChild(
+            row
+          );
+        }
+      );
+
+
+      return group;
+    };
+
+
+    const renderStudentPreview =
+      students => {
+
+        studentsPreview.replaceChildren();
+
+
+        studentsPreview.appendChild(
+          createStudentPreviewSummary(
+            students
+          )
+        );
+
+
+        const groups =
+          document.createElement(
+            "div"
+          );
+
+        groups.className =
+          "administration-student-preview-groups";
+
+
+        classIds.forEach(
+          classId => {
+
+            groups.appendChild(
+              createStudentPreviewGroup(
+                classId,
+                students.filter(
+                  student =>
+                    student.classId ===
+                    classId
+                )
+              )
+            );
+          }
+        );
+
+
+        studentsPreview.appendChild(
+          groups
+        );
+
+        studentsPreviewEmpty.hidden =
+          true;
+
+        studentsPreview.hidden =
+          false;
+      };
     const normaliseEmail = (
       value
     ) => {
@@ -1184,7 +1733,67 @@ document.addEventListener(
           }
         );
     };
+    studentImportData.addEventListener(
+      "input",
+      () => {
 
+        resetStudentPreview();
+      }
+    );
+
+
+    studentPreviewButton.addEventListener(
+      "click",
+      () => {
+
+        if (
+          !currentAdminUser
+        ) {
+
+          return;
+        }
+
+
+        try {
+
+          const students =
+            parseStudentImportData();
+
+
+          preparedStudents =
+            students;
+
+
+          renderStudentPreview(
+            preparedStudents
+          );
+
+
+          setStudentImportMessage(
+            `${preparedStudents.length} alumnos preparados. Revisa el reparto antes de guardar.`,
+            "success"
+          );
+
+
+        } catch (error) {
+
+          console.error(
+            "No se ha podido preparar el alumnado:",
+            error
+          );
+
+
+          resetStudentPreview();
+
+
+          setStudentImportMessage(
+            error.message ||
+              "No se ha podido preparar el alumnado.",
+            "error"
+          );
+        }
+      }
+    );
     invitationForm.addEventListener(
       "submit",
       async event => {
@@ -1358,6 +1967,7 @@ document.addEventListener(
 
     resetInterface();
     resetInvitationInterface();
+    resetStudentImportInterface();
 
     onAuthStateChanged(
       auth,
@@ -1368,6 +1978,7 @@ document.addEventListener(
 
         resetInterface();
         resetInvitationInterface();
+        resetStudentImportInterface();
 
 
         if (!user) {
@@ -1426,7 +2037,10 @@ document.addEventListener(
                    currentAdminUser =
             user;
 
-          invitationSubmit.disabled =
+                    invitationSubmit.disabled =
+            false;
+
+          studentPreviewButton.disabled =
             false;
 
           startTeacherListener();
