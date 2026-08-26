@@ -243,9 +243,7 @@ const teacherCalizWeeks =
         "studentClassTabs"
       );
 
-    const studentRoster =
-      document.getElementById(
-            const studentRoster =
+        const studentRoster =
       document.getElementById(
         "studentRoster"
       );
@@ -253,9 +251,6 @@ const teacherCalizWeeks =
     const studentMeritWorkspace =
       document.getElementById(
         "studentMeritWorkspace"
-      );
-
-    const navigationButtons =
       );
 
     const navigationButtons =
