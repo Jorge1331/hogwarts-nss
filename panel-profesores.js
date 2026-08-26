@@ -32,7 +32,8 @@ import {
   orderBy,
   query,
   runTransaction,
-  serverTimestamp
+  serverTimestamp,
+  where
 } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js";
 
 
@@ -237,9 +238,14 @@ const teacherCalizWeeks =
         "movementHistoryClearFilters"
       );
 
-    const studentClassTabs =
+        const studentClassTabs =
       document.getElementById(
         "studentClassTabs"
+      );
+
+    const studentRoster =
+      document.getElementById(
+        "studentRoster"
       );
 
     const navigationButtons =
@@ -311,7 +317,8 @@ const teacherCalizWeeks =
       movementHistoryHouseFilter,
       movementHistoryTypeFilter,
       movementHistoryClearFilters,
-      studentClassTabs
+      studentClassTabs,
+      studentRoster
     ];
 
 
@@ -335,7 +342,10 @@ const teacherCalizWeeks =
 
         let currentTeacherProfile = null;
 
-    let selectedStudentClassId =
+        let selectedStudentClassId =
+      null;
+
+    let unsubscribeStudentRoster =
       null;
 
     let authorizationInProgress =
@@ -579,9 +589,11 @@ const teacherCalizWeeks =
                 selectedStudentClassId =
                   classId;
 
-                renderStudentClassTabs(
+                               renderStudentClassTabs(
                   profile
                 );
+
+                startStudentRosterListener();
               }
             );
 
@@ -591,10 +603,342 @@ const teacherCalizWeeks =
         );
 
 
-      studentClassTabs.replaceChildren(
+           studentClassTabs.replaceChildren(
         ...buttons
       );
     };
+
+
+    const showStudentRosterState = (
+      title,
+      message
+    ) => {
+
+      const state =
+        document.createElement(
+          "div"
+        );
+
+      state.className =
+        "student-panel-empty";
+
+
+      const heading =
+        document.createElement(
+          "strong"
+        );
+
+      heading.textContent =
+        title;
+
+
+      const detail =
+        document.createElement(
+          "p"
+        );
+
+      detail.textContent =
+        message;
+
+
+      state.append(
+        heading,
+        detail
+      );
+
+
+      studentRoster.replaceChildren(
+        state
+      );
+    };
+
+
+    const renderStudentRoster = (
+      students
+    ) => {
+
+      const activeStudents =
+        students
+          .filter(
+            student =>
+              student.active === true &&
+              student.classId ===
+                selectedStudentClassId &&
+              student.schoolYear ===
+                "2026-2027"
+          )
+          .sort(
+            (
+              studentA,
+              studentB
+            ) => {
+
+              const orderA =
+                Number.isInteger(
+                  studentA.order
+                )
+                  ? studentA.order
+                  : 999;
+
+              const orderB =
+                Number.isInteger(
+                  studentB.order
+                )
+                  ? studentB.order
+                  : 999;
+
+
+              return orderA - orderB;
+            }
+          );
+
+
+      if (
+        activeStudents.length === 0
+      ) {
+
+        showStudentRosterState(
+          "No hay alumnado activo",
+          "Este grupo no contiene alumnado activo disponible."
+        );
+
+        return;
+      }
+
+
+      const houseLabels = {
+        gryffindor:
+          "Gryffindor",
+
+        hufflepuff:
+          "Hufflepuff",
+
+        ravenclaw:
+          "Ravenclaw",
+
+        slytherin:
+          "Slytherin"
+      };
+
+
+      const items =
+        activeStudents.map(
+          student => {
+
+            const item =
+              document.createElement(
+                "div"
+              );
+
+            item.className =
+              "student-roster-item";
+
+            item.dataset.studentId =
+              student.id;
+
+
+            const order =
+              document.createElement(
+                "span"
+              );
+
+            order.textContent =
+              Number.isInteger(
+                student.order
+              )
+                ? String(
+                    student.order
+                  )
+                : "—";
+
+
+            const identity =
+              document.createElement(
+                "strong"
+              );
+
+            identity.textContent =
+              `${cleanText(
+                student.displayName,
+                "Alumno"
+              )} · ${
+                houseLabels[
+                  student.houseId
+                ] || "Sin Casa"
+              }`;
+
+
+            const personalPoints =
+              Number.isInteger(
+                student.personalPoints
+              )
+                ? student.personalPoints
+                : 0;
+
+
+            const points =
+              document.createElement(
+                "span"
+              );
+
+            points.textContent =
+              `${personalPoints} ${
+                Math.abs(
+                  personalPoints
+                ) === 1
+                  ? "pt"
+                  : "pts"
+              }`;
+
+
+            item.append(
+              order,
+              identity,
+              points
+            );
+
+
+            return item;
+          }
+        );
+
+
+      studentRoster.replaceChildren(
+        ...items
+      );
+    };
+
+
+    const stopStudentRosterListener =
+      () => {
+
+        if (
+          typeof unsubscribeStudentRoster ===
+            "function"
+        ) {
+
+          unsubscribeStudentRoster();
+
+          unsubscribeStudentRoster =
+            null;
+        }
+      };
+
+
+    const startStudentRosterListener =
+      () => {
+
+        stopStudentRosterListener();
+
+
+        const assignedClasses =
+          Array.isArray(
+            currentTeacherProfile
+              ?.assignedClasses
+          )
+            ? currentTeacherProfile
+                .assignedClasses
+            : [];
+
+
+        if (
+          !selectedStudentClassId ||
+          !assignedClasses.includes(
+            selectedStudentClassId
+          )
+        ) {
+
+          showStudentRosterState(
+            "Sin grupo seleccionado",
+            "Selecciona uno de tus grupos asignados para consultar su alumnado."
+          );
+
+          return;
+        }
+
+
+        const classId =
+          selectedStudentClassId;
+
+        const classLabel =
+          `${classId.charAt(0)}.º ${classId.charAt(1)}`;
+
+
+        showStudentRosterState(
+          "Cargando alumnado",
+          `Consultando el alumnado de ${classLabel}.`
+        );
+
+
+        const studentsQuery =
+          query(
+            collection(
+              db,
+              "students"
+            ),
+            where(
+              "classId",
+              "==",
+              classId
+            )
+          );
+
+
+        unsubscribeStudentRoster =
+          onSnapshot(
+            studentsQuery,
+
+            snapshot => {
+
+              if (
+                selectedStudentClassId !==
+                  classId
+              ) {
+
+                return;
+              }
+
+
+              const students =
+                snapshot.docs.map(
+                  studentSnapshot => ({
+                    id:
+                      studentSnapshot.id,
+
+                    ...studentSnapshot.data()
+                  })
+                );
+
+
+              renderStudentRoster(
+                students
+              );
+            },
+
+            error => {
+
+              if (
+                selectedStudentClassId !==
+                  classId
+              ) {
+
+                return;
+              }
+
+
+              console.error(
+                "No se ha podido cargar el alumnado del grupo:",
+                error
+              );
+
+
+              showStudentRosterState(
+                "No se ha podido cargar el alumnado",
+                "Firestore no ha podido completar la consulta de este grupo."
+              );
+            }
+          );
+      };
 
      /* =====================================================
    CARTA DEL SANTO CÁLIZ
@@ -3132,9 +3476,11 @@ setMovementMessage(
        OBSERVADOR DE FIREBASE AUTHENTICATION
        ===================================================== */
 
-    onAuthStateChanged(
+        onAuthStateChanged(
       auth,
       async (user) => {
+
+        stopStudentRosterListener();
 
         if (
           manualLogoutInProgress
@@ -3205,9 +3551,11 @@ setMovementMessage(
             teacherProfile
           );
 
-          renderStudentClassTabs(
+         renderStudentClassTabs(
             teacherProfile
           );
+
+          startStudentRosterListener();
 
 
         } catch (error) {
