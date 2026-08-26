@@ -170,7 +170,41 @@ document.addEventListener(
       document.getElementById(
         "adminStudentsPreview"
       );
-      const requiredElements = [
+         const studentManagementCount =
+      document.getElementById(
+        "adminStudentManagementCount"
+      );
+
+    const studentManagementTabs =
+      document.getElementById(
+        "adminStudentManagementTabs"
+      );
+
+    const studentManagementLoading =
+      document.getElementById(
+        "adminStudentManagementLoading"
+      );
+
+    const studentManagementError =
+      document.getElementById(
+        "adminStudentManagementError"
+      );
+
+    const studentManagementEmpty =
+      document.getElementById(
+        "adminStudentManagementEmpty"
+      );
+
+    const studentManagementList =
+      document.getElementById(
+        "adminStudentManagementList"
+      );
+
+    const studentManagementMessage =
+      document.getElementById(
+        "adminStudentManagementMessage"
+      );
+          const requiredElements = [
       teacherTotal,
       teacherActive,
       teacherAdmins,
@@ -198,7 +232,14 @@ document.addEventListener(
       studentImportButton,
       studentImportMessage,
       studentsPreviewEmpty,
-      studentsPreview
+      studentsPreview,
+      studentManagementCount,
+      studentManagementTabs,
+      studentManagementLoading,
+      studentManagementError,
+      studentManagementEmpty,
+      studentManagementList,
+      studentManagementMessage
     ];
 
     if (
@@ -215,20 +256,28 @@ document.addEventListener(
     }
 
 
-    let unsubscribeTeachers =
+        let unsubscribeTeachers =
       null;
     let unsubscribeInvitations =
       null;
+    let unsubscribeStudentManagement =
+      null;
 
     let currentAdminUser =
-      null;
 
     let invitationSubmitting =
       false;
     let preparedStudents =
       [];
-    let studentImportSubmitting =
+       let studentImportSubmitting =
       false;
+
+    let studentManagementStudents =
+      [];
+
+    let selectedStudentClassId =
+      "5A";
+
     const studentHouseIds = [
       "gryffindor",
       "hufflepuff",
@@ -1736,7 +1785,508 @@ document.addEventListener(
           }
         );
     };
-    studentImportData.addEventListener(
+      const setStudentManagementMessage = (
+      message = "",
+      state = ""
+    ) => {
+
+      studentManagementMessage.textContent =
+        message;
+
+      if (state) {
+
+        studentManagementMessage.dataset.state =
+          state;
+
+      } else {
+
+        delete studentManagementMessage.dataset.state;
+      }
+    };
+
+
+    const updateStudentManagementTabs =
+      () => {
+
+        studentManagementTabs
+          .querySelectorAll(
+            "[data-student-class]"
+          )
+          .forEach(
+            button => {
+
+              const selected =
+                button.dataset.studentClass ===
+                selectedStudentClassId;
+
+              button.setAttribute(
+                "aria-selected",
+                selected
+                  ? "true"
+                  : "false"
+              );
+            }
+          );
+      };
+
+
+    const resetStudentManagementInterface =
+      () => {
+
+        studentManagementStudents =
+          [];
+
+        selectedStudentClassId =
+          "5A";
+
+        studentManagementCount.textContent =
+          "0 alumnos";
+
+        studentManagementList.replaceChildren();
+
+        studentManagementList.hidden =
+          true;
+
+        studentManagementEmpty.hidden =
+          true;
+
+        studentManagementError.hidden =
+          true;
+
+        studentManagementLoading.hidden =
+          false;
+
+        setStudentManagementMessage();
+
+        updateStudentManagementTabs();
+      };
+
+
+    const stopStudentManagementListener =
+      () => {
+
+        if (
+          typeof unsubscribeStudentManagement ===
+          "function"
+        ) {
+
+          unsubscribeStudentManagement();
+
+          unsubscribeStudentManagement =
+            null;
+        }
+      };
+
+
+    const createStudentManagementRow =
+      student => {
+
+        const row =
+          document.createElement(
+            "article"
+          );
+
+        row.className =
+          "administration-student-management-row";
+
+        row.dataset.active =
+          student.active === true
+            ? "true"
+            : "false";
+
+
+        const identity =
+          document.createElement(
+            "div"
+          );
+
+        identity.className =
+          "administration-student-management-identity";
+
+
+        const order =
+          document.createElement(
+            "span"
+          );
+
+        order.className =
+          "administration-student-management-order";
+
+        order.textContent =
+          String(
+            student.order
+          );
+
+
+        const copy =
+          document.createElement(
+            "div"
+          );
+
+        copy.className =
+          "administration-student-management-copy";
+
+
+        const name =
+          document.createElement(
+            "strong"
+          );
+
+        name.className =
+          "administration-student-management-name";
+
+        name.textContent =
+          cleanText(
+            student.displayName,
+            "Alumno"
+          );
+
+
+        const meta =
+          document.createElement(
+            "span"
+          );
+
+        meta.className =
+          "administration-student-management-meta";
+
+        meta.textContent =
+          student.active === true
+            ? "Alumno activo"
+            : "Alumno inactivo";
+
+
+        copy.append(
+          name,
+          meta
+        );
+
+        identity.append(
+          order,
+          copy
+        );
+
+
+        const points =
+          document.createElement(
+            "div"
+          );
+
+        points.className =
+          "administration-student-management-points";
+
+
+        const pointsValue =
+          document.createElement(
+            "strong"
+          );
+
+        pointsValue.textContent =
+          String(
+            Number.isInteger(
+              student.personalPoints
+            )
+              ? student.personalPoints
+              : 0
+          );
+
+
+        const pointsLabel =
+          document.createElement(
+            "span"
+          );
+
+        pointsLabel.textContent =
+          "Puntos";
+
+
+        points.append(
+          pointsValue,
+          pointsLabel
+        );
+
+
+        const house =
+          document.createElement(
+            "label"
+          );
+
+        house.className =
+          "administration-student-management-house";
+
+
+        const houseLabel =
+          document.createElement(
+            "span"
+          );
+
+        houseLabel.textContent =
+          "Casa";
+
+
+        const houseSelect =
+          document.createElement(
+            "select"
+          );
+
+        houseSelect.disabled =
+          true;
+
+        houseSelect.setAttribute(
+          "aria-label",
+          `Casa de ${student.displayName}`
+        );
+
+
+        studentHouseIds.forEach(
+          houseId => {
+
+            const option =
+              document.createElement(
+                "option"
+              );
+
+            option.value =
+              houseId;
+
+            option.textContent =
+              studentHouseLabels[
+                houseId
+              ];
+
+            option.selected =
+              student.houseId ===
+              houseId;
+
+            houseSelect.appendChild(
+              option
+            );
+          }
+        );
+
+
+        house.append(
+          houseLabel,
+          houseSelect
+        );
+
+
+        const status =
+          document.createElement(
+            "button"
+          );
+
+        status.type =
+          "button";
+
+        status.className =
+          "administration-student-management-status";
+
+        status.dataset.active =
+          student.active === true
+            ? "true"
+            : "false";
+
+        status.textContent =
+          student.active === true
+            ? "Activo"
+            : "Inactivo";
+
+        status.disabled =
+          true;
+
+
+        row.append(
+          identity,
+          points,
+          house,
+          status
+        );
+
+        return row;
+      };
+
+
+    const renderStudentManagement =
+      () => {
+
+        updateStudentManagementTabs();
+
+        studentManagementLoading.hidden =
+          true;
+
+        studentManagementError.hidden =
+          true;
+
+        studentManagementList.replaceChildren();
+
+
+        const students =
+          studentManagementStudents
+            .filter(
+              student =>
+                student.classId ===
+                selectedStudentClassId
+            )
+            .sort(
+              (
+                studentA,
+                studentB
+              ) =>
+                studentA.order -
+                studentB.order
+            );
+
+
+        studentManagementCount.textContent =
+          students.length === 1
+            ? "1 alumno"
+            : `${students.length} alumnos`;
+
+
+        if (
+          students.length === 0
+        ) {
+
+          studentManagementList.hidden =
+            true;
+
+          studentManagementEmpty.hidden =
+            false;
+
+          return;
+        }
+
+
+        studentManagementEmpty.hidden =
+          true;
+
+
+        students.forEach(
+          student => {
+
+            studentManagementList.appendChild(
+              createStudentManagementRow(
+                student
+              )
+            );
+          }
+        );
+
+
+        studentManagementList.hidden =
+          false;
+      };
+
+
+    const startStudentManagementListener =
+      () => {
+
+        stopStudentManagementListener();
+
+
+        unsubscribeStudentManagement =
+          onSnapshot(
+            collection(
+              db,
+              "students"
+            ),
+
+            snapshot => {
+
+              studentManagementStudents =
+                snapshot.docs.map(
+                  studentSnapshot => ({
+                    id:
+                      studentSnapshot.id,
+
+                    ...studentSnapshot.data()
+                  })
+                );
+
+
+              studentsCount.textContent =
+                studentManagementStudents.length === 1
+                  ? "1 alumno"
+                  : `${studentManagementStudents.length} alumnos`;
+
+
+              renderStudentManagement();
+            },
+
+            error => {
+
+              console.error(
+                "No se ha podido consultar el alumnado:",
+                error
+              );
+
+
+              studentManagementLoading.hidden =
+                true;
+
+              studentManagementList.hidden =
+                true;
+
+              studentManagementEmpty.hidden =
+                true;
+
+              studentManagementError.hidden =
+                false;
+            }
+          );
+      };
+
+
+    studentManagementTabs.addEventListener(
+      "click",
+      event => {
+
+        if (
+          !currentAdminUser
+        ) {
+
+          return;
+        }
+
+
+        const button =
+          event.target.closest(
+            "[data-student-class]"
+          );
+
+
+        if (
+          !button
+        ) {
+
+          return;
+        }
+
+
+        const classId =
+          button.dataset.studentClass;
+
+
+        if (
+          !classIds.includes(
+            classId
+          )
+        ) {
+
+          return;
+        }
+
+
+        selectedStudentClassId =
+          classId;
+
+        setStudentManagementMessage();
+
+        renderStudentManagement();
+      }
+    );
+     studentImportData.addEventListener(
       "input",
       () => {
 
@@ -2143,24 +2693,26 @@ document.addEventListener(
     );
 
 
-    resetInterface();
+        resetInterface();
     resetInvitationInterface();
     resetStudentImportInterface();
+    resetStudentManagementInterface();
 
     onAuthStateChanged(
       auth,
       async user => {
 
-      stopTeacherListener();
+      s        stopTeacherListener();
         stopInvitationListener();
+        stopStudentManagementListener();
 
-        resetInterface();
+                resetInterface();
         resetInvitationInterface();
         resetStudentImportInterface();
+        resetStudentManagementInterface();
 
 
         if (!user) {
-
           teachersLoading.hidden =
             true;
 
@@ -2221,8 +2773,9 @@ document.addEventListener(
           studentPreviewButton.disabled =
             false;
 
-          startTeacherListener();
+                   startTeacherListener();
           startInvitationListener();
+          startStudentManagementListener();
 
 
         } catch (error) {
