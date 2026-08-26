@@ -2203,11 +2203,18 @@ document.addEventListener(
         status.className =
           "administration-student-management-status";
 
-        status.dataset.active =
-                  status.textContent =
+                status.dataset.active =
+          student.active === true
+            ? "true"
+            : "false";
+
+        status.textContent =
           student.active === true
             ? "Activo"
             : "Inactivo";
+
+        status.disabled =
+          false;
 
         status.disabled =
           false;
