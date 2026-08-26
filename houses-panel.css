@@ -1266,3 +1266,610 @@ div > span {
   }
 
 }
+/* =========================================================
+   REGISTRO UNIFICADO · ALUMNO → CASA
+   ========================================================= */
+
+#sectionCasas .student-merit-panel {
+  position: relative;
+
+  margin-top: 20px;
+
+  padding:
+    22px
+    24px
+    24px;
+
+  overflow: hidden;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.22);
+
+  border-radius: 14px;
+
+  background:
+    radial-gradient(
+      circle at 0 0,
+      rgba(214, 174, 82, 0.09),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15, 27, 46, 0.98),
+      rgba(7, 12, 22, 0.99)
+    );
+
+  box-shadow:
+    0 20px 44px
+    rgba(0, 0, 0, 0.28);
+}
+
+
+#sectionCasas .student-merit-panel::before {
+  content: "";
+
+  position: absolute;
+
+  top: 0;
+  left: 0;
+  right: 0;
+
+  height: 2px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(239, 216, 157, 0.7),
+      transparent
+    );
+}
+
+
+/* =========================================================
+   CABECERA
+   ========================================================= */
+
+#sectionCasas .student-merit-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 24px;
+}
+
+
+#sectionCasas
+.student-merit-heading h3 {
+  margin:
+    3px
+    0
+    0;
+
+  font-size:
+    clamp(
+      1.15rem,
+      1.8vw,
+      1.45rem
+    );
+}
+
+
+#sectionCasas .student-merit-intro {
+  max-width: 680px;
+
+  margin:
+    8px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 0.66rem;
+
+  line-height: 1.55;
+}
+
+
+#sectionCasas
+.student-merit-private-badge {
+  flex: 0 0 auto;
+
+  padding:
+    7px
+    10px;
+
+  color:
+    rgba(241, 222, 173, 0.78);
+
+  font-size: 0.54rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.18);
+
+  border-radius: 999px;
+
+  background:
+    rgba(230, 196, 123, 0.035);
+}
+
+
+/* =========================================================
+   SELECTOR DE CLASE
+   ========================================================= */
+
+#sectionCasas .student-class-selector {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  margin-top: 20px;
+
+  padding:
+    12px
+    14px;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.11);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+#sectionCasas
+.student-class-selector-label {
+  flex: 0 0 auto;
+
+  color: var(--muted);
+
+  font-size: 0.56rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.08em;
+
+  text-transform: uppercase;
+}
+
+
+#sectionCasas .student-class-tabs {
+  display: flex;
+
+  align-items: center;
+
+  flex-wrap: wrap;
+
+  gap: 7px;
+}
+
+
+#sectionCasas .student-class-loading {
+  color:
+    rgba(237, 225, 196, 0.7);
+
+  font-size: 0.62rem;
+}
+
+
+/* clases que después creará JavaScript */
+
+#sectionCasas .student-class-tab {
+  min-width: 58px;
+
+  min-height: 32px;
+
+  padding:
+    6px
+    11px;
+
+  color: var(--muted);
+
+  font-size: 0.61rem;
+
+  font-weight: 700;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.14);
+
+  border-radius: 7px;
+
+  cursor: pointer;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease,
+    background 0.2s ease;
+}
+
+
+#sectionCasas
+.student-class-tab:hover {
+  color: var(--gold-300);
+
+  border-color:
+    rgba(230, 196, 123, 0.3);
+}
+
+
+#sectionCasas
+.student-class-tab.is-active {
+  color: #f3dfad;
+
+  border-color:
+    rgba(230, 196, 123, 0.5);
+
+  background:
+    rgba(214, 174, 82, 0.1);
+}
+
+
+/* =========================================================
+   ESPACIO DE TRABAJO
+   ========================================================= */
+
+#sectionCasas .student-merit-layout {
+  display: grid;
+
+  grid-template-columns:
+    minmax(230px, 0.8fr)
+    minmax(300px, 1.15fr)
+    minmax(230px, 0.75fr);
+
+  gap: 14px;
+
+  margin-top: 14px;
+}
+
+
+#sectionCasas
+.student-roster-panel,
+
+#sectionCasas
+.student-detail-panel,
+
+#sectionCasas
+.student-ranking-panel {
+  min-width: 0;
+
+  padding:
+    16px;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.1);
+
+  border-radius: 10px;
+
+  background:
+    rgba(255, 255, 255, 0.014);
+}
+
+
+/* =========================================================
+   ENCABEZADOS INTERNOS
+   ========================================================= */
+
+#sectionCasas .student-workspace-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 10px;
+}
+
+
+#sectionCasas .student-step-number {
+  display: grid;
+
+  place-items: center;
+
+  width: 25px;
+  height: 25px;
+
+  flex: 0 0 auto;
+
+  color: #f1dca4;
+
+  font-family:
+    var(--font-display);
+
+  font-size: 0.67rem;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.3);
+
+  border-radius: 50%;
+
+  background:
+    rgba(214, 174, 82, 0.07);
+}
+
+
+#sectionCasas
+.student-workspace-heading h4,
+
+#sectionCasas
+.student-ranking-heading h4 {
+  margin: 0;
+
+  color:
+    rgba(244, 229, 193, 0.92);
+
+  font-family:
+    var(--font-display);
+
+  font-size: 0.78rem;
+}
+
+
+#sectionCasas
+.student-workspace-heading p {
+  margin:
+    4px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 0.55rem;
+
+  line-height: 1.4;
+}
+
+
+/* =========================================================
+   LISTADO DE ALUMNOS
+   ========================================================= */
+
+#sectionCasas .student-roster {
+  margin-top: 14px;
+}
+
+
+#sectionCasas .student-roster-item {
+  display: grid;
+
+  grid-template-columns:
+    28px
+    minmax(0, 1fr)
+    auto;
+
+  align-items: center;
+
+  gap: 9px;
+
+  width: 100%;
+
+  min-height: 48px;
+
+  margin-top: 6px;
+
+  padding:
+    7px
+    9px;
+
+  color: var(--white);
+
+  text-align: left;
+
+  border:
+    1px solid
+    rgba(230, 196, 123, 0.09);
+
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  background:
+    rgba(255, 255, 255, 0.018);
+}
+
+
+#sectionCasas
+.student-roster-item.is-active {
+  border-color:
+    rgba(230, 196, 123, 0.42);
+
+  background:
+    rgba(214, 174, 82, 0.07);
+}
+
+
+/* =========================================================
+   ESTADOS VACÍOS
+   ========================================================= */
+
+#sectionCasas .student-panel-empty {
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+
+  justify-content: center;
+
+  min-height: 145px;
+
+  padding:
+    18px;
+
+  color: var(--muted);
+
+  text-align: center;
+
+  border:
+    1px dashed
+    rgba(230, 196, 123, 0.12);
+
+  border-radius: 8px;
+}
+
+
+#sectionCasas
+.student-panel-empty strong {
+  color:
+    rgba(237, 225, 196, 0.75);
+
+  font-size: 0.65rem;
+}
+
+
+#sectionCasas
+.student-panel-empty p {
+  max-width: 270px;
+
+  margin:
+    6px
+    0
+    0;
+
+  font-size: 0.56rem;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   CLASIFICACIÓN PRIVADA
+   ========================================================= */
+
+#sectionCasas .student-ranking-heading {
+  display: flex;
+
+  align-items: flex-start;
+
+  justify-content: space-between;
+
+  gap: 10px;
+}
+
+
+#sectionCasas
+.student-ranking-heading > span {
+  color:
+    rgba(230, 196, 123, 0.64);
+
+  font-size: 0.5rem;
+
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+
+  text-transform: uppercase;
+}
+
+
+#sectionCasas .student-ranking-class {
+  display: block;
+
+  margin-top: 14px;
+
+  color: var(--gold-300);
+
+  font-size: 0.64rem;
+}
+
+
+#sectionCasas .student-ranking-list {
+  margin-top: 10px;
+}
+
+
+/* =========================================================
+   MOVIMIENTO DIRECTO DE CASA
+   ========================================================= */
+
+#sectionCasas
+.movement-panel-description {
+  max-width: 720px;
+
+  margin:
+    7px
+    0
+    0;
+
+  color: var(--muted);
+
+  font-size: 0.61rem;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  #sectionCasas .student-merit-layout {
+    grid-template-columns:
+      minmax(230px, 0.8fr)
+      minmax(0, 1.2fr);
+  }
+
+
+  #sectionCasas .student-ranking-panel {
+    grid-column:
+      1 / -1;
+  }
+
+}
+
+
+@media (max-width: 760px) {
+
+  #sectionCasas .student-merit-heading {
+    flex-direction: column;
+  }
+
+
+  #sectionCasas .student-class-selector {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+
+  #sectionCasas .student-merit-layout {
+    grid-template-columns: 1fr;
+  }
+
+
+  #sectionCasas .student-ranking-panel {
+    grid-column: auto;
+  }
+
+}
+
+
+@media (max-width: 650px) {
+
+  #sectionCasas .student-merit-panel {
+    padding:
+      18px
+      15px;
+  }
+
+}
