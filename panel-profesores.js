@@ -245,7 +245,17 @@ const teacherCalizWeeks =
 
     const studentRoster =
       document.getElementById(
+            const studentRoster =
+      document.getElementById(
         "studentRoster"
+      );
+
+    const studentMeritWorkspace =
+      document.getElementById(
+        "studentMeritWorkspace"
+      );
+
+    const navigationButtons =
       );
 
     const navigationButtons =
@@ -318,7 +328,8 @@ const teacherCalizWeeks =
       movementHistoryTypeFilter,
       movementHistoryClearFilters,
       studentClassTabs,
-      studentRoster
+      studentRoster,
+      studentMeritWorkspace
     ];
 
 
@@ -345,7 +356,12 @@ const teacherCalizWeeks =
         let selectedStudentClassId =
       null;
 
-    let unsubscribeStudentRoster =
+        let unsubscribeStudentRoster =
+      null;
+
+    let currentStudentRoster = [];
+
+    let selectedStudentId =
       null;
 
     let authorizationInProgress =
@@ -647,13 +663,127 @@ const teacherCalizWeeks =
       );
 
 
-      studentRoster.replaceChildren(
+            studentRoster.replaceChildren(
         state
       );
     };
 
 
-    const renderStudentRoster = (
+    const showStudentMeritState = (
+      title,
+      message
+    ) => {
+
+      const state =
+        document.createElement(
+          "div"
+        );
+
+      state.className =
+        "student-panel-empty";
+
+
+      const heading =
+        document.createElement(
+          "strong"
+        );
+
+      heading.textContent =
+        title;
+
+
+      const detail =
+        document.createElement(
+          "p"
+        );
+
+      detail.textContent =
+        message;
+
+
+      state.append(
+        heading,
+        detail
+      );
+
+
+      studentMeritWorkspace.replaceChildren(
+        state
+      );
+    };
+
+
+    const renderSelectedStudentWorkspace =
+      () => {
+
+        const selectedStudent =
+          currentStudentRoster.find(
+            student =>
+              student.id ===
+              selectedStudentId
+          );
+
+
+        if (!selectedStudent) {
+
+          showStudentMeritState(
+            "Selecciona un alumno",
+            "Aquí aparecerán su Casa, sus puntos personales, la categoría y la aportación final a la Casa."
+          );
+
+          return;
+        }
+
+
+        const houseLabels = {
+          gryffindor:
+            "Gryffindor",
+
+          hufflepuff:
+            "Hufflepuff",
+
+          ravenclaw:
+            "Ravenclaw",
+
+          slytherin:
+            "Slytherin"
+        };
+
+
+        const personalPoints =
+          Number.isInteger(
+            selectedStudent.personalPoints
+          )
+            ? selectedStudent.personalPoints
+            : 0;
+
+
+        const classLabel =
+          `${selectedStudent.classId.charAt(0)}.º ${selectedStudent.classId.charAt(1)}`;
+
+
+        const houseLabel =
+          houseLabels[
+            selectedStudent.houseId
+          ] || "Sin Casa";
+
+
+        showStudentMeritState(
+          cleanText(
+            selectedStudent.displayName,
+            "Alumno"
+          ),
+          `${classLabel} · ${houseLabel} · ${personalPoints} ${
+            Math.abs(
+              personalPoints
+            ) === 1
+              ? "punto personal"
+              : "puntos personales"
+          }`
+        );
+      };
+
+        const renderStudentRoster = (
       students
     ) => {
 
@@ -693,6 +823,23 @@ const teacherCalizWeeks =
           );
 
 
+      currentStudentRoster =
+        activeStudents;
+
+
+      if (
+        !activeStudents.some(
+          student =>
+            student.id ===
+            selectedStudentId
+        )
+      ) {
+
+        selectedStudentId =
+          null;
+      }
+
+
       if (
         activeStudents.length === 0
       ) {
@@ -701,6 +848,8 @@ const teacherCalizWeeks =
           "No hay alumnado activo",
           "Este grupo no contiene alumnado activo disponible."
         );
+
+        renderSelectedStudentWorkspace();
 
         return;
       }
@@ -727,14 +876,38 @@ const teacherCalizWeeks =
 
             const item =
               document.createElement(
-                "div"
+                "button"
               );
+
+            item.type =
+              "button";
 
             item.className =
               "student-roster-item";
 
             item.dataset.studentId =
               student.id;
+
+
+            const isSelected =
+              student.id ===
+              selectedStudentId;
+
+
+            if (isSelected) {
+
+              item.classList.add(
+                "is-active"
+              );
+            }
+
+
+            item.setAttribute(
+              "aria-pressed",
+              isSelected
+                ? "true"
+                : "false"
+            );
 
 
             const order =
@@ -791,6 +964,20 @@ const teacherCalizWeeks =
               }`;
 
 
+            item.addEventListener(
+              "click",
+              () => {
+
+                selectedStudentId =
+                  student.id;
+
+                renderStudentRoster(
+                  currentStudentRoster
+                );
+              }
+            );
+
+
             item.append(
               order,
               identity,
@@ -806,6 +993,8 @@ const teacherCalizWeeks =
       studentRoster.replaceChildren(
         ...items
       );
+
+      renderSelectedStudentWorkspace();
     };
 
 
@@ -825,10 +1014,17 @@ const teacherCalizWeeks =
       };
 
 
-    const startStudentRosterListener =
+       const startStudentRosterListener =
       () => {
 
         stopStudentRosterListener();
+
+        currentStudentRoster = [];
+
+        selectedStudentId =
+          null;
+
+        renderSelectedStudentWorkspace();
 
 
         const assignedClasses =
