@@ -422,203 +422,6 @@ document.addEventListener(
 
       role.textContent =
         "Tutoría";
-      const classAssignment =
-        document.createElement(
-          "div"
-        );
-
-
-      classAssignment.className =
-        "administration-class-assignment";
-
-
-      const classAssignmentLabel =
-        document.createElement(
-          "span"
-        );
-
-
-      classAssignmentLabel.className =
-        "administration-class-label";
-
-      classAssignmentLabel.textContent =
-        "Grupos";
-
-
-      const classAssignmentControls =
-        document.createElement(
-          "div"
-        );
-
-
-      classAssignmentControls.className =
-        "administration-class-controls";
-
-
-      if (
-        teacher.role ===
-        "admin"
-      ) {
-
-        const allClasses =
-          document.createElement(
-            "strong"
-          );
-
-
-        allClasses.className =
-          "administration-all-classes";
-
-        allClasses.textContent =
-          "Todos";
-
-
-        classAssignmentControls.appendChild(
-          allClasses
-        );
-
-      } else {
-
-        const assignedClasses =
-          Array.isArray(
-            teacher.assignedClasses
-          )
-            ? classIds.filter(
-                classId =>
-                  teacher.assignedClasses.includes(
-                    classId
-                  )
-              )
-            : [];
-
-
-        classIds.forEach(
-          classId => {
-
-            const classButton =
-              document.createElement(
-                "button"
-              );
-
-
-            classButton.type =
-              "button";
-
-            classButton.className =
-              "administration-class-button";
-
-            classButton.textContent =
-              classId;
-
-            classButton.dataset.active =
-              assignedClasses.includes(
-                classId
-              )
-                ? "true"
-                : "false";
-
-
-            classButton.addEventListener(
-              "click",
-              async () => {
-
-                if (
-                  !currentAdminUser
-                ) {
-
-                  return;
-                }
-
-
-                const isAssigned =
-                  assignedClasses.includes(
-                    classId
-                  );
-
-
-                const nextAssignedClasses =
-                  classIds.filter(
-                    currentClassId => {
-
-                      if (
-                        currentClassId ===
-                        classId
-                      ) {
-
-                        return !isAssigned;
-                      }
-
-
-                      return assignedClasses.includes(
-                        currentClassId
-                      );
-                    }
-                  );
-
-
-                const classButtons =
-                  classAssignmentControls
-                    .querySelectorAll(
-                      ".administration-class-button"
-                    );
-
-
-                classButtons.forEach(
-                  button => {
-
-                    button.disabled =
-                      true;
-                  }
-                );
-
-
-                try {
-
-                  await updateDoc(
-                    doc(
-                      db,
-                      "authorizedTeachers",
-                      teacher.id
-                    ),
-                    {
-                      assignedClasses:
-                        nextAssignedClasses
-                    }
-                  );
-
-
-                } catch (error) {
-
-                  console.error(
-                    "No se han podido actualizar los grupos del docente:",
-                    error
-                  );
-
-
-                  classButtons.forEach(
-                    button => {
-
-                      button.disabled =
-                        false;
-                    }
-                  );
-                }
-              }
-            );
-
-
-            classAssignmentControls.appendChild(
-              classButton
-            );
-          }
-        );
-      }
-
-
-      classAssignment.append(
-        classAssignmentLabel,
-        classAssignmentControls
-      );
 
       const status =
         document.createElement(
@@ -643,11 +446,10 @@ document.addEventListener(
           : "Pendiente";
 
 
-           row.append(
+       row.append(
         identity,
         job,
         role,
-        classAssignment,
         status
       );
 
@@ -973,7 +775,203 @@ document.addEventListener(
           teacher.role,
           "Rol pendiente"
         );
+      const classAssignment =
+        document.createElement(
+          "div"
+        );
 
+
+      classAssignment.className =
+        "administration-class-assignment";
+
+
+      const classAssignmentLabel =
+        document.createElement(
+          "span"
+        );
+
+
+      classAssignmentLabel.className =
+        "administration-class-label";
+
+      classAssignmentLabel.textContent =
+        "Grupos";
+
+
+      const classAssignmentControls =
+        document.createElement(
+          "div"
+        );
+
+
+      classAssignmentControls.className =
+        "administration-class-controls";
+
+
+      if (
+        teacher.role ===
+        "admin"
+      ) {
+
+        const allClasses =
+          document.createElement(
+            "strong"
+          );
+
+
+        allClasses.className =
+          "administration-all-classes";
+
+        allClasses.textContent =
+          "Todos";
+
+
+        classAssignmentControls.appendChild(
+          allClasses
+        );
+
+      } else {
+
+        const assignedClasses =
+          Array.isArray(
+            teacher.assignedClasses
+          )
+            ? classIds.filter(
+                classId =>
+                  teacher.assignedClasses.includes(
+                    classId
+                  )
+              )
+            : [];
+
+
+        classIds.forEach(
+          classId => {
+
+            const classButton =
+              document.createElement(
+                "button"
+              );
+
+
+            classButton.type =
+              "button";
+
+            classButton.className =
+              "administration-class-button";
+
+            classButton.textContent =
+              classId;
+
+            classButton.dataset.active =
+              assignedClasses.includes(
+                classId
+              )
+                ? "true"
+                : "false";
+
+
+            classButton.addEventListener(
+              "click",
+              async () => {
+
+                if (
+                  !currentAdminUser
+                ) {
+
+                  return;
+                }
+
+
+                const isAssigned =
+                  assignedClasses.includes(
+                    classId
+                  );
+
+
+                const nextAssignedClasses =
+                  classIds.filter(
+                    currentClassId => {
+
+                      if (
+                        currentClassId ===
+                        classId
+                      ) {
+
+                        return !isAssigned;
+                      }
+
+
+                      return assignedClasses.includes(
+                        currentClassId
+                      );
+                    }
+                  );
+
+
+                const classButtons =
+                  classAssignmentControls
+                    .querySelectorAll(
+                      ".administration-class-button"
+                    );
+
+
+                classButtons.forEach(
+                  button => {
+
+                    button.disabled =
+                      true;
+                  }
+                );
+
+
+                try {
+
+                  await updateDoc(
+                    doc(
+                      db,
+                      "authorizedTeachers",
+                      teacher.id
+                    ),
+                    {
+                      assignedClasses:
+                        nextAssignedClasses
+                    }
+                  );
+
+
+                } catch (error) {
+
+                  console.error(
+                    "No se han podido actualizar los grupos del docente:",
+                    error
+                  );
+
+
+                  classButtons.forEach(
+                    button => {
+
+                      button.disabled =
+                        false;
+                    }
+                  );
+                }
+              }
+            );
+
+
+            classAssignmentControls.appendChild(
+              classButton
+            );
+          }
+        );
+      }
+
+
+      classAssignment.append(
+        classAssignmentLabel,
+        classAssignmentControls
+      );
 
       const status =
         document.createElement(
@@ -995,13 +993,13 @@ document.addEventListener(
           : "Inactiva";
 
 
-      row.append(
+            row.append(
         identity,
         job,
         role,
+        classAssignment,
         status
       );
-
 
       return row;
     };
