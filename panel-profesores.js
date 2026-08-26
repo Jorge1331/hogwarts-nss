@@ -1176,10 +1176,15 @@ const teacherCalizWeeks =
         );
 
 
-        studentMeritWorkspace.replaceChildren(
+         studentMeritWorkspace.replaceChildren(
           workspace
         );
       };
+
+
+    const renderStudentRoster = (
+      students
+    ) => {
 
       const activeStudents =
         students
