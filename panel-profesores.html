@@ -2375,6 +2375,175 @@
       </div>
 
     </article>
+        <article class="administration-card administration-student-management-card">
+
+      <header class="administration-card-heading">
+
+        <div>
+
+          <p class="private-eyebrow">
+            Gestión del alumnado
+          </p>
+
+          <h3>
+            Casas y grupos
+          </h3>
+
+          <p>
+            Consulta el alumnado por clase y ajusta su Casa
+            cuando sea necesario. Los puntos personales
+            permanecen protegidos durante estos cambios.
+          </p>
+
+        </div>
+
+        <span
+          id="adminStudentManagementCount"
+          class="administration-record-counter"
+        >
+          0 alumnos
+        </span>
+
+      </header>
+
+
+      <div class="administration-student-management">
+
+        <div
+          id="adminStudentManagementTabs"
+          class="administration-student-class-tabs"
+          role="tablist"
+          aria-label="Grupos del tercer ciclo"
+        >
+
+          <button
+            class="administration-student-class-tab"
+            type="button"
+            role="tab"
+            data-student-class="5A"
+            aria-selected="false"
+          >
+            5.º A
+          </button>
+
+          <button
+            class="administration-student-class-tab"
+            type="button"
+            role="tab"
+            data-student-class="5B"
+            aria-selected="false"
+          >
+            5.º B
+          </button>
+
+          <button
+            class="administration-student-class-tab"
+            type="button"
+            role="tab"
+            data-student-class="6A"
+            aria-selected="false"
+          >
+            6.º A
+          </button>
+
+          <button
+            class="administration-student-class-tab"
+            type="button"
+            role="tab"
+            data-student-class="6B"
+            aria-selected="false"
+          >
+            6.º B
+          </button>
+
+        </div>
+
+
+        <div
+          id="adminStudentManagementLoading"
+          class="administration-status"
+          role="status"
+          aria-live="polite"
+        >
+
+          <strong>
+            Consultando alumnado
+          </strong>
+
+          <p>
+            Recuperando el registro privado desde Firestore.
+          </p>
+
+        </div>
+
+
+        <div
+          id="adminStudentManagementError"
+          class="administration-status administration-error"
+          role="alert"
+          hidden
+        >
+
+          <strong>
+            No se ha podido consultar el alumnado
+          </strong>
+
+          <p>
+            Comprueba la sesión y los permisos del administrador.
+          </p>
+
+        </div>
+
+
+        <div
+          id="adminStudentManagementEmpty"
+          class="administration-status"
+          hidden
+        >
+
+          <strong>
+            No hay alumnado en este grupo
+          </strong>
+
+          <p>
+            Selecciona otro grupo o revisa el registro.
+          </p>
+
+        </div>
+
+
+        <div
+          id="adminStudentManagementList"
+          class="administration-student-management-list"
+          aria-live="polite"
+          hidden
+        ></div>
+
+
+        <p
+          id="adminStudentManagementMessage"
+          class="administration-invitation-message"
+          role="status"
+          aria-live="polite"
+        ></p>
+
+      </div>
+
+
+      <footer class="administration-readonly-note">
+
+        <strong>
+          Puntos protegidos
+        </strong>
+
+        <span>
+          Cambiar la Casa o el estado de un alumno
+          no modifica sus puntos personales.
+        </span>
+
+      </footer>
+
+    </article>
       <article class="administration-card administration-students-card">
 
       <header class="administration-card-heading">
