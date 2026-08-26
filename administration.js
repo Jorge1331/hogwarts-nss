@@ -2030,8 +2030,8 @@ document.addEventListener(
             "select"
           );
 
-        houseSelect.disabled =
-          true;
+               houseSelect.disabled =
+          false;
 
         houseSelect.setAttribute(
           "aria-label",
@@ -2062,6 +2062,126 @@ document.addEventListener(
             houseSelect.appendChild(
               option
             );
+          }
+        );
+
+
+        houseSelect.addEventListener(
+          "change",
+          async () => {
+
+            if (
+              !currentAdminUser
+            ) {
+
+              houseSelect.value =
+                student.houseId;
+
+              return;
+            }
+
+
+            const nextHouseId =
+              houseSelect.value;
+
+
+            if (
+              nextHouseId ===
+              student.houseId
+            ) {
+
+              return;
+            }
+
+
+            if (
+              !studentHouseIds.includes(
+                nextHouseId
+              )
+            ) {
+
+              houseSelect.value =
+                student.houseId;
+
+              return;
+            }
+
+
+            const confirmed =
+              window.confirm(
+                `¿Cambiar a ${student.displayName} de ${studentHouseLabels[student.houseId]} a ${studentHouseLabels[nextHouseId]}?`
+              );
+
+
+            if (
+              !confirmed
+            ) {
+
+              houseSelect.value =
+                student.houseId;
+
+              return;
+            }
+
+
+            houseSelect.disabled =
+              true;
+
+
+            setStudentManagementMessage(
+              `Actualizando la Casa de ${student.displayName}...`
+            );
+
+
+            try {
+
+              await updateDoc(
+                doc(
+                  db,
+                  "students",
+                  student.id
+                ),
+                {
+                  houseId:
+                    nextHouseId
+                }
+              );
+
+
+              setStudentManagementMessage(
+                `${student.displayName} ahora pertenece a ${studentHouseLabels[nextHouseId]}.`,
+                "success"
+              );
+
+
+            } catch (error) {
+
+              console.error(
+                "No se ha podido cambiar la Casa del alumno:",
+                error
+              );
+
+
+              houseSelect.value =
+                student.houseId;
+
+
+              setStudentManagementMessage(
+                `No se ha podido cambiar la Casa de ${student.displayName}.`,
+                "error"
+              );
+
+
+            } finally {
+
+              if (
+                houseSelect.isConnected
+              ) {
+
+                houseSelect.disabled =
+                  false;
+              }
+            }
           }
         );
 
