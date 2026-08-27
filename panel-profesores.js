@@ -978,8 +978,24 @@ const teacherCalizWeeks =
           "Selecciona una categoría para previsualizar la puntuación.";
 
 
-        previewFooter.appendChild(
-          preview
+              const submitButton =
+          document.createElement(
+            "button"
+          );
+
+        submitButton.type =
+          "button";
+
+        submitButton.className =
+          "movement-submit-button";
+
+        submitButton.textContent =
+          "Registrar mérito";
+
+
+        previewFooter.append(
+          preview,
+          submitButton
         );
 
 
@@ -1004,7 +1020,31 @@ const teacherCalizWeeks =
           };
 
 
-        const updateStudentMeritPreview =
+        const setStudentMeritMessage =
+          (
+            message,
+            type = ""
+          ) => {
+
+            preview.textContent =
+              message;
+
+            preview.classList.remove(
+              "success",
+              "error"
+            );
+
+
+            if (type) {
+
+              preview.classList.add(
+                type
+              );
+            }
+          };
+
+
+        const getStudentMeritScoring =
           () => {
 
             const selectedOption =
@@ -1036,10 +1076,26 @@ const teacherCalizWeeks =
               freeAmountInput.value =
                 "";
 
-              preview.textContent =
-                "Selecciona una categoría para previsualizar la puntuación.";
 
-              return;
+              return {
+                valid:
+                  false,
+
+                message:
+                  "Selecciona una categoría para previsualizar la puntuación.",
+
+                categoryValue:
+                  "",
+
+                baseAmount:
+                  null,
+
+                houseAmount:
+                  null,
+
+                bonus:
+                  null
+              };
             }
 
 
@@ -1062,10 +1118,24 @@ const teacherCalizWeeks =
 
               if (!freeAmountText) {
 
-                preview.textContent =
-                  "Escribe una puntuación libre para calcular su efecto.";
+                return {
+                  valid:
+                    false,
 
-                return;
+                  message:
+                    "Escribe una puntuación libre para calcular su efecto.",
+
+                  categoryValue,
+
+                  baseAmount:
+                    null,
+
+                  houseAmount:
+                    null,
+
+                  bonus:
+                    null
+                };
               }
 
 
@@ -1084,10 +1154,24 @@ const teacherCalizWeeks =
                 baseAmount > 100
               ) {
 
-                preview.textContent =
-                  "La puntuación libre debe ser un entero entre -100 y +100, distinto de cero.";
+                return {
+                  valid:
+                    false,
 
-                return;
+                  message:
+                    "La puntuación libre debe ser un entero entre -100 y +100, distinto de cero.",
+
+                  categoryValue,
+
+                  baseAmount:
+                    null,
+
+                  houseAmount:
+                    null,
+
+                  bonus:
+                    null
+                };
               }
 
             } else {
@@ -1112,10 +1196,24 @@ const teacherCalizWeeks =
                 baseAmount === 0
               ) {
 
-                preview.textContent =
-                  "La categoría seleccionada no contiene una puntuación válida.";
+                return {
+                  valid:
+                    false,
 
-                return;
+                  message:
+                    "La categoría seleccionada no contiene una puntuación válida.",
+
+                  categoryValue,
+
+                  baseAmount:
+                    null,
+
+                  houseAmount:
+                    null,
+
+                  bonus:
+                    null
+                };
               }
             }
 
@@ -1142,16 +1240,632 @@ const teacherCalizWeeks =
                 : baseAmount;
 
 
-            preview.textContent =
-              `Alumno ${formatPreviewAmount(
-                baseAmount
-              )} · Casa ${formatPreviewAmount(
-                houseAmount
-              )}${
+            return {
+              valid:
+                true,
+
+              message:
+                "",
+
+              categoryValue,
+
+              baseAmount,
+
+              houseAmount,
+
+              bonus:
                 bonusApplies
-                  ? ` · Santo Cáliz ×${activeBonus.multiplier}`
+                  ? activeBonus
+                  : null
+            };
+          };
+
+
+        const updateStudentMeritPreview =
+          () => {
+
+            const scoring =
+              getStudentMeritScoring();
+
+
+            if (!scoring.valid) {
+
+              setStudentMeritMessage(
+                scoring.message
+              );
+
+              return;
+            }
+
+
+            setStudentMeritMessage(
+              `Alumno ${formatPreviewAmount(
+                scoring.baseAmount
+              )} · Casa ${formatPreviewAmount(
+                scoring.houseAmount
+              )}${
+                scoring.bonus
+                  ? ` · Santo Cáliz ×${scoring.bonus.multiplier}`
                   : ""
-              }`;
+              }`
+            );
+          };
+
+
+        const submitStudentMerit =
+          async () => {
+
+            if (
+              submitButton.disabled
+            ) {
+
+              return;
+            }
+
+
+            const user =
+              auth.currentUser;
+
+            const scoring =
+              getStudentMeritScoring();
+
+            const reason =
+              reasonInput.value.trim();
+
+
+            if (
+              !user ||
+              !currentTeacherProfile
+            ) {
+
+              setStudentMeritMessage(
+                "La sesión docente ya no está disponible.",
+                "error"
+              );
+
+              return;
+            }
+
+
+            if (
+              !selectedStudent ||
+              selectedStudent.id !==
+                selectedStudentId
+            ) {
+
+              setStudentMeritMessage(
+                "El alumno seleccionado ya no está disponible.",
+                "error"
+              );
+
+              return;
+            }
+
+
+            const assignedClasses =
+              Array.isArray(
+                currentTeacherProfile
+                  .assignedClasses
+              )
+                ? currentTeacherProfile
+                    .assignedClasses
+                : [];
+
+
+            if (
+              !assignedClasses.includes(
+                selectedStudent.classId
+              )
+            ) {
+
+              setStudentMeritMessage(
+                "Este grupo no está asignado a tu perfil docente.",
+                "error"
+              );
+
+              return;
+            }
+
+
+            if (!scoring.valid) {
+
+              setStudentMeritMessage(
+                scoring.message,
+                "error"
+              );
+
+              return;
+            }
+
+
+            if (
+              reason &&
+              reason.length < 2
+            ) {
+
+              setStudentMeritMessage(
+                "El comentario debe tener al menos 2 caracteres o dejarse vacío.",
+                "error"
+              );
+
+              reasonInput.focus();
+
+              return;
+            }
+
+
+            if (
+              reason.length > 160
+            ) {
+
+              setStudentMeritMessage(
+                "El comentario no puede superar los 160 caracteres.",
+                "error"
+              );
+
+              reasonInput.focus();
+
+              return;
+            }
+
+
+            const selectedHouse =
+              currentHouses.find(
+                house =>
+                  house.id ===
+                    selectedStudent.houseId
+              );
+
+
+            if (
+              !selectedHouse ||
+              selectedHouse.active !== true
+            ) {
+
+              setStudentMeritMessage(
+                "La Casa del alumno no está disponible para recibir puntos.",
+                "error"
+              );
+
+              return;
+            }
+
+
+            submitButton.disabled =
+              true;
+
+            submitButton.textContent =
+              "Registrando...";
+
+            categorySelect.disabled =
+              true;
+
+            freeAmountInput.disabled =
+              true;
+
+            reasonInput.disabled =
+              true;
+
+
+            setStudentMeritMessage(
+              "Guardando el mérito en Firestore..."
+            );
+
+
+            try {
+
+              const studentReference =
+                doc(
+                  db,
+                  "students",
+                  selectedStudent.id
+                );
+
+
+              const houseReference =
+                doc(
+                  db,
+                  "houses",
+                  selectedStudent.houseId
+                );
+
+
+              const publicRankingReference =
+                doc(
+                  db,
+                  "publicRanking",
+                  selectedStudent.houseId
+                );
+
+
+              const movementReference =
+                doc(
+                  collection(
+                    db,
+                    "studentMovements"
+                  )
+                );
+
+
+              const result =
+                await runTransaction(
+                  db,
+                  async transaction => {
+
+                    /*
+                     Todas las lecturas se realizan
+                     antes de cualquier escritura.
+                    */
+
+                    const studentSnapshot =
+                      await transaction.get(
+                        studentReference
+                      );
+
+
+                    const houseSnapshot =
+                      await transaction.get(
+                        houseReference
+                      );
+
+
+                    const publicRankingSnapshot =
+                      await transaction.get(
+                        publicRankingReference
+                      );
+
+
+                    if (
+                      !studentSnapshot.exists()
+                    ) {
+
+                      throw new Error(
+                        "El alumno seleccionado ya no existe."
+                      );
+                    }
+
+
+                    if (
+                      !houseSnapshot.exists()
+                    ) {
+
+                      throw new Error(
+                        "La Casa del alumno ya no existe."
+                      );
+                    }
+
+
+                    if (
+                      !publicRankingSnapshot.exists()
+                    ) {
+
+                      throw new Error(
+                        "El ranking público de la Casa no está disponible."
+                      );
+                    }
+
+
+                    const studentData =
+                      studentSnapshot.data();
+
+                    const houseData =
+                      houseSnapshot.data();
+
+                    const publicRankingData =
+                      publicRankingSnapshot.data();
+
+
+                    if (
+                      studentData.active !== true
+                    ) {
+
+                      throw new Error(
+                        "El alumno seleccionado está desactivado."
+                      );
+                    }
+
+
+                    if (
+                      studentData.schoolYear !==
+                        "2026-2027"
+                    ) {
+
+                      throw new Error(
+                        "El alumno no pertenece al curso activo."
+                      );
+                    }
+
+
+                    if (
+                      studentData.classId !==
+                        selectedStudent.classId ||
+                      studentData.houseId !==
+                        selectedStudent.houseId
+                    ) {
+
+                      throw new Error(
+                        "Los datos del alumno han cambiado. Vuelve a seleccionarlo."
+                      );
+                    }
+
+
+                    if (
+                      !assignedClasses.includes(
+                        studentData.classId
+                      )
+                    ) {
+
+                      throw new Error(
+                        "Ya no tienes acceso a este grupo."
+                      );
+                    }
+
+
+                    if (
+                      houseData.active !== true
+                    ) {
+
+                      throw new Error(
+                        "La Casa del alumno está desactivada."
+                      );
+                    }
+
+
+                    if (
+                      !Number.isInteger(
+                        studentData.personalPoints
+                      )
+                    ) {
+
+                      throw new Error(
+                        "La puntuación personal actual no es válida."
+                      );
+                    }
+
+
+                    if (
+                      !Number.isInteger(
+                        houseData.totalPoints
+                      )
+                    ) {
+
+                      throw new Error(
+                        "La puntuación actual de la Casa no es válida."
+                      );
+                    }
+
+
+                    if (
+                      !Number.isInteger(
+                        publicRankingData.totalPoints
+                      )
+                    ) {
+
+                      throw new Error(
+                        "La puntuación del ranking público no es válida."
+                      );
+                    }
+
+
+                    const previousStudentPoints =
+                      studentData.personalPoints;
+
+                    const previousHouseTotal =
+                      houseData.totalPoints;
+
+
+                    if (
+                      publicRankingData.totalPoints !==
+                        previousHouseTotal
+                    ) {
+
+                      throw new Error(
+                        "La Casa y el ranking público no están sincronizados."
+                      );
+                    }
+
+
+                    const newStudentPoints =
+                      previousStudentPoints +
+                      scoring.baseAmount;
+
+                    const newHouseTotal =
+                      previousHouseTotal +
+                      scoring.houseAmount;
+
+
+                    if (
+                      !Number.isSafeInteger(
+                        newStudentPoints
+                      ) ||
+                      !Number.isSafeInteger(
+                        newHouseTotal
+                      )
+                    ) {
+
+                      throw new Error(
+                        "El nuevo total de puntos no es válido."
+                      );
+                    }
+
+
+                    transaction.update(
+                      studentReference,
+                      {
+                        personalPoints:
+                          newStudentPoints,
+
+                        lastMovementId:
+                          movementReference.id
+                      }
+                    );
+
+
+                    transaction.update(
+                      houseReference,
+                      {
+                        totalPoints:
+                          newHouseTotal,
+
+                        updatedAt:
+                          serverTimestamp(),
+
+                        updatedBy:
+                          user.uid,
+
+                        lastMovementId:
+                          movementReference.id
+                      }
+                    );
+
+
+                    transaction.update(
+                      publicRankingReference,
+                      {
+                        totalPoints:
+                          newHouseTotal,
+
+                        updatedAt:
+                          serverTimestamp()
+                      }
+                    );
+
+
+                    transaction.set(
+                      movementReference,
+                      {
+                        type:
+                          "student-merit",
+
+                        schoolYear:
+                          "2026-2027",
+
+                        studentId:
+                          studentSnapshot.id,
+
+                        studentName:
+                          studentData.displayName,
+
+                        classId:
+                          studentData.classId,
+
+                        houseId:
+                          studentData.houseId,
+
+                        category:
+                          scoring.categoryValue,
+
+                        reason,
+
+                        personalAmount:
+                          scoring.baseAmount,
+
+                        houseAmount:
+                          scoring.houseAmount,
+
+                        calizApplied:
+                          Boolean(
+                            scoring.bonus
+                          ),
+
+                        calizMultiplier:
+                          scoring.bonus
+                            ? 2
+                            : 1,
+
+                        createdBy:
+                          user.uid,
+
+                        createdByName:
+                          currentTeacherProfile
+                            .displayName,
+
+                        teacherRole:
+                          currentTeacherProfile
+                            .role,
+
+                        createdAt:
+                          serverTimestamp(),
+
+                        previousStudentPoints,
+
+                        newStudentPoints,
+
+                        previousHouseTotal,
+
+                        newHouseTotal,
+
+                        corrected:
+                          false
+                      }
+                    );
+
+
+                    return {
+                      studentName:
+                        studentData.displayName,
+
+                      newStudentPoints,
+
+                      newHouseTotal
+                    };
+                  }
+                );
+
+
+              const calizNotice =
+                scoring.bonus
+                  ? ` · Santo Cáliz ×${scoring.bonus.multiplier}`
+                  : "";
+
+
+              setStudentMeritMessage(
+                `${result.studentName}: ${formatPreviewAmount(
+                  scoring.baseAmount
+                )} personal · ${formatPreviewAmount(
+                  scoring.houseAmount
+                )} para ${selectedHouse.name}${calizNotice}.`,
+                "success"
+              );
+
+            } catch (error) {
+
+              console.error(
+                "No se ha podido registrar el mérito individual:",
+                error
+              );
+
+
+              const message =
+                error.code ===
+                  "permission-denied"
+                  ? "Firestore ha rechazado el mérito individual. No se ha modificado ningún punto."
+                  : error.message ||
+                    "No se ha podido registrar el mérito individual.";
+
+
+              setStudentMeritMessage(
+                message,
+                "error"
+              );
+
+            } finally {
+
+              categorySelect.disabled =
+                false;
+
+              freeAmountInput.disabled =
+                false;
+
+              reasonInput.disabled =
+                false;
+
+              submitButton.disabled =
+                false;
+
+              submitButton.textContent =
+                "Registrar mérito";
+            }
           };
 
 
@@ -1164,6 +1878,12 @@ const teacherCalizWeeks =
         freeAmountInput.addEventListener(
           "input",
           updateStudentMeritPreview
+        );
+
+
+        submitButton.addEventListener(
+          "click",
+          submitStudentMerit
         );
 
 
