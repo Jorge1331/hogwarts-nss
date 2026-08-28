@@ -8910,3 +8910,65 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   GRINGOTTS · ICONOGRAFÍA VECTORIAL
+   ========================================================= */
+
+.gringotts-icon-svg {
+  display: block;
+
+  width: 32px;
+  height: 32px;
+
+  fill: none;
+
+  stroke: currentColor;
+  stroke-width: 1.55;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  color: var(--vault-accent, #efc873);
+
+  filter:
+    drop-shadow(
+      0 0 7px
+      color-mix(
+        in srgb,
+        currentColor 24%,
+        transparent
+      )
+    );
+}
+
+
+.gringotts-principle-symbol
+.gringotts-icon-svg {
+  width: 25px;
+  height: 25px;
+
+  color: #f1cc76;
+}
+
+
+.gringotts-reward-icon {
+  color:
+    var(--vault-accent);
+}
+
+
+.gringotts-key-emblem
+.gringotts-icon-svg {
+  width: 42px;
+  height: 42px;
+
+  color: #efc873;
+
+  stroke-width: 1.35;
+}
+
+
+/* Eliminamos las antiguas llaves emoji */
+
+.gringotts-key-milestones span::after {
+  content: none;
+}
