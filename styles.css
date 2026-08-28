@@ -8526,3 +8526,387 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   HOME 2026-2027 · ACCESO COMPACTO A GRINGOTTS
+   ========================================================= */
+
+.gringotts-teaser {
+  min-height: 0;
+}
+
+
+.gringotts-teaser .gringotts-teaser-layout {
+  grid-template-columns:
+    minmax(260px, 0.72fr)
+    minmax(0, 1.28fr);
+
+  gap: 34px;
+
+  padding:
+    24px
+    clamp(26px, 3.5vw, 48px);
+
+  border-bottom: 0;
+}
+
+
+.gringotts-teaser
+.gringotts-hero-copy h3 {
+  margin-bottom: 8px;
+
+  font-size:
+    clamp(
+      2rem,
+      3vw,
+      2.8rem
+    );
+}
+
+
+.gringotts-teaser
+.gringotts-intro {
+  max-width: 440px;
+
+  font-size: 0.82rem;
+
+  line-height: 1.55;
+}
+
+
+/* =========================================================
+   PANEL DE ACCESO
+   ========================================================= */
+
+.gringotts-teaser-panel {
+  display: grid;
+
+  grid-template-columns:
+    1fr
+    auto;
+
+  grid-template-areas:
+    "label link"
+    "vaults link"
+    "motto link";
+
+  column-gap: 24px;
+  row-gap: 7px;
+
+  align-items: center;
+
+  min-width: 0;
+
+  padding:
+    17px
+    20px;
+
+  border:
+    1px solid rgba(239, 200, 115, 0.28);
+
+  border-radius: 11px;
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(216, 168, 78, 0.1),
+      transparent 30%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(19, 29, 45, 0.94),
+      rgba(8, 14, 24, 0.96)
+    );
+
+  box-shadow:
+    inset 0 1px 0 rgba(255, 238, 199, 0.06),
+    0 12px 28px rgba(0, 0, 0, 0.24);
+}
+
+
+.gringotts-teaser-label {
+  grid-area: label;
+
+  margin: 0;
+
+  color: rgba(239, 200, 115, 0.62);
+
+  font-family: var(--font-display);
+
+  font-size: 0.55rem;
+  font-weight: 700;
+
+  letter-spacing: 0.16em;
+
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   HITOS
+   ========================================================= */
+
+.gringotts-teaser-vaults {
+  grid-area: vaults;
+
+  display: flex;
+  align-items: center;
+
+  min-width: 0;
+}
+
+
+.gringotts-teaser-vault {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+
+  min-width: 44px;
+}
+
+
+.gringotts-teaser-vault strong {
+  display: grid;
+  place-items: center;
+
+  width: 35px;
+  height: 35px;
+
+  color: #f0d38d;
+
+  font-family: var(--font-display);
+
+  font-size: 0.72rem;
+
+  border:
+    1px solid rgba(239, 200, 115, 0.34);
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 25%,
+      rgba(239, 200, 115, 0.15),
+      rgba(216, 168, 78, 0.035) 65%
+    );
+
+  box-shadow:
+    inset 0 0 14px rgba(216, 168, 78, 0.04),
+    0 0 14px rgba(216, 168, 78, 0.06);
+}
+
+
+.gringotts-teaser-vault small {
+  margin-top: 4px;
+
+  color: rgba(213, 220, 230, 0.55);
+
+  font-family: var(--font-display);
+
+  font-size: 0.45rem;
+}
+
+
+.gringotts-teaser-divider {
+  flex: 1;
+
+  min-width: 12px;
+
+  color: rgba(239, 200, 115, 0.25);
+
+  font-size: 0;
+
+  text-align: center;
+}
+
+
+.gringotts-teaser-divider::before {
+  content: "";
+
+  display: block;
+
+  width: 100%;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      rgba(239, 200, 115, 0.12),
+      rgba(239, 200, 115, 0.5),
+      rgba(239, 200, 115, 0.12)
+    );
+}
+
+
+/* =========================================================
+   LEMA
+   ========================================================= */
+
+.gringotts-teaser-motto {
+  grid-area: motto;
+
+  margin: 0;
+
+  color: rgba(220, 211, 191, 0.58);
+
+  font-family:
+    Georgia,
+    "Times New Roman",
+    serif;
+
+  font-size: 0.66rem;
+  font-style: italic;
+}
+
+
+/* =========================================================
+   BOTÓN
+   ========================================================= */
+
+.gringotts-teaser-link {
+  grid-area: link;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+
+  min-width: 176px;
+  min-height: 44px;
+
+  padding:
+    11px
+    17px;
+
+  color: #f1d58f;
+
+  font-family: var(--font-display);
+
+  font-size: 0.63rem;
+  font-weight: 700;
+
+  letter-spacing: 0.06em;
+
+  text-decoration: none;
+
+  border:
+    1px solid rgba(239, 200, 115, 0.48);
+
+  border-radius: 7px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(216, 168, 78, 0.13),
+      rgba(216, 168, 78, 0.04)
+    );
+
+  transition:
+    transform 0.22s ease,
+    border-color 0.22s ease,
+    background 0.22s ease,
+    box-shadow 0.22s ease;
+}
+
+
+.gringotts-teaser-link:hover {
+  transform:
+    translateY(-2px);
+
+  border-color:
+    rgba(239, 200, 115, 0.8);
+
+  background:
+    rgba(216, 168, 78, 0.12);
+
+  box-shadow:
+    0 9px 20px rgba(0, 0, 0, 0.22),
+    0 0 18px rgba(216, 168, 78, 0.08);
+}
+
+
+.gringotts-teaser-link span {
+  font-size: 0.95rem;
+
+  transition:
+    transform 0.22s ease;
+}
+
+
+.gringotts-teaser-link:hover span {
+  transform:
+    translateX(3px);
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .gringotts-teaser
+  .gringotts-teaser-layout {
+    grid-template-columns: 1fr;
+
+    gap: 18px;
+  }
+
+}
+
+
+/* =========================================================
+   MÓVIL
+   ========================================================= */
+
+@media (max-width: 650px) {
+
+  .gringotts-teaser
+  .gringotts-teaser-layout {
+    padding:
+      23px
+      18px;
+  }
+
+
+  .gringotts-teaser-panel {
+    grid-template-columns: 1fr;
+
+    grid-template-areas:
+      "label"
+      "vaults"
+      "motto"
+      "link";
+
+    gap: 12px;
+
+    padding:
+      17px
+      15px;
+  }
+
+
+  .gringotts-teaser-vault {
+    min-width: 38px;
+  }
+
+
+  .gringotts-teaser-vault strong {
+    width: 32px;
+    height: 32px;
+
+    font-size: 0.64rem;
+  }
+
+
+  .gringotts-teaser-divider {
+    min-width: 6px;
+  }
+
+
+  .gringotts-teaser-link {
+    width: 100%;
+
+    margin-top: 3px;
+  }
+
+}
