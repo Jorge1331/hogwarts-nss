@@ -248,10 +248,22 @@ const teacherCalizWeeks =
         "studentRoster"
       );
 
-    const studentMeritWorkspace =
+       const studentMeritWorkspace =
       document.getElementById(
         "studentMeritWorkspace"
       );
+
+    const studentProfileStatus =
+      document.getElementById(
+        "studentProfileStatus"
+      );
+
+    const studentProfileContent =
+      document.getElementById(
+        "studentProfileContent"
+      );
+
+    const navigationButtons =
 
     const navigationButtons =
       Array.from(
@@ -324,7 +336,9 @@ const teacherCalizWeeks =
       movementHistoryClearFilters,
       studentClassTabs,
       studentRoster,
-      studentMeritWorkspace
+      studentMeritWorkspace,
+      studentProfileStatus,
+      studentProfileContent
     ];
 
 
@@ -354,9 +368,15 @@ const teacherCalizWeeks =
         let unsubscribeStudentRoster =
       null;
 
-    let currentStudentRoster = [];
+       let currentStudentRoster = [];
 
     let selectedStudentId =
+      null;
+
+    let currentStudentProfileMovements =
+      [];
+
+    let unsubscribeStudentProfileMovements =
       null;
 
     let authorizationInProgress =
@@ -702,10 +722,838 @@ const teacherCalizWeeks =
       );
 
 
-      studentMeritWorkspace.replaceChildren(
+            studentMeritWorkspace.replaceChildren(
         state
       );
     };
+
+
+    const createStudentProfileElement =
+      (
+        tagName,
+        className,
+        text
+      ) => {
+
+        const element =
+          document.createElement(
+            tagName
+          );
+
+        if (className) {
+
+          element.className =
+            className;
+        }
+
+        if (
+          text !== undefined &&
+          text !== null
+        ) {
+
+          element.textContent =
+            text;
+        }
+
+        return element;
+      };
+
+
+    const formatStudentProfileAmount =
+      amount => {
+
+        if (amount > 0) {
+
+          return `+${amount}`;
+        }
+
+        if (amount < 0) {
+
+          return `−${Math.abs(
+            amount
+          )}`;
+        }
+
+        return "0";
+      };
+
+
+    const formatStudentProfileDate =
+      timestamp => {
+
+        if (
+          !timestamp ||
+          typeof timestamp.toDate !==
+            "function"
+        ) {
+
+          return "Fecha pendiente";
+        }
+
+        const date =
+          timestamp.toDate();
+
+        if (
+          Number.isNaN(
+            date.getTime()
+          )
+        ) {
+
+          return "Fecha pendiente";
+        }
+
+        return new Intl.DateTimeFormat(
+          "es-ES",
+          {
+            day:
+              "numeric",
+
+            month:
+              "short"
+          }
+        )
+          .format(date)
+          .replace(".", "");
+      };
+
+
+    const getStudentProfileTimestamp =
+      movement => {
+
+        if (
+          movement.createdAt &&
+          typeof movement.createdAt.toMillis ===
+            "function"
+        ) {
+
+          return movement.createdAt.toMillis();
+        }
+
+        return 0;
+      };
+
+
+    const showStudentProfileState =
+      (
+        title,
+        message
+      ) => {
+
+        studentProfileStatus.textContent =
+          title;
+
+        const state =
+          createStudentProfileElement(
+            "div",
+            "student-panel-empty"
+          );
+
+        const heading =
+          createStudentProfileElement(
+            "strong",
+            "",
+            title
+          );
+
+        const detail =
+          createStudentProfileElement(
+            "p",
+            "",
+            message
+          );
+
+        state.append(
+          heading,
+          detail
+        );
+
+        studentProfileContent.replaceChildren(
+          state
+        );
+      };
+
+
+    const stopStudentProfileListener =
+      () => {
+
+        if (
+          typeof unsubscribeStudentProfileMovements ===
+            "function"
+        ) {
+
+          unsubscribeStudentProfileMovements();
+        }
+
+        unsubscribeStudentProfileMovements =
+          null;
+
+        currentStudentProfileMovements =
+          [];
+      };
+
+
+    const renderStudentProfile =
+      () => {
+
+        const selectedStudent =
+          currentStudentRoster.find(
+            student =>
+              student.id ===
+              selectedStudentId
+          );
+
+        if (!selectedStudent) {
+
+          stopStudentProfileListener();
+
+          showStudentProfileState(
+            "Sin alumno seleccionado",
+            "Selecciona un alumno para consultar su evolución y sus últimos méritos."
+          );
+
+          return;
+        }
+
+        const houseLabels = {
+          gryffindor:
+            "Gryffindor",
+
+          hufflepuff:
+            "Hufflepuff",
+
+          ravenclaw:
+            "Ravenclaw",
+
+          slytherin:
+            "Slytherin"
+        };
+
+        const personalPoints =
+          Number.isInteger(
+            selectedStudent.personalPoints
+          )
+            ? selectedStudent.personalPoints
+            : 0;
+
+        const positionIndex =
+          currentStudentRoster.findIndex(
+            student =>
+              student.id ===
+              selectedStudent.id
+          );
+
+        const position =
+          positionIndex >= 0
+            ? positionIndex + 1
+            : null;
+
+        const movements =
+          currentStudentProfileMovements
+            .filter(
+              movement =>
+                movement.studentId ===
+                  selectedStudent.id &&
+                movement.classId ===
+                  selectedStudent.classId &&
+                movement.schoolYear ===
+                  "2026-2027" &&
+                movement.type ===
+                  "student-merit"
+            )
+            .slice()
+            .sort(
+              (
+                movementA,
+                movementB
+              ) =>
+                getStudentProfileTimestamp(
+                  movementB
+                ) -
+                getStudentProfileTimestamp(
+                  movementA
+                )
+            );
+
+        const houseContribution =
+          movements.reduce(
+            (
+              total,
+              movement
+            ) =>
+              total +
+              (
+                Number.isInteger(
+                  movement.houseAmount
+                )
+                  ? movement.houseAmount
+                  : 0
+              ),
+            0
+          );
+
+        const positiveCount =
+          movements.filter(
+            movement =>
+              Number.isInteger(
+                movement.personalAmount
+              ) &&
+              movement.personalAmount > 0
+          ).length;
+
+        const negativeCount =
+          movements.filter(
+            movement =>
+              Number.isInteger(
+                movement.personalAmount
+              ) &&
+              movement.personalAmount < 0
+          ).length;
+
+        const scoredMovementCount =
+          positiveCount +
+          negativeCount;
+
+        const positiveAngle =
+          scoredMovementCount > 0
+            ? (
+                positiveCount /
+                scoredMovementCount
+              ) * 360
+            : 0;
+
+        const studentName =
+          cleanText(
+            selectedStudent.displayName,
+            "Alumno"
+          );
+
+        const houseLabel =
+          houseLabels[
+            selectedStudent.houseId
+          ] || "Sin Casa";
+
+        studentProfileStatus.textContent =
+          `${studentName} · ${houseLabel}`;
+
+        const profile =
+          createStudentProfileElement(
+            "div",
+            "student-profile-card"
+          );
+
+        const summary =
+          createStudentProfileElement(
+            "div",
+            "student-profile-summary"
+          );
+
+        const balance =
+          createStudentProfileElement(
+            "div",
+            "student-profile-balance"
+          );
+
+        const ring =
+          createStudentProfileElement(
+            "div",
+            "student-profile-ring"
+          );
+
+        ring.style.setProperty(
+          "--student-positive-angle",
+          `${positiveAngle}deg`
+        );
+
+        ring.setAttribute(
+          "role",
+          "img"
+        );
+
+        ring.setAttribute(
+          "aria-label",
+          `Balance de movimientos: ${positiveCount} positivos y ${negativeCount} negativos.`
+        );
+
+        if (
+          scoredMovementCount === 0
+        ) {
+
+          ring.classList.add(
+            "is-empty"
+          );
+        }
+
+        const ringCenter =
+          createStudentProfileElement(
+            "span",
+            "student-profile-ring-center"
+          );
+
+        const ringPoints =
+          createStudentProfileElement(
+            "strong",
+            "",
+            String(
+              personalPoints
+            )
+          );
+
+        const ringLabel =
+          createStudentProfileElement(
+            "small",
+            "",
+            Math.abs(
+              personalPoints
+            ) === 1
+              ? "punto"
+              : "puntos"
+          );
+
+        ringCenter.append(
+          ringPoints,
+          ringLabel
+        );
+
+        ring.appendChild(
+          ringCenter
+        );
+
+        const balanceLegend =
+          createStudentProfileElement(
+            "div",
+            "student-profile-balance-legend"
+          );
+
+        const positiveLegend =
+          createStudentProfileElement(
+            "span",
+            "is-positive",
+            `${positiveCount} ${
+              positiveCount === 1
+                ? "mérito"
+                : "méritos"
+            }`
+          );
+
+        const negativeLegend =
+          createStudentProfileElement(
+            "span",
+            "is-negative",
+            `${negativeCount} ${
+              negativeCount === 1
+                ? "penalización"
+                : "penalizaciones"
+            }`
+          );
+
+        balanceLegend.append(
+          positiveLegend,
+          negativeLegend
+        );
+
+        balance.append(
+          ring,
+          balanceLegend
+        );
+
+        const stats =
+          createStudentProfileElement(
+            "div",
+            "student-profile-stats"
+          );
+
+        const createStat =
+          (
+            label,
+            value
+          ) => {
+
+            const stat =
+              createStudentProfileElement(
+                "div",
+                "student-profile-stat"
+              );
+
+            const statLabel =
+              createStudentProfileElement(
+                "span",
+                "",
+                label
+              );
+
+            const statValue =
+              createStudentProfileElement(
+                "strong",
+                "",
+                value
+              );
+
+            stat.append(
+              statLabel,
+              statValue
+            );
+
+            return stat;
+          };
+
+        stats.append(
+          createStat(
+            "Posición",
+            position
+              ? `#${position}`
+              : "—"
+          ),
+          createStat(
+            "Puntos",
+            String(
+              personalPoints
+            )
+          ),
+          createStat(
+            "A su Casa",
+            formatStudentProfileAmount(
+              houseContribution
+            )
+          )
+        );
+
+        summary.append(
+          balance,
+          stats
+        );
+
+        const history =
+          createStudentProfileElement(
+            "div",
+            "student-profile-history"
+          );
+
+        const historyHeading =
+          createStudentProfileElement(
+            "div",
+            "student-profile-history-heading"
+          );
+
+        const historyTitle =
+          createStudentProfileElement(
+            "strong",
+            "",
+            "Últimos méritos"
+          );
+
+        const historyCount =
+          createStudentProfileElement(
+            "span",
+            "",
+            `${movements.length} ${
+              movements.length === 1
+                ? "movimiento"
+                : "movimientos"
+            }`
+          );
+
+        historyHeading.append(
+          historyTitle,
+          historyCount
+        );
+
+        const historyList =
+          createStudentProfileElement(
+            "div",
+            "student-profile-history-list"
+          );
+
+        const recentMovements =
+          movements.slice(
+            0,
+            5
+          );
+
+        if (
+          recentMovements.length === 0
+        ) {
+
+          const emptyHistory =
+            createStudentProfileElement(
+              "p",
+              "student-profile-history-empty",
+              "Todavía no hay méritos registrados para este alumno."
+            );
+
+          historyList.appendChild(
+            emptyHistory
+          );
+
+        } else {
+
+          recentMovements.forEach(
+            movement => {
+
+              const personalAmount =
+                Number.isInteger(
+                  movement.personalAmount
+                )
+                  ? movement.personalAmount
+                  : 0;
+
+              const houseAmount =
+                Number.isInteger(
+                  movement.houseAmount
+                )
+                  ? movement.houseAmount
+                  : 0;
+
+              const item =
+                createStudentProfileElement(
+                  "article",
+                  "student-profile-movement"
+                );
+
+              item.classList.add(
+                personalAmount >= 0
+                  ? "is-positive"
+                  : "is-negative"
+              );
+
+              const itemHeading =
+                createStudentProfileElement(
+                  "div",
+                  "student-profile-movement-heading"
+                );
+
+              const category =
+                createStudentProfileElement(
+                  "strong",
+                  "",
+                  cleanText(
+                    movement.category,
+                    "Movimiento"
+                  )
+                );
+
+              const amount =
+                createStudentProfileElement(
+                  "span",
+                  "",
+                  formatStudentProfileAmount(
+                    personalAmount
+                  )
+                );
+
+              itemHeading.append(
+                category,
+                amount
+              );
+
+              const impact =
+                createStudentProfileElement(
+                  "p",
+                  "student-profile-movement-impact",
+                  `Personal ${formatStudentProfileAmount(
+                    personalAmount
+                  )} · Casa ${formatStudentProfileAmount(
+                    houseAmount
+                  )}`
+                );
+
+              if (
+                movement.calizApplied ===
+                  true &&
+                Number.isInteger(
+                  movement.calizMultiplier
+                ) &&
+                movement.calizMultiplier > 1
+              ) {
+
+                impact.textContent +=
+                  ` · Santo Cáliz ×${movement.calizMultiplier}`;
+              }
+
+              const reason =
+                String(
+                  movement.reason || ""
+                ).trim();
+
+              const meta =
+                createStudentProfileElement(
+                  "small",
+                  "student-profile-movement-meta",
+                  `${formatStudentProfileDate(
+                    movement.createdAt
+                  )} · ${cleanText(
+                    movement.createdByName,
+                    "Profesorado"
+                  )}`
+                );
+
+              item.append(
+                itemHeading,
+                impact
+              );
+
+              if (reason) {
+
+                const reasonElement =
+                  createStudentProfileElement(
+                    "p",
+                    "student-profile-movement-reason",
+                    reason
+                  );
+
+                item.appendChild(
+                  reasonElement
+                );
+              }
+
+              item.appendChild(
+                meta
+              );
+
+              historyList.appendChild(
+                item
+              );
+            }
+          );
+        }
+
+        history.append(
+          historyHeading,
+          historyList
+        );
+
+        profile.append(
+          summary,
+          history
+        );
+
+        studentProfileContent.replaceChildren(
+          profile
+        );
+      };
+
+
+    const startStudentProfileListener =
+      () => {
+
+        const selectedStudent =
+          currentStudentRoster.find(
+            student =>
+              student.id ===
+              selectedStudentId
+          );
+
+        stopStudentProfileListener();
+
+        if (!selectedStudent) {
+
+          renderStudentProfile();
+
+          return;
+        }
+
+        const studentId =
+          selectedStudent.id;
+
+        const classId =
+          selectedStudent.classId;
+
+        showStudentProfileState(
+          "Consultando seguimiento",
+          "Recuperando los movimientos registrados de este alumno."
+        );
+
+        const studentMovementsQuery =
+          query(
+            collection(
+              db,
+              "studentMovements"
+            ),
+            where(
+              "studentId",
+              "==",
+              studentId
+            ),
+            where(
+              "classId",
+              "==",
+              classId
+            )
+          );
+
+        unsubscribeStudentProfileMovements =
+          onSnapshot(
+            studentMovementsQuery,
+
+            snapshot => {
+
+              if (
+                selectedStudentId !==
+                  studentId ||
+                selectedStudentClassId !==
+                  classId
+              ) {
+
+                return;
+              }
+
+              currentStudentProfileMovements =
+                snapshot.docs.map(
+                  movementSnapshot => ({
+                    id:
+                      movementSnapshot.id,
+
+                    ...movementSnapshot.data()
+                  })
+                );
+
+              renderStudentProfile();
+            },
+
+            error => {
+
+              if (
+                selectedStudentId !==
+                  studentId ||
+                selectedStudentClassId !==
+                  classId
+              ) {
+
+                return;
+              }
+
+              console.error(
+                "No se ha podido cargar el seguimiento del alumno:",
+                error
+              );
+
+              showStudentProfileState(
+                "Seguimiento no disponible",
+                "Firestore no ha podido recuperar el historial privado de este alumno."
+              );
+            }
+          );
+      };
+
+
+    studentRoster.addEventListener(
+      "click",
+      event => {
+
+        const target =
+          event.target instanceof Element
+            ? event.target.closest(
+                ".student-roster-item"
+              )
+            : null;
+
+        if (!target) {
+
+          return;
+        }
+
+        startStudentProfileListener();
+      }
+    );
 
 
         const renderSelectedStudentWorkspace =
@@ -1991,11 +2839,10 @@ const teacherCalizWeeks =
           "No hay alumnado activo",
           "Este grupo no contiene alumnado activo disponible."
         );
-
         renderSelectedStudentWorkspace();
+        renderStudentProfile();
 
         return;
-      }
 
 
       const houseLabels = {
@@ -2135,11 +2982,10 @@ const teacherCalizWeeks =
       studentRoster.replaceChildren(
         ...items
       );
-
+         
       renderSelectedStudentWorkspace();
+      renderStudentProfile();
     };
-
-
     const stopStudentRosterListener =
       () => {
 
@@ -2153,6 +2999,13 @@ const teacherCalizWeeks =
           unsubscribeStudentRoster =
             null;
         }
+
+        stopStudentProfileListener();
+
+        showStudentProfileState(
+          "Sin alumno seleccionado",
+          "Selecciona un alumno para consultar su evolución y sus últimos méritos."
+        );
       };
 
 
