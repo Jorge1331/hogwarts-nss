@@ -264,8 +264,6 @@ const teacherCalizWeeks =
       );
 
     const navigationButtons =
-
-    const navigationButtons =
       Array.from(
         document.querySelectorAll(
           "[data-panel-section]"
