@@ -1531,9 +1531,9 @@ div > span {
   display: grid;
 
     grid-template-columns:
-    minmax(230px, 0.8fr)
-    minmax(300px, 0.95fr)
-    minmax(230px, 1fr);
+  minmax(230px, 0.8fr)
+  minmax(300px, 0.8fr)
+  minmax(360px, 1.2fr);
 
   gap: 14px;
 
