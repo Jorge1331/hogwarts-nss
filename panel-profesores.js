@@ -1916,11 +1916,35 @@ const teacherCalizWeeks =
               student.schoolYear ===
                 "2026-2027"
           )
-          .sort(
+                   .sort(
             (
               studentA,
               studentB
             ) => {
+
+              const pointsA =
+                Number.isInteger(
+                  studentA.personalPoints
+                )
+                  ? studentA.personalPoints
+                  : 0;
+
+              const pointsB =
+                Number.isInteger(
+                  studentB.personalPoints
+                )
+                  ? studentB.personalPoints
+                  : 0;
+
+
+              if (
+                pointsA !==
+                pointsB
+              ) {
+
+                return pointsB - pointsA;
+              }
+
 
               const orderA =
                 Number.isInteger(
@@ -1991,7 +2015,10 @@ const teacherCalizWeeks =
 
       const items =
         activeStudents.map(
-          student => {
+                    (
+            student,
+            index
+          ) => {
 
             const item =
               document.createElement(
@@ -2034,14 +2061,10 @@ const teacherCalizWeeks =
                 "span"
               );
 
-            order.textContent =
-              Number.isInteger(
-                student.order
-              )
-                ? String(
-                    student.order
-                  )
-                : "—";
+                      order.textContent =
+              String(
+                index + 1
+              );
 
 
             const identity =
