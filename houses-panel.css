@@ -2141,7 +2141,6 @@ span::before {
   gap: 7px;
 }
 
-
 #sectionCasas .student-profile-stat {
   display: flex;
 
@@ -2153,11 +2152,11 @@ span::before {
 
   min-width: 0;
 
-  min-height: 66px;
+  min-height: 78px;
 
   padding:
-    9px
-    7px;
+    10px
+    5px;
 
   text-align: center;
 
@@ -2171,16 +2170,28 @@ span::before {
     rgba(255, 255, 255, 0.014);
 }
 
-
 #sectionCasas
 .student-profile-stat span {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 100%;
+  min-height: 2.4em;
+
   color: var(--muted);
 
-  font-size: 0.49rem;
+  font-size: 0.46rem;
 
   font-weight: 700;
 
-  letter-spacing: 0.05em;
+  line-height: 1.2;
+
+  letter-spacing: 0.035em;
+
+  text-align: center;
 
   text-transform: uppercase;
 }
