@@ -1530,10 +1530,10 @@ div > span {
 #sectionCasas .student-merit-layout {
   display: grid;
 
-  grid-template-columns:
+    grid-template-columns:
     minmax(230px, 0.8fr)
-    minmax(300px, 1.15fr)
-    minmax(230px, 0.75fr);
+    minmax(300px, 0.95fr)
+    minmax(230px, 1fr);
 
   gap: 14px;
 
