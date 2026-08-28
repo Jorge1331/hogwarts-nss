@@ -2841,7 +2841,7 @@ const teacherCalizWeeks =
         renderStudentProfile();
 
         return;
-
+      }
 
       const houseLabels = {
         gryffindor:
