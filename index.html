@@ -246,48 +246,109 @@
 
         </article>
 
-        <!-- NOTICIAS -->
-        <article class="dashboard-card parchment-card news-card">
+              <!-- =================================================
+             EL PROFETA · PORTADA Y CRÓNICAS
+             ================================================= -->
 
-          <div class="card-heading">
-            <div>
-              <p class="card-kicker">El Profeta</p>
-              <h3>Noticias del castillo</h3>
-            </div>
+        <article
+          class="dashboard-card parchment-card news-card prophet-card"
+          aria-labelledby="prophetTitle"
+        >
 
-            <span class="card-symbol">📰</span>
+          <div class="prophet-layout">
+
+
+            <!-- =============================================
+                 1 · PORTADA DE EL PROFETA
+                 ============================================= -->
+
+            <section
+              class="prophet-cover"
+              aria-labelledby="prophetTitle"
+            >
+
+              <div class="prophet-cover-header">
+
+                <p class="card-kicker">
+                  Edición de Hogwarts NSS
+                </p>
+
+                <h3 id="prophetTitle">
+                  El Profeta
+                </h3>
+
+              </div>
+
+
+              <div class="prophet-cover-slot">
+
+                <p class="prophet-cover-placeholder">
+                  Portada de El Profeta
+                </p>
+
+              </div>
+
+            </section>
+
+
+            <!-- =============================================
+                 2 · ÚLTIMAS CRÓNICAS
+                 ============================================= -->
+
+            <section
+              class="prophet-chronicles"
+              aria-labelledby="prophetChroniclesTitle"
+            >
+
+              <div class="prophet-chronicles-heading">
+
+                <div>
+
+                  <p class="card-kicker">
+                    Últimas publicaciones
+                  </p>
+
+                  <h3 id="prophetChroniclesTitle">
+                    Crónicas del castillo
+                  </h3>
+
+                </div>
+
+              </div>
+
+
+              <div
+                id="publicChroniclesList"
+                class="news-list prophet-chronicles-list"
+                aria-live="polite"
+              >
+
+                <article class="news-item">
+
+                  <div>
+
+                    <strong>
+                      Consultando El Profeta
+                    </strong>
+
+                    <p>
+                      Recuperando las últimas crónicas del castillo.
+                    </p>
+
+                    <small>
+                      Hogwarts NSS
+                    </small>
+
+                  </div>
+
+                </article>
+
+              </div>
+
+            </section>
+
+
           </div>
-
-        <div
-  id="publicChroniclesList"
-  class="news-list"
-  aria-live="polite"
->
-
-  <article class="news-item">
-    <span
-      class="news-icon"
-      aria-hidden="true"
-    >
-      📰
-    </span>
-
-    <div>
-      <strong>
-        Consultando El Profeta
-      </strong>
-
-      <p>
-        Recuperando las últimas crónicas del castillo.
-      </p>
-
-      <small>
-        Hogwarts NSS
-      </small>
-    </div>
-  </article>
-
-</div>
 
         </article>
 
