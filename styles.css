@@ -10234,3 +10234,81 @@ a:focus-visible {
 .prophet-front-photo-placeholder::after {
   z-index: 2;
 }
+/* =========================================================
+   EL PROFETA · PORTADA MÁS COMPACTA
+   ========================================================= */
+
+/* Ganamos espacio vertical */
+
+.prophet-cover {
+  gap: 6px;
+
+  padding:
+    14px
+    20px
+    10px;
+}
+
+
+.prophet-front-masthead {
+  padding-bottom: 6px;
+}
+
+
+/* =========================================================
+   CURSO
+   ========================================================= */
+
+.prophet-front-course {
+  margin-bottom: 4px;
+
+  font-size: 0.45rem;
+
+  letter-spacing: 0.09em;
+}
+
+
+/* =========================================================
+   TITULAR
+   ========================================================= */
+
+.prophet-front-headline {
+  padding:
+    3px
+    0
+    6px;
+}
+
+
+.prophet-front-headline h4 {
+  max-width: 590px;
+
+  font-size:
+    clamp(
+      0.88rem,
+      1.25vw,
+      1.18rem
+    );
+
+  line-height: 1.03;
+
+  letter-spacing: 0.015em;
+}
+
+
+/* =========================================================
+   MÁS PROTAGONISMO PARA LA FOTOGRAFÍA
+   ========================================================= */
+
+.prophet-front-photo-placeholder {
+  min-height: 165px;
+}
+
+
+/* Pie de foto más discreto */
+
+.prophet-front-photo figcaption {
+  margin-top: 3px;
+
+  font-size: 0.46rem;
+}
