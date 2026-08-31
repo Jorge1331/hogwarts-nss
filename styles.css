@@ -10137,3 +10137,42 @@ a:focus-visible {
   }
 
 }
+/* =========================================================
+   EL PROFETA · AJUSTE EDITORIAL DE PORTADA
+   ========================================================= */
+
+.prophet-front-meta {
+  grid-template-columns:
+    1fr
+    1fr;
+}
+
+
+.prophet-front-meta span:last-child {
+  text-align: right;
+}
+
+
+.prophet-front-course {
+  display: block;
+
+  margin-bottom: 4px;
+
+  color:
+    rgba(239, 200, 115, 0.82);
+
+  font-family: var(--font-display);
+
+  font-size: 0.52rem;
+  font-weight: 700;
+
+  letter-spacing: 0.1em;
+
+  text-align: center;
+  text-transform: uppercase;
+}
+
+
+.prophet-front-headline > span {
+  margin-bottom: 4px;
+}
