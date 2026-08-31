@@ -10355,3 +10355,10 @@ a:focus-visible {
 
   font-size: 0.43rem;
 }
+/* =========================================================
+   EL PROFETA · FOTO SIN MARCO INTERIOR
+   ========================================================= */
+
+.prophet-front-photo-placeholder::after {
+  display: none;
+}
