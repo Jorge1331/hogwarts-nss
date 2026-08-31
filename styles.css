@@ -10176,3 +10176,61 @@ a:focus-visible {
 .prophet-front-headline > span {
   margin-bottom: 4px;
 }
+/* =========================================================
+   EL PROFETA · FOTOGRAFÍA MÁGICA
+   ========================================================= */
+
+.prophet-front-photo-placeholder {
+  position: relative;
+
+  display: block;
+
+  min-height: 125px;
+
+  overflow: hidden;
+
+  background: #08111f;
+}
+
+
+.prophet-front-photo-image {
+  position: absolute;
+
+  top: 0;
+  bottom: 0;
+  left: 0;
+
+  width: 118%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+  object-position: left center;
+
+  filter:
+    saturate(0.94)
+    contrast(1.06)
+    brightness(0.92);
+
+  transform:
+    scale(1.015);
+
+  transform-origin:
+    left center;
+}
+
+
+/* Quitamos por ahora el resplandor provisional.
+   La magia la añadiremos después de forma deliberada. */
+
+.prophet-front-photo-placeholder::before {
+  display: none;
+}
+
+
+/* Conservamos el marco interior */
+
+.prophet-front-photo-placeholder::after {
+  z-index: 2;
+}
