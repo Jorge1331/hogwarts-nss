@@ -10312,3 +10312,46 @@ a:focus-visible {
 
   font-size: 0.46rem;
 }
+/* =========================================================
+   EL PROFETA · AJUSTE FINAL DE FOTOGRAFÍA
+   ========================================================= */
+
+.prophet-cover {
+  padding-bottom: 6px;
+}
+
+
+.prophet-front-photo {
+  margin: 0;
+}
+
+
+.prophet-front-photo-placeholder {
+  min-height: 190px;
+}
+
+
+.prophet-front-photo-image {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: contain;
+  object-position: center center;
+
+  filter:
+    saturate(0.96)
+    contrast(1.04)
+    brightness(0.94);
+
+  transform: none;
+}
+
+
+.prophet-front-photo figcaption {
+  margin-top: 2px;
+
+  font-size: 0.43rem;
+}
