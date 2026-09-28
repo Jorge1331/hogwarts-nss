@@ -1777,7 +1777,13 @@ function showRankingSummary() {
     );
   }
 );
+if (sortedHouses.length < 2) {
+  showMagicMessage(
+    "La clasificación todavía se está cargando. Inténtalo de nuevo en unos segundos."
+  );
 
+  return;
+}
   const leader = sortedHouses[0];
   const secondHouse = sortedHouses[1];
 
