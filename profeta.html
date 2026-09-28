@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta
+    name="description"
+    content="El Profeta de Hogwarts NSS. Crónicas y noticias del castillo."
+  >
+
+  <title>
+    El Profeta | Hogwarts NSS
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
+
+</head>
+
+
+<body class="prophet-page">
+
+  <div class="app-shell">
+
+
+    <!-- =====================================================
+         CABECERA PÚBLICA
+         ===================================================== -->
+
+    <header class="public-header">
+
+      <div class="public-brand">
+
+        <div class="public-school-logo">
+
+          <img
+            src="logo_cole.png"
+            alt="Colegio Diocesano Nuestra Señora del Socorro"
+          >
+
+        </div>
+
+
+        <div class="public-project-brand">
+
+          <strong>
+            Hogwarts NSS
+          </strong>
+
+          <span>
+            El legado del Fénix
+          </span>
+
+        </div>
+
+      </div>
+
+
+      <nav
+        class="public-navigation"
+        aria-label="Navegación principal"
+      >
+
+        <a
+          class="public-nav-link"
+          href="index.html"
+        >
+          Inicio
+        </a>
+
+        <a
+          class="public-nav-link"
+          href="index.html#houseRanking"
+        >
+          Casas
+        </a>
+
+        <a
+          class="public-nav-link"
+          href="recompensas.html"
+        >
+          Recompensas
+        </a>
+
+        <a
+          class="public-nav-link active"
+          href="profeta.html"
+          aria-current="page"
+        >
+          El Profeta
+        </a>
+
+        <a
+          class="public-nav-link"
+          href="torneo.html"
+        >
+          Torneo
+        </a>
+
+      </nav>
+
+
+      <a
+        class="public-teacher-access"
+        href="profesores.html"
+      >
+
+        <span aria-hidden="true">
+          ⌑
+        </span>
+
+        Acceso profesorado
+
+      </a>
+
+    </header>
+
+
+    <!-- =====================================================
+         EL PROFETA
+         ===================================================== -->
+
+    <main class="main-content prophet-page-main">
+
+
+      <!-- CABECERA DEL PERIÓDICO -->
+
+      <section
+        class="prophet-page-header"
+        aria-labelledby="prophetPageTitle"
+      >
+
+        <div class="prophet-page-brand">
+
+          <p class="prophet-page-edition">
+            Edición de Hogwarts NSS · Curso 2026-2027
+          </p>
+
+          <h1 id="prophetPageTitle">
+            El Profeta
+          </h1>
+
+          <p class="prophet-page-tagline">
+            El periódico del mundo mágico de
+            Nuestra Señora del Socorro
+          </p>
+
+        </div>
+
+
+        <div
+          class="prophet-page-divider"
+          aria-hidden="true"
+        >
+          ✦
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           NOTICIA PRINCIPAL
+           =================================================== -->
+
+      <section
+        class="prophet-page-feature"
+        aria-labelledby="prophetLatestHeading"
+      >
+
+        <div class="prophet-page-section-heading">
+
+          <div>
+
+            <p class="card-kicker">
+              Última hora
+            </p>
+
+            <h2 id="prophetLatestHeading">
+              La noticia principal
+            </h2>
+
+          </div>
+
+        </div>
+
+
+        <div
+          id="prophetLatestArticle"
+          class="prophet-page-feature-content"
+          aria-live="polite"
+        >
+
+          <article class="prophet-page-loading">
+
+            <p class="card-kicker">
+              El Profeta
+            </p>
+
+            <h3>
+              Consultando las últimas noticias
+            </h3>
+
+            <p>
+              Las lechuzas están trayendo la edición
+              más reciente del castillo.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           ARCHIVO DE CRÓNICAS
+           =================================================== -->
+
+      <section
+        class="prophet-page-archive"
+        aria-labelledby="prophetArchiveHeading"
+      >
+
+        <div class="prophet-page-section-heading">
+
+          <div>
+
+            <p class="card-kicker">
+              Archivo del castillo
+            </p>
+
+            <h2 id="prophetArchiveHeading">
+              Más noticias de Hogwarts NSS
+            </h2>
+
+          </div>
+
+          <p class="prophet-page-archive-intro">
+            Crónicas publicadas por el profesorado
+            a lo largo del curso.
+          </p>
+
+        </div>
+
+
+        <div
+          id="prophetArchiveList"
+          class="prophet-page-archive-list"
+          aria-live="polite"
+        >
+
+          <article class="prophet-page-loading">
+
+            <h3>
+              Preparando el archivo de El Profeta
+            </h3>
+
+            <p>
+              Recuperando las crónicas publicadas.
+            </p>
+
+          </article>
+
+        </div>
+
+      </section>
+
+
+      <!-- ===================================================
+           PIE
+           =================================================== -->
+
+      <footer class="site-footer">
+
+        <p>
+          Hogwarts NSS: El legado del Fénix ·
+          Nuestra Señora del Socorro
+        </p>
+
+        <blockquote>
+          “La magia nace cuando nadie se queda atrás.”
+        </blockquote>
+
+      </footer>
+
+    </main>
+
+  </div>
+
+</body>
+
+</html>
