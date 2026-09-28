@@ -646,14 +646,20 @@ function getChronicleScopeLabel(
     hogwarts:
       "Hogwarts NSS",
 
-    class:
-      "Aula",
+    all:
+      "Las cuatro casas",
 
-    course:
-      "Curso",
+    gryffindor:
+      "Gryffindor",
 
-    school:
-      "Colegio"
+    slytherin:
+      "Slytherin",
+
+    ravenclaw:
+      "Ravenclaw",
+
+    hufflepuff:
+      "Hufflepuff"
 
   };
 
@@ -663,7 +669,6 @@ function getChronicleScopeLabel(
     "Hogwarts NSS"
   );
 }
-
 
 /* =========================================================
    FECHA
