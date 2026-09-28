@@ -1692,9 +1692,9 @@ function initializeButtons() {
     ".primary-button"
   );
 
-  const secondaryButtons = document.querySelectorAll(
-    ".secondary-button"
-  );
+ const secondaryButtons = document.querySelectorAll(
+  "button.secondary-button"
+);
 
   const textButtons = document.querySelectorAll(
     ".text-button"
